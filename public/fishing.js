@@ -21,7 +21,237 @@ function _boot() {
     }
 };
 
-},{"./fishing.js":4}],2:[function(require,module,exports){
+},{"./fishing.js":6}],2:[function(require,module,exports){
+// PERLIN NOISE
+// based 99.999% on Processing's implementation, found here:
+// https://github.com/processing/processing/blob/master/core/src/processing/core/PApplet.java
+// credit goes entirely to them. i just ported it to javascript.
+
+var Alea = require("alea"); // this is pretty great, btw
+
+var Perlin = module.exports = function(seed) {
+	if (seed != undefined) {
+		this.alea_rand = new Alea(seed); // use provided seed
+	} else {
+		this.alea_rand = new Alea(); // use random seed
+	}
+	this.PERLIN_YWRAPB = 4;
+	this.PERLIN_YWRAP = 1 << this.PERLIN_YWRAPB;
+	this.PERLIN_ZWRAPB = 8;
+	this.PERLIN_ZWRAP = 1 << this.PERLIN_ZWRAPB;
+	this.PERLIN_SIZE = 4095;
+	this.perlin_octaves = 4; // default to medium smooth
+	this.perlin_amp_falloff = 0.5; // 50% reduction/octave
+	this.perlin_array = new Array();
+	// generate cos lookup table
+	var DEG_TO_RAD = 0.0174532925;
+	var SINCOS_PRECISION = 0.5;
+	var SINCOS_LENGTH = Math.floor(360/SINCOS_PRECISION);
+	this.cosLUT = new Array();
+	for (var i = 0; i < SINCOS_LENGTH; i++) {
+		this.cosLUT[i] = Math.cos(i * DEG_TO_RAD * SINCOS_PRECISION);
+	}
+	this.perlin_TWOPI = SINCOS_LENGTH;
+	this.perlin_PI = SINCOS_LENGTH;
+	this.perlin_PI >>= 1;
+}
+
+Perlin.prototype.noiseReseed = function() {
+	this.alea_rand = new Alea(); // new random seed
+	this.perlin_array = new Array(); // start the perlin array fresh
+}
+
+Perlin.prototype.noiseSeed = function(seed) {
+	this.alea_rand = new Alea(seed); // use provided seed
+	this.perlin_array = new Array(); // start the perlin array fresh
+}
+
+
+Perlin.prototype.noiseDetail = function(lod, falloff) {
+	if (Math.floor(lod) > 0) this.perlin_octaves = Math.floor(lod);
+	if (falloff != undefined && falloff > 0) this.perlin_amp_falloff = falloff;
+}
+
+Perlin.prototype.noise_fsc = function(i) {
+	return 0.5 * (1.0 - this.cosLUT[Math.floor(i * this.perlin_PI) % this.perlin_TWOPI]);
+}
+
+Perlin.prototype.noise = function(x, y, z) {
+	if (x == undefined) {
+		return false; // we need at least one param
+	}
+	if (y == undefined) {
+		y = 0; // use 0 if not provided
+	}
+	if (z == undefined) {
+		z = 0; // use 0 if not provided
+	}
+	
+	// build the first perlin array if there isn't one
+	if (this.perlin_array.length == 0) {
+		this.perlin_array = new Array();
+		for (var i = 0; i < this.PERLIN_SIZE + 1; i++) {
+			this.perlin_array[i] = this.alea_rand();
+		}
+	}
+
+	if (x < 0) x = -x;
+	if (y < 0) y = -y;
+	if (z < 0) z = -z;
+	var xi = Math.floor(x);
+	var yi = Math.floor(y);
+	var zi = Math.floor(z);
+	var xf = x - xi;
+	var yf = y - yi;
+	var zf = z - zi;
+	var r = 0;
+	var ampl = 0.5;
+	var rxf, ryf, n1, n2, n3;
+	
+	for (var i = 0; i < this.perlin_octaves; i++) {
+		// look at all this math stuff
+		var of = xi + (yi << this.PERLIN_YWRAPB) + (zi << this.PERLIN_ZWRAPB);
+		rxf = this.noise_fsc(xf);
+		ryf = this.noise_fsc(yf);
+		n1  = this.perlin_array[of & this.PERLIN_SIZE];
+		n1 += rxf * (this.perlin_array[(of + 1) & this.PERLIN_SIZE] - n1);
+		n2  = this.perlin_array[(of + this.PERLIN_YWRAP) & this.PERLIN_SIZE];
+		n2 += rxf * (this.perlin_array[(of + this.PERLIN_YWRAP + 1) & this.PERLIN_SIZE] - n2);
+		n1 += ryf * (n2-n1);
+		of += this.PERLIN_ZWRAP;
+		n2  = this.perlin_array[of & this.PERLIN_SIZE];
+		n2 += rxf * (this.perlin_array[(of + 1) & this.PERLIN_SIZE] - n2);
+		n3  = this.perlin_array[(of + this.PERLIN_YWRAP) & this.PERLIN_SIZE];
+		n3 += rxf * (this.perlin_array[(of + this.PERLIN_YWRAP + 1) & this.PERLIN_SIZE] - n3);
+		n2 += ryf * (n3 - n2);
+		n1 += this.noise_fsc(zf) * (n2 - n1);
+		r += n1 * ampl;
+		ampl *= this.perlin_amp_falloff;
+		xi <<= 1;
+		xf *= 2;
+		yi <<= 1;
+		yf *= 2;
+		zi <<= 1; 
+		zf *= 2;
+		if (xf >= 1) { xi++; xf--; }
+		if (yf >= 1) { yi++; yf--; }
+		if (zf >= 1) { zi++; zf--; }
+	}
+	return r;
+}
+
+},{"alea":3}],3:[function(require,module,exports){
+(function (root, factory) {
+  if (typeof exports === 'object') {
+      module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+      define(factory);
+  } else {
+      root.Alea = factory();
+  }
+}(this, function () {
+
+  'use strict';
+
+  // From http://baagoe.com/en/RandomMusings/javascript/
+
+  // importState to sync generator states
+  Alea.importState = function(i){
+    var random = new Alea();
+    random.importState(i);
+    return random;
+  };
+
+  return Alea;
+
+  function Alea() {
+    return (function(args) {
+      // Johannes Baagøe <baagoe@baagoe.com>, 2010
+      var s0 = 0;
+      var s1 = 0;
+      var s2 = 0;
+      var c = 1;
+
+      if (args.length == 0) {
+        args = [+new Date];
+      }
+      var mash = Mash();
+      s0 = mash(' ');
+      s1 = mash(' ');
+      s2 = mash(' ');
+
+      for (var i = 0; i < args.length; i++) {
+        s0 -= mash(args[i]);
+        if (s0 < 0) {
+          s0 += 1;
+        }
+        s1 -= mash(args[i]);
+        if (s1 < 0) {
+          s1 += 1;
+        }
+        s2 -= mash(args[i]);
+        if (s2 < 0) {
+          s2 += 1;
+        }
+      }
+      mash = null;
+
+      var random = function() {
+        var t = 2091639 * s0 + c * 2.3283064365386963e-10; // 2^-32
+        s0 = s1;
+        s1 = s2;
+        return s2 = t - (c = t | 0);
+      };
+      random.uint32 = function() {
+        return random() * 0x100000000; // 2^32
+      };
+      random.fract53 = function() {
+        return random() + 
+          (random() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
+      };
+      random.version = 'Alea 0.9';
+      random.args = args;
+
+      // my own additions to sync state between two generators
+      random.exportState = function(){
+        return [s0, s1, s2, c];
+      };
+      random.importState = function(i){
+        s0 = +i[0] || 0;
+        s1 = +i[1] || 0;
+        s2 = +i[2] || 0;
+        c = +i[3] || 0;
+      };
+ 
+      return random;
+
+    } (Array.prototype.slice.call(arguments)));
+  }
+
+  function Mash() {
+    var n = 0xefc8249d;
+
+    var mash = function(data) {
+      data = data.toString();
+      for (var i = 0; i < data.length; i++) {
+        n += data.charCodeAt(i);
+        var h = 0.02519603282416938 * n;
+        n = h >>> 0;
+        h -= n;
+        h *= n;
+        n = h >>> 0;
+        h -= n;
+        n += h * 0x100000000; // 2^32
+      }
+      return (n >>> 0) * 2.3283064365386963e-10; // 2^-32
+    };
+
+    mash.version = 'Mash 0.9';
+    return mash;
+  }
+}));
+
+},{}],4:[function(require,module,exports){
 /*! qwest 1.5.4 (https://github.com/pyrsmk/qwest) */
 
 ;(function(context,name,definition){
@@ -518,7 +748,7 @@ function _boot() {
 
 }()));
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 
 // Config loads and prepares the config file. The modules that does the
 // actual transformations of the dataset are located in transforms/config.
@@ -586,7 +816,7 @@ function crawl(args) {
     return obj;
 }
 
-},{"./utils/type.js":9,"qwest":2}],4:[function(require,module,exports){
+},{"./utils/type.js":13,"qwest":4}],6:[function(require,module,exports){
 var config      = require('./config.js');
 var dom         = require('./utils/dom.js');
 var game_config = null;
@@ -596,6 +826,7 @@ var game_config = null;
 
 var boot        = require('./states/boot.js');
 var preloader   = require('./states/preloader.js');
+var generate    = require('./states/generate.js');
 var game_state  = require('./states/game.js');
 
 module.exports = function() {
@@ -610,13 +841,63 @@ module.exports = function() {
 
         game.state.add('Boot',      boot);
         game.state.add('Preloader', preloader);
+        game.state.add('Generate',  generate);
         game.state.add('Game',      game_state);
 
         game.state.start('Boot');
     });
 }
 
-},{"./config.js":3,"./states/boot.js":5,"./states/game.js":6,"./states/preloader.js":7,"./utils/dom.js":8}],5:[function(require,module,exports){
+},{"./config.js":5,"./states/boot.js":8,"./states/game.js":9,"./states/generate.js":10,"./states/preloader.js":11,"./utils/dom.js":12}],7:[function(require,module,exports){
+var config          = require('./../config.js');
+var PerlinGenerator = require('proc-noise');
+
+var map = [];
+var cfg = config.get('worldmap');
+
+module.exports.generate = function() {
+    var seed = Math.round(Math.random * 10000);
+    var Perlin = new PerlinGenerator(seed);
+    var map_raw = [];
+
+    for (var y=0; y<cfg.world_height; y++) {
+        for (var x=0; x<cfg.world_width; x++) {
+            map_raw.push(Perlin.noise(x, y));
+        }
+    }
+
+    fill(map_raw, map, 0.0, 1.0, 0);
+    fill(map_raw, map, 0.3, 0.5, 1);
+    fill(map_raw, map, 0.6, 0.75, 2);
+};
+
+module.exports.print = function() {
+    var str = '';
+
+    map.forEach(function(val, i) {
+        str += i % cfg.world_width !== 0 ? ',' : '\n';
+        str += val;
+    });
+
+    console.log(str);
+};
+
+function fill(data, output, lower, upper, value) {
+    var count = 0;
+    data.forEach(function(data_value, i) {
+        if (data_value >= lower && data_value <= upper) {
+            output[i] = value;
+            count++;
+        }
+    });
+    console.log('filled '+count+' tiles with '+value);
+}
+
+Object.defineProperty(module.exports, 'map', {
+    get: function() { return map; }
+});
+
+},{"./../config.js":5,"proc-noise":2}],8:[function(require,module,exports){
 var config = require('./../config.js');
 
 module.exports = new Phaser.State();
@@ -648,7 +929,7 @@ module.exports.create = function() {
     game.state.start('Preloader');
 };
 
-},{"./../config.js":3}],6:[function(require,module,exports){
+},{"./../config.js":5}],9:[function(require,module,exports){
 module.exports = new Phaser.State();
 
 var config = require('./../config.js');
@@ -661,7 +942,19 @@ module.exports.create = function() {
 
 };
 
-},{"./../config.js":3}],7:[function(require,module,exports){
+},{"./../config.js":5}],10:[function(require,module,exports){
+module.exports = new Phaser.State();
+
+var worldmap = require('./../generators/worldmap.js');
+
+module.exports.create = function() {
+
+    worldmap.generate();
+    worldmap.print();
+
+};
+
+},{"./../generators/worldmap.js":7}],11:[function(require,module,exports){
 var config = require('./../config.js');
 
 module.exports = new Phaser.State();
@@ -678,11 +971,16 @@ module.exports.preload = function() {
 
 module.exports.update = function() {
     if (this.game.load.hasLoaded) {
-        this.game.state.start('Game');
+
+        // TODO:
+        // There should be an easy way to get the next state without
+        // knowing the name of the state
+
+        this.game.state.start('Generate');
     }
 };
 
-},{"./../config.js":3}],8:[function(require,module,exports){
+},{"./../config.js":5}],12:[function(require,module,exports){
 var config  = require('./../config.js');
 var type_of = require('./type.js');
 
@@ -745,7 +1043,7 @@ Object.defineProperty(module.exports, 'game_node', {
     get: function() { return game_node; }
 });
 
-},{"./../config.js":3,"./type.js":9}],9:[function(require,module,exports){
+},{"./../config.js":5,"./type.js":13}],13:[function(require,module,exports){
 var type = '';
 
 module.exports = function(element) {

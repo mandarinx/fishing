@@ -4,42 +4,41 @@ module.exports = new Phaser.State();
 
 var config          = require('config');
 var list            = require('utils/list');
-var worldmap        = require('generators/worldmap');
+var tilemaps        = require('helpers/phaser/tilemaps');
+var world           = require('generators/world');
 
-var maps = {};
+var game = null;
+var coordinate = {x: -1, y: -1};
+
+module.exports.init = function(options) {
+    if (typeof options === 'undefined') {
+        console.log('Game state is missing options');
+        return;
+    }
+
+    coordinate.x = options.x;
+    coordinate.y = options.y;
+
+    world.generate(options.x, options.y, options.map_type);
+};
 
 module.exports.create = function() {
-    var game = this.game;
     var game_config = config.get('game');
 
+    game = this.game;
     game.stage.backgroundColor = game_config.background_color;
 
-    var tileindexes = list.printString(worldmap.map.tiles);
+    // var segment = world.get(coordinate.x, coordinate.y);
+    // segment: {
+    //     tiles: []
+    //     width: 16
+    //     name: ''
+    // }
 
-    loadTilemap(game, {
-        map_name:   'worldmap',
-        data:       tileindexes,
-        tile_size:  32,
-        tileset:    'worldmap'
-    });
-
-    // loadTilemap(game, {
-    //     map_name:   'indexdebug',
-    //     data:       list.printString(worldmap.map.data),
-    //     tileset:    'indexdebug'
+    // tilemaps.loadTilemap(game, {
+    //     map_name:   segment.name,
+    //     data:       list.printString(segment.tiles),
+    //     tileset:    'worldmap'
     // });
 
 };
-
-function loadTilemap(game, options) {
-    var tile_size = options.tile_size || 16;
-    game.load.tilemap(options.map_name, null, options.data);
-
-    maps[options.map_name] = game.add.tilemap(options.map_name, tile_size, tile_size);
-    var map = maps[options.map_name];
-    map.addTilesetImage(options.tileset);
-
-    map.layer = {};
-    map.layer['0'] = map.createLayer(0);
-    map.layer['0'].resizeWorld();
-}

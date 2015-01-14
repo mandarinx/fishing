@@ -15,6 +15,6 @@ module.exports.create = function() {
 
     tilemapper.direct(worldmap.map, map_cfg.data_types);
 
-    this.game.state.start('Game');
+    this.game.state.start('Worldmap');
 
 };

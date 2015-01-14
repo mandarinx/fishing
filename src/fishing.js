@@ -10,6 +10,7 @@ var game_config = null;
 var boot        = require('states/boot');
 var preloader   = require('states/preloader');
 var generate    = require('states/generate');
+var worldmap    = require('states/worldmap');
 var game_state  = require('states/game');
 
 module.exports = function() {
@@ -25,6 +26,7 @@ module.exports = function() {
         game.state.add('Boot',      boot);
         game.state.add('Preloader', preloader);
         game.state.add('Generate',  generate);
+        game.state.add('Worldmap',  worldmap);
         game.state.add('Game',      game_state);
 
         game.state.start('Boot');

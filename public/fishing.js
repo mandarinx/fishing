@@ -823,7 +823,7 @@ function crawl(args) {
     return obj;
 }
 
-},{"./utils/type.js":16,"qwest":4}],6:[function(require,module,exports){
+},{"./utils/type.js":19,"qwest":4}],6:[function(require,module,exports){
 var list = require('./../utils/list.js');
 
 function Grid(width, height, value) {
@@ -879,7 +879,7 @@ module.exports.create = function(width, height, value) {
     return new Grid(width, height, value);
 }
 
-},{"./../utils/list.js":15}],7:[function(require,module,exports){
+},{"./../utils/list.js":18}],7:[function(require,module,exports){
 "use strict";
 
 var config      = require('./config.js');
@@ -892,6 +892,7 @@ var game_config = null;
 var boot        = require('./states/boot.js');
 var preloader   = require('./states/preloader.js');
 var generate    = require('./states/generate.js');
+var worldmap    = require('./states/worldmap.js');
 var game_state  = require('./states/game.js');
 
 module.exports = function() {
@@ -907,13 +908,48 @@ module.exports = function() {
         game.state.add('Boot',      boot);
         game.state.add('Preloader', preloader);
         game.state.add('Generate',  generate);
+        game.state.add('Worldmap',  worldmap);
         game.state.add('Game',      game_state);
 
         game.state.start('Boot');
     });
 }
 
-},{"./config.js":5,"./states/boot.js":9,"./states/game.js":10,"./states/generate.js":11,"./states/preloader.js":12,"./utils/dom.js":14}],8:[function(require,module,exports){
+},{"./config.js":5,"./states/boot.js":11,"./states/game.js":12,"./states/generate.js":13,"./states/preloader.js":14,"./states/worldmap.js":15,"./utils/dom.js":17}],8:[function(require,module,exports){
+"use strict";
+
+var list            = require('./../utils/list.js');
+
+var world = [];
+
+module.exports.generate = function(x, y, type) {
+    if (exists(x, y)) {
+        return;
+    }
+
+    // pick a seed for the world
+    // use cellular automata to generate a map
+    // put the map in world[]
+};
+
+module.exports.get = function(x, y, type) {
+    // check if segment(x, y) has a tiles array
+    // if not > run tilemapper.natural
+    // return the segment
+};
+
+function exists(x, y) {
+    var segment = null;
+    for (var i=0; i<world.length; i++) {
+        segment = world[i];
+        if (segment.x === x && segment.y === y) {
+            break;
+        }
+    }
+    return segment ? true : false;
+}
+
+},{"./../utils/list.js":18}],9:[function(require,module,exports){
 var config          = require('./../config.js');
 var PerlinGenerator = require('proc-noise');
 var grid            = require('./../data/grid.js');
@@ -962,7 +998,32 @@ Object.defineProperty(module.exports, 'map', {
     get: function() { return map; }
 });
 
-},{"./../config.js":5,"./../data/grid.js":6,"./../utils/list.js":15,"proc-noise":2}],9:[function(require,module,exports){
+},{"./../config.js":5,"./../data/grid.js":6,"./../utils/list.js":18,"proc-noise":2}],10:[function(require,module,exports){
+"use strict";
+
+var tilemaps = {};
+
+module.exports.loadTilemap = function(game, options) {
+    options.tile_size = options.tile_size || 16;
+    options.layer_index = options.layer_index || 0;
+
+    game.load.tilemap(options.map_name, null, options.data);
+
+    var ref = tilemaps[options.map_name] = {map: null, layer: null};
+
+    ref.map = game.add.tilemap(options.map_name, options.tile_size, options.tile_size);
+    ref.map.addTilesetImage(options.tileset);
+
+    ref.layer = ref.map.createLayer(options.layer_index);
+    ref.layer.resizeWorld();
+}
+
+module.exports.layer = function(name) {
+    var tilemap = tilemaps[name];
+    return tilemap ? tilemap.layer : null;
+}
+
+},{}],11:[function(require,module,exports){
 "use strict";
 
 var config = require('./../config.js');
@@ -996,54 +1057,53 @@ module.exports.create = function() {
     game.state.start('Preloader');
 };
 
-},{"./../config.js":5}],10:[function(require,module,exports){
+},{"./../config.js":5}],12:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
 
 var config          = require('./../config.js');
 var list            = require('./../utils/list.js');
-var worldmap        = require('./../generators/worldmap.js');
+var tilemaps        = require('./../helpers/phaser/tilemaps.js');
+var world           = require('./../generators/world.js');
 
-var maps = {};
+var game = null;
+var coordinate = {x: -1, y: -1};
+
+module.exports.init = function(options) {
+    if (typeof options === 'undefined') {
+        console.log('Game state is missing options');
+        return;
+    }
+
+    coordinate.x = options.x;
+    coordinate.y = options.y;
+
+    world.generate(options.x, options.y, options.map_type);
+};
 
 module.exports.create = function() {
-    var game = this.game;
     var game_config = config.get('game');
 
+    game = this.game;
     game.stage.backgroundColor = game_config.background_color;
 
-    var tileindexes = list.printString(worldmap.map.tiles);
+    // var segment = world.get(coordinate.x, coordinate.y);
+    // segment: {
+    //     tiles: []
+    //     width: 16
+    //     name: ''
+    // }
 
-    loadTilemap(game, {
-        map_name:   'worldmap',
-        data:       tileindexes,
-        tile_size:  32,
-        tileset:    'worldmap'
-    });
-
-    // loadTilemap(game, {
-    //     map_name:   'indexdebug',
-    //     data:       list.printString(worldmap.map.data),
-    //     tileset:    'indexdebug'
+    // tilemaps.loadTilemap(game, {
+    //     map_name:   segment.name,
+    //     data:       list.printString(segment.tiles),
+    //     tileset:    'worldmap'
     // });
 
 };
 
-function loadTilemap(game, options) {
-    var tile_size = options.tile_size || 16;
-    game.load.tilemap(options.map_name, null, options.data);
-
-    maps[options.map_name] = game.add.tilemap(options.map_name, tile_size, tile_size);
-    var map = maps[options.map_name];
-    map.addTilesetImage(options.tileset);
-
-    map.layer = {};
-    map.layer['0'] = map.createLayer(0);
-    map.layer['0'].resizeWorld();
-}
-
-},{"./../config.js":5,"./../generators/worldmap.js":8,"./../utils/list.js":15}],11:[function(require,module,exports){
+},{"./../config.js":5,"./../generators/world.js":8,"./../helpers/phaser/tilemaps.js":10,"./../utils/list.js":18}],13:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -1061,11 +1121,11 @@ module.exports.create = function() {
 
     tilemapper.direct(worldmap.map, map_cfg.data_types);
 
-    this.game.state.start('Game');
+    this.game.state.start('Worldmap');
 
 };
 
-},{"./../config.js":5,"./../generators/worldmap.js":8,"./../tilemapper.js":13}],12:[function(require,module,exports){
+},{"./../config.js":5,"./../generators/worldmap.js":9,"./../tilemapper.js":16}],14:[function(require,module,exports){
 "use strict";
 
 var config = require('./../config.js');
@@ -1093,7 +1153,68 @@ module.exports.update = function() {
     }
 };
 
-},{"./../config.js":5}],13:[function(require,module,exports){
+},{"./../config.js":5}],15:[function(require,module,exports){
+"use strict";
+
+module.exports = new Phaser.State();
+
+var config          = require('./../config.js');
+var list            = require('./../utils/list.js');
+var tilemaps        = require('./../helpers/phaser/tilemaps.js');
+var worldmap        = require('./../generators/worldmap.js');
+
+var marker      = {x:0, y:0};
+var cur_tile    = {x:0, y:0};
+var layer       = {};
+var tilesize    = 32;
+var pointer     = {};
+var game        = null;
+
+module.exports.create = function() {
+    var game_config = config.get('game');
+    var mapname = 'worldmap';
+
+    game = this.game;
+    game.stage.backgroundColor = game_config.background_color;
+    pointer = game.input.activePointer;
+
+    tilemaps.loadTilemap(game, {
+        map_name:       mapname,
+        data:           list.printString(worldmap.map.tiles),
+        tile_size:      tilesize,
+        tileset:        'worldmap'
+    });
+
+    marker = game.add.sprite(0, 0, 'sprites');
+    layer = tilemaps.layer(mapname);
+
+    game.input.onUp.add(click, this);
+};
+
+module.exports.update = function() {
+    cur_tile.x = layer.getTileX(pointer.worldX);
+    cur_tile.y = layer.getTileY(pointer.worldY);
+
+    marker.x = cur_tile.x * tilesize;
+    marker.y = cur_tile.y * tilesize;
+};
+
+function click() {
+    var map_type = list.get(worldmap.map.data,
+                            cur_tile.x,
+                            cur_tile.y,
+                            worldmap.map.width);
+
+    game.input.onUp.remove(click, this);
+
+    game.state.start('Game', true, false, {
+        map_type:   map_type,
+        x:          cur_tile.x,
+        y:          cur_tile.y
+    });
+}
+
+},{"./../config.js":5,"./../generators/worldmap.js":9,"./../helpers/phaser/tilemaps.js":10,"./../utils/list.js":18}],16:[function(require,module,exports){
 var gridcreator     = require('./data/grid.js');
 var list            = require('./utils/list.js');
 
@@ -1171,7 +1292,7 @@ function getMetaData(grid, meta) {
     });
 }
 
-},{"./data/grid.js":6,"./utils/list.js":15}],14:[function(require,module,exports){
+},{"./data/grid.js":6,"./utils/list.js":18}],17:[function(require,module,exports){
 "use strict";
 
 var config  = require('./../config.js');
@@ -1236,7 +1357,7 @@ Object.defineProperty(module.exports, 'game_node', {
     get: function() { return game_node; }
 });
 
-},{"./../config.js":5,"./type.js":16}],15:[function(require,module,exports){
+},{"./../config.js":5,"./type.js":19}],18:[function(require,module,exports){
 module.exports.each = function(list, width, callback) {
     if (!callback) {
         console.warn('each() missing callback');
@@ -1305,7 +1426,7 @@ module.exports.printString = function(list, width) {
     return str;
 }
 
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 var type = '';

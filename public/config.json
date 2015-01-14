@@ -35,6 +35,9 @@
         "bitmapFont": {
             "Boxy-Bold":    ["assets/fonts/boxy_bold_8.png", "assets/fonts/boxy_bold_8.xml"]
         },
+        "spritesheet": {
+            "sprites":      ["assets/sprites.png", 32, 32]
+        },
         "image": {
             "tilemap":      ["assets/tilemap.png"],
             "worldmap":     ["assets/worldmap.png"],

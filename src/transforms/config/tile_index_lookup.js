@@ -1,3 +1,5 @@
+"use strict";
+
 
 // This module creates a lookup list for each tileset, containing a reference
 // to the tile type and firstgid. The lookup list is indexed by the tile's

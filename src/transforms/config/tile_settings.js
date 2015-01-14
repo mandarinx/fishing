@@ -1,3 +1,5 @@
+"use strict";
+
 
 // This module completes the lookup list created by tile_index_lookup
 // by filling it with data from config.tilesets. Tile manager will

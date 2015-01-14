@@ -1,3 +1,5 @@
+"use strict";
+
 
 // Checks tilesets for tile index settings like "1-32", which is a
 // custom short form for specifying all tiles indexes from 1 to, and

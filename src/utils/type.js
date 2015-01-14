@@ -1,3 +1,5 @@
+"use strict";
+
 var type = '';
 
 module.exports = function(element) {

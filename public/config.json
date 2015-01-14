@@ -10,14 +10,35 @@
     },
     "worldmap": {
         "world_width": 16,
-        "world_height": 16
+        "world_height": 16,
+        "noise_scale": 0.5
+    },
+    "map": {
+        "data_types": [{
+            "name": "Island",
+            "value": 2,
+            "tile_row_offset": 0,
+            "lower": 0.65, "upper": 0.8
+        },{
+            "name": "Shallow sea",
+            "value": 1,
+            "tile_row_offset": 1,
+            "lower": 0.2, "upper": 0.65
+        },{
+            "name": "Deep sea",
+            "value": 0,
+            "tile_row_offset": 2,
+            "lower": 0.0, "upper": 1.0
+        }]
     },
     "preload": {
         "bitmapFont": {
             "Boxy-Bold":    ["assets/fonts/boxy_bold_8.png", "assets/fonts/boxy_bold_8.xml"]
         },
         "image": {
-            "tilemap":      ["assets/tilemap.png"]
+            "tilemap":      ["assets/tilemap.png"],
+            "worldmap":     ["assets/worldmap.png"],
+            "indexdebug":   ["assets/index-debug.png"]
         }
     }
 }

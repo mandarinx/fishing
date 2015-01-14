@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = function(payload) {
     return {
         pipe: function(handler) {

@@ -1,3 +1,4 @@
+"use strict";
 
 // Config loads and prepares the config file. The modules that does the
 // actual transformations of the dataset are located in transforms/config.
@@ -13,6 +14,10 @@ module.exports = {
     get: function() {
         var args = Array.prototype.slice.call(arguments);
         if (args.length === 0) {
+            return null;
+        }
+        if (config == null) {
+            console.log('config is empty');
             return null;
         }
         return crawl(args);

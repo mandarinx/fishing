@@ -1,3 +1,5 @@
+"use strict";
+
 if (document.readyState === 'complete' ||
     document.readyState === 'interactive') {
     window.setTimeout(_boot, 0);

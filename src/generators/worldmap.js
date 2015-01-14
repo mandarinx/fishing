@@ -1,45 +1,45 @@
 var config          = require('config');
 var PerlinGenerator = require('proc-noise');
+var grid            = require('data/grid');
+var list            = require('utils/list');
 
-var map = [];
-var cfg = config.get('worldmap');
+var map = {};
+var cfg = {};
 
-module.exports.generate = function() {
+module.exports.generate = function(data_types) {
+    cfg = config.get('worldmap');
+
     var seed = Math.round(Math.random * 10000);
     var Perlin = new PerlinGenerator(seed);
-    var map_raw = [];
+    var noise = [];
+    var scale = 1 / cfg.noise_scale;
 
-    for (var y=0; y<cfg.world_height; y++) {
-        for (var x=0; x<cfg.world_width; x++) {
-            map_raw.push(Perlin.noise(x, y));
-        }
-    }
+    map = grid.create(cfg.world_width, cfg.world_height, 0);
 
-    fill(map_raw, map, 0.0, 1.0, 0);
-    fill(map_raw, map, 0.3, 0.5, 1);
-    fill(map_raw, map, 0.6, 0.75, 2);
+    list.fill(noise, map.width, map.length, function(x, y, i) {
+        noise[i] = Perlin.noise(x * scale, y * scale);
+    });
+
+    filter(noise, map, data_types);
 };
 
 module.exports.print = function() {
-    var str = '';
-
-    map.forEach(function(val, i) {
-        str += i % cfg.world_width !== 0 ? ',' : '\n';
-        str += val;
-    });
-
-    console.log(str);
+    list.print(map.data);
 };
 
-function fill(data, output, lower, upper, value) {
-    var count = 0;
+function filter(data, grid, config) {
     data.forEach(function(data_value, i) {
-        if (data_value >= lower && data_value <= upper) {
-            output[i] = value;
-            count++;
-        }
+        grid.data[i] = filterValue(data_value, config);
     });
-    console.log('filled '+count+' tiles with '+value);
+}
+
+function filterValue(value, config) {
+    for (var i=0; i<config.length; i++) {
+        var cfg = config[i];
+        if (value >= cfg.lower && value < cfg.upper) {
+            return cfg.value;
+        }
+    }
 }
 
 Object.defineProperty(module.exports, 'map', {

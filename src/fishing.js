@@ -1,3 +1,5 @@
+"use strict";
+
 var config      = require('config');
 var dom         = require('utils/dom');
 var game_config = null;

@@ -1,4 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+
 if (document.readyState === 'complete' ||
     document.readyState === 'interactive') {
     window.setTimeout(_boot, 0);
@@ -21,7 +23,7 @@ function _boot() {
     }
 };
 
-},{"./fishing.js":6}],2:[function(require,module,exports){
+},{"./fishing.js":7}],2:[function(require,module,exports){
 // PERLIN NOISE
 // based 99.999% on Processing's implementation, found here:
 // https://github.com/processing/processing/blob/master/core/src/processing/core/PApplet.java
@@ -749,6 +751,7 @@ Perlin.prototype.noise = function(x, y, z) {
 }()));
 
 },{}],5:[function(require,module,exports){
+"use strict";
 
 // Config loads and prepares the config file. The modules that does the
 // actual transformations of the dataset are located in transforms/config.
@@ -764,6 +767,10 @@ module.exports = {
     get: function() {
         var args = Array.prototype.slice.call(arguments);
         if (args.length === 0) {
+            return null;
+        }
+        if (config == null) {
+            console.log('config is empty');
             return null;
         }
         return crawl(args);
@@ -816,7 +823,65 @@ function crawl(args) {
     return obj;
 }
 
-},{"./utils/type.js":13,"qwest":4}],6:[function(require,module,exports){
+},{"./utils/type.js":16,"qwest":4}],6:[function(require,module,exports){
+var list = require('./../utils/list.js');
+
+function Grid(width, height, value) {
+    var w = width;
+    var h = height;
+    var data = [];
+    var tiles = [];
+
+    var instance = {
+        init: function(value) {
+            value = value || 0;
+            for (var i=0, l=w * h; i<l; i++) {
+                data.push(value);
+                tiles.push(value);
+            }
+        }
+    };
+
+    if (typeof value !== 'undefined') {
+        instance.init(value);
+    }
+
+    get(instance, 'width', function() {
+        return w;
+    });
+
+    get(instance, 'height', function() {
+        return data.length / w;
+    });
+
+    get(instance, 'length', function() {
+        return data.length;
+    });
+
+    getset(instance, 'data', function() { return data; },
+                             function() { data = value; });
+
+    getset(instance, 'tiles', function() { return tiles; },
+                              function() { tiles = value; });
+
+    return instance;
+}
+
+function get(obj, prop, cb) {
+    Object.defineProperty(obj, prop, { get: cb });
+}
+
+function getset(obj, prop, get_cb, set_cb) {
+    Object.defineProperty(obj, prop, { get: get_cb, set: set_cb });
+}
+
+module.exports.create = function(width, height, value) {
+    return new Grid(width, height, value);
+}
+
+},{"./../utils/list.js":15}],7:[function(require,module,exports){
+"use strict";
+
 var config      = require('./config.js');
 var dom         = require('./utils/dom.js');
 var game_config = null;
@@ -848,56 +913,58 @@ module.exports = function() {
     });
 }
 
-},{"./config.js":5,"./states/boot.js":8,"./states/game.js":9,"./states/generate.js":10,"./states/preloader.js":11,"./utils/dom.js":12}],7:[function(require,module,exports){
+},{"./config.js":5,"./states/boot.js":9,"./states/game.js":10,"./states/generate.js":11,"./states/preloader.js":12,"./utils/dom.js":14}],8:[function(require,module,exports){
 var config          = require('./../config.js');
 var PerlinGenerator = require('proc-noise');
+var grid            = require('./../data/grid.js');
+var list            = require('./../utils/list.js');
 
-var map = [];
-var cfg = config.get('worldmap');
+var map = {};
+var cfg = {};
 
-module.exports.generate = function() {
+module.exports.generate = function(data_types) {
+    cfg = config.get('worldmap');
+
     var seed = Math.round(Math.random * 10000);
     var Perlin = new PerlinGenerator(seed);
-    var map_raw = [];
+    var noise = [];
+    var scale = 1 / cfg.noise_scale;
 
-    for (var y=0; y<cfg.world_height; y++) {
-        for (var x=0; x<cfg.world_width; x++) {
-            map_raw.push(Perlin.noise(x, y));
-        }
-    }
+    map = grid.create(cfg.world_width, cfg.world_height, 0);
 
-    fill(map_raw, map, 0.0, 1.0, 0);
-    fill(map_raw, map, 0.3, 0.5, 1);
-    fill(map_raw, map, 0.6, 0.75, 2);
+    list.fill(noise, map.width, map.length, function(x, y, i) {
+        noise[i] = Perlin.noise(x * scale, y * scale);
+    });
+
+    filter(noise, map, data_types);
 };
 
 module.exports.print = function() {
-    var str = '';
-
-    map.forEach(function(val, i) {
-        str += i % cfg.world_width !== 0 ? ',' : '\n';
-        str += val;
-    });
-
-    console.log(str);
+    list.print(map.data);
 };
 
-function fill(data, output, lower, upper, value) {
-    var count = 0;
+function filter(data, grid, config) {
     data.forEach(function(data_value, i) {
-        if (data_value >= lower && data_value <= upper) {
-            output[i] = value;
-            count++;
-        }
+        grid.data[i] = filterValue(data_value, config);
     });
-    console.log('filled '+count+' tiles with '+value);
+}
+
+function filterValue(value, config) {
+    for (var i=0; i<config.length; i++) {
+        var cfg = config[i];
+        if (value >= cfg.lower && value < cfg.upper) {
+            return cfg.value;
+        }
+    }
 }
 
 Object.defineProperty(module.exports, 'map', {
     get: function() { return map; }
 });
 
-},{"./../config.js":5,"proc-noise":2}],8:[function(require,module,exports){
+},{"./../config.js":5,"./../data/grid.js":6,"./../utils/list.js":15,"proc-noise":2}],9:[function(require,module,exports){
+"use strict";
+
 var config = require('./../config.js');
 
 module.exports = new Phaser.State();
@@ -929,10 +996,16 @@ module.exports.create = function() {
     game.state.start('Preloader');
 };
 
-},{"./../config.js":5}],9:[function(require,module,exports){
+},{"./../config.js":5}],10:[function(require,module,exports){
+"use strict";
+
 module.exports = new Phaser.State();
 
-var config = require('./../config.js');
+var config          = require('./../config.js');
+var list            = require('./../utils/list.js');
+var worldmap        = require('./../generators/worldmap.js');
+
+var maps = {};
 
 module.exports.create = function() {
     var game = this.game;
@@ -940,21 +1013,61 @@ module.exports.create = function() {
 
     game.stage.backgroundColor = game_config.background_color;
 
+    var tileindexes = list.printString(worldmap.map.tiles);
+
+    loadTilemap(game, {
+        map_name:   'worldmap',
+        data:       tileindexes,
+        tile_size:  32,
+        tileset:    'worldmap'
+    });
+
+    // loadTilemap(game, {
+    //     map_name:   'indexdebug',
+    //     data:       list.printString(worldmap.map.data),
+    //     tileset:    'indexdebug'
+    // });
+
 };
 
-},{"./../config.js":5}],10:[function(require,module,exports){
+function loadTilemap(game, options) {
+    var tile_size = options.tile_size || 16;
+    game.load.tilemap(options.map_name, null, options.data);
+
+    maps[options.map_name] = game.add.tilemap(options.map_name, tile_size, tile_size);
+    var map = maps[options.map_name];
+    map.addTilesetImage(options.tileset);
+
+    map.layer = {};
+    map.layer['0'] = map.createLayer(0);
+    map.layer['0'].resizeWorld();
+}
+
+},{"./../config.js":5,"./../generators/worldmap.js":8,"./../utils/list.js":15}],11:[function(require,module,exports){
+"use strict";
+
 module.exports = new Phaser.State();
 
-var worldmap = require('./../generators/worldmap.js');
+var worldmap        = require('./../generators/worldmap.js');
+var tilemapper      = require('./../tilemapper.js');
+var config          = require('./../config.js');
 
 module.exports.create = function() {
 
-    worldmap.generate();
+    var map_cfg = config.get('map');
+
+    worldmap.generate(map_cfg.data_types);
     worldmap.print();
+
+    tilemapper.direct(worldmap.map, map_cfg.data_types);
+
+    this.game.state.start('Game');
 
 };
 
-},{"./../generators/worldmap.js":7}],11:[function(require,module,exports){
+},{"./../config.js":5,"./../generators/worldmap.js":8,"./../tilemapper.js":13}],12:[function(require,module,exports){
+"use strict";
+
 var config = require('./../config.js');
 
 module.exports = new Phaser.State();
@@ -980,7 +1093,87 @@ module.exports.update = function() {
     }
 };
 
-},{"./../config.js":5}],12:[function(require,module,exports){
+},{"./../config.js":5}],13:[function(require,module,exports){
+var gridcreator     = require('./data/grid.js');
+var list            = require('./utils/list.js');
+
+var meta = {};
+
+module.exports.natural = function(grid, data_types) {
+    meta = gridcreator.create(grid.width + 1, grid.height + 1);
+    getMetaData(grid, meta);
+
+    data_types.forEach(function(type) {
+        getMetaTileIDs(grid, type);
+    });
+};
+
+module.exports.direct = function(grid, data_types) {
+    data_types.forEach(function(type) {
+        getTileIDs(grid, type);
+    });
+};
+
+// Creates ID's ranging from 0 to 15 based on a binary input
+function getTileIDs(grid, data_type) {
+    list.each(grid.data, grid.width, function(tile_value, x, y, i) {
+        if (tile_value === data_type.value) {
+            var id = getID(1, 1, 1, 1);
+            var offset = data_type.tile_row_offset * 16;
+            // console.log('x:'+x+' y:'+y+' id:'+id+' off:'+(id + offset));
+            grid.tiles[i] = id + offset;
+        }
+
+    });
+};
+
+// Creates ID's ranging from 0 to 15 based on a binary input
+function getMetaTileIDs(grid, data_type) {
+    list.each(grid.data, grid.width, function(tile_value, x, y, i) {
+        var tl = getFilteredMetaData(x,   y,   data_type.value);
+        var tr = getFilteredMetaData(x+1, y,   data_type.value);
+        var bl = getFilteredMetaData(x,   y+1, data_type.value);
+        var br = getFilteredMetaData(x+1, y+1, data_type.value);
+
+        var id = getID(tl, tr, bl, br);
+
+        // var sig = tl+' '+tr+' '+bl+' '+br;
+        // console.log('x:'+x+' y:'+y+' ('+sig+') id:'+id);
+
+        grid.tiles[i] = id + data_type.tile_row_offset;
+    });
+};
+
+function getFilteredMetaData(x, y, filter) {
+    var value = list.get(meta.data, x, y, meta.width);
+    return value === filter ? 1 : 0;
+}
+
+function getID(a, b, c, d) {
+    return (a & 1) | (b & 1) << 1 | (c & 1) << 2 | (d & 1) << 3;
+}
+
+function getMetaData(grid, meta) {
+    // Add the upper left corner
+    meta.data.push(grid.data[0]);
+
+    // Fill the first row
+    for (var i=0; i<grid.width; i++) {
+        meta.data.push(grid.data[i]);
+    }
+
+    // Fill the rest, duplication the left most column
+    list.fill(meta.data, grid.width, grid.length, function(x, y, i) {
+        if (i % grid.width === 0) {
+            meta.data.push(grid.data[i]);
+        }
+        meta.data.push(grid.data[i]);
+    });
+}
+
+},{"./data/grid.js":6,"./utils/list.js":15}],14:[function(require,module,exports){
+"use strict";
+
 var config  = require('./../config.js');
 var type_of = require('./type.js');
 
@@ -1043,7 +1236,78 @@ Object.defineProperty(module.exports, 'game_node', {
     get: function() { return game_node; }
 });
 
-},{"./../config.js":5,"./type.js":13}],13:[function(require,module,exports){
+},{"./../config.js":5,"./type.js":16}],15:[function(require,module,exports){
+module.exports.each = function(list, width, callback) {
+    if (!callback) {
+        console.warn('each() missing callback');
+        return;
+    }
+
+    var x = 0;
+    var y = 0;
+
+    list.forEach(function(item, i) {
+        x = i % width !== 0 ? x + 1 : 0;
+        y = i > 0 && x === 0 ? y + 1 : y;
+        callback(item, x, y, i);
+    });
+};
+
+module.exports.get = function(arr, x, y, width) {
+    return arr[(width * y) + x];
+};
+
+module.exports.set = function(arr, x, y, width, value) {
+    arr[(width * y) + x] = value;
+};
+
+module.exports.fill = function(arr, width, length, callback) {
+    if (!arr) {
+        arr = [];
+    }
+
+    var x = 0;
+    var y = 0;
+
+    for (var i=0; i<length; i+=1) {
+        x = i % width !== 0 ? x + 1 : 0;
+        y = i > 0 && x === 0 ? y + 1 : y;
+        callback(x, y, i);
+    }
+};
+
+module.exports.print = function(list, width) {
+    var str = this.printString(list, width);
+    console.log(str);
+}
+
+module.exports.printString = function(list, width) {
+    if (!(list instanceof Array)) {
+        console.log('list.print() needs an array');
+        return;
+    }
+
+    if (typeof width === 'undefined') {
+        var width = Math.sqrt(list.length);
+        if (width % 1 !== 0) {
+            console.log('list.print() cannot find the width for the current list');
+            return;
+        }
+    }
+
+    var str = '';
+
+    this.each(list, width, function(tile, x, y, i) {
+        str += i % width !== 0 ? ',' : '\n';
+        str += tile;
+    });
+
+    return str;
+}
+
+},{}],16:[function(require,module,exports){
+"use strict";
+
 var type = '';
 
 module.exports = function(element) {

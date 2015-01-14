@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"tile",
+				"tileindexes"
+			],
+			[
+				"pr",
+				"printString"
+			],
+			[
+				"l",
+				"list"
+			],
+			[
+				"met",
+				"meta_data"
+			],
+			[
+				"for",
+				"forEach"
+			],
+			[
+				"con",
+				"config"
+			],
+			[
+				"time",
+				"timely"
+			],
+			[
+				"data",
+				"data_value"
+			],
+			[
+				"wo",
+				"world_width"
+			],
+			[
 				"project",
 				"projectname"
 			],
@@ -478,42 +514,6 @@
 			[
 				"got",
 				"gotWaypoint"
-			],
-			[
-				"Next",
-				"NextWaypoint"
-			],
-			[
-				"transfor",
-				"Transform"
-			],
-			[
-				"label",
-				"labelHeight"
-			],
-			[
-				"labe",
-				"labelHeight"
-			],
-			[
-				"thr",
-				"threatened"
-			],
-			[
-				"th",
-				"threshold"
-			],
-			[
-				"the",
-				"threatLevel"
-			],
-			[
-				"Sense",
-				"SensePresenceOptions"
-			],
-			[
-				"Walking",
-				"WalkingOptions"
 			]
 		]
 	},
@@ -523,7 +523,66 @@
 			"file": "src/states/game.js",
 			"settings":
 			{
-				"buffer_size": 328,
+				"buffer_size": 1188,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/states/generate.js",
+			"settings":
+			{
+				"buffer_size": 305,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/tilemapper.js",
+			"settings":
+			{
+				"buffer_size": 1936,
+				"line_ending": "Unix",
+				"name": "module.exports.map = function(data) {};"
+			}
+		},
+		{
+			"contents": "2 tiles: 14\n - vann\n - jord\n\n3 tiles: ??\n - vann\n - jord\n - gress\n\n2,2,2,2 = 16  \n3,3,3,3 = 81\n4,4,4,4 = 256 \n\n1,2,4,8       = 16  2x\n2,4,8,16      = 30\n4,8,16,32     = 60\n8,16,32,64    = 120 3x\n16,32,64,128  = 240\n32,64,128,256 = 480 4x\n\n1000 = 1 >> 1 = 0\n0100 = 2 >> 1 = 1\n1100 = 3 >> 1 = 1\n0010 = 4 >> 1 = 2\n1010 = 5 >> 1 = 2\n\n---------  ---------  ---------  --------- \n| 1 | 1 |  | 1 | 1 |  | 0 | 1 |  | 1 | 0 | \n---------  ---------  ---------  --------- \n| 1 | 0 |  | 0 | 1 |  | 1 | 1 |  | 1 | 1 | \n---------  ---------  ---------  --------- \n                                           \n---------  ---------  ---------  --------- \n| 1 | 0 |  | 1 | 1 |  | 0 | 1 |  | 0 | 0 | \n---------  ---------  ---------  --------- \n| 1 | 0 |  | 0 | 0 |  | 0 | 1 |  | 1 | 1 | \n---------  ---------  ---------  --------- \n                                           \n---------  ---------  ---------  --------- \n| 1 | 0 |  | 0 | 1 |  | 0 | 0 |  | 0 | 0 | \n---------  ---------  ---------  --------- \n| 0 | 0 |  | 0 | 0 |  | 0 | 1 |  | 1 | 0 | \n---------  ---------  ---------  --------- \n                                           \n---------  ---------                       \n| 0 | 0 |  | 1 | 1 |                       \n---------  ---------                       \n| 0 | 0 |  | 1 | 1 |                       \n---------  ---------                       \n\n...............    ...............    ...............\n                   ...............    ...............\n                   ...............    ...............\n                   ...............    ...............\n                   ...............    ...............\n                   .                  ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n",
+			"settings":
+			{
+				"buffer_size": 2207,
+				"line_ending": "Unix",
+				"name": "2 tiles: 14"
+			}
+		},
+		{
+			"file": "src/utils/list.js",
+			"settings":
+			{
+				"buffer_size": 1500,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/generators/worldmap.js",
+			"settings":
+			{
+				"buffer_size": 1126,
+				"line_ending": "Unix",
+				"name": "var config          = require('config');"
+			}
+		},
+		{
+			"file": "src/data/grid.js",
+			"settings":
+			{
+				"buffer_size": 1526,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/config.json",
+			"settings":
+			{
+				"buffer_size": 933,
 				"line_ending": "Unix"
 			}
 		}
@@ -535,11 +594,11 @@
 		"selected_items":
 		[
 			[
-				"install",
+				"inst",
 				"Package Control: Install Package"
 			],
 			[
-				"inst",
+				"install",
 				"Package Control: Install Package"
 			],
 			[
@@ -567,7 +626,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 660.0
+		"width": 579.0
 	},
 	"console":
 	{
@@ -586,14 +645,46 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/Users/mandarin/Projects/Games/Fishing/fishing"
+	],
 	"file_history":
 	[
+		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/generators/dungeon.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boot.js",
+		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/states/game.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/libs.json",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/test/marching_squares_01.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/Fishing.sublime-project",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tile_index_lookup.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tileset_index_range.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tile_settings.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/preloader.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/index.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/pipeline.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/fishing.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/fishing.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/dom.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/main.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/browserify.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/.yo-rc.json",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/package.json",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/index.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/.gitignore",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/Fishing.sublime-workspace",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/boxy_bold_8.xml",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/index.html",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/config.json",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/README.md",
+		"/Users/mandarin/Projects/Games/River Run/riverrun/River Run.sublime-project",
 		"/Users/mandarin/Projects/Games/River Run/riverrun/src/states/game.js",
 		"/Users/mandarin/Projects/_experiments/generator-phaser-simple/generators/app/index.js",
 		"/Users/mandarin/Projects/_experiments/generator-phaser-simple/templates/project.sublime-project",
 		"/Users/mandarin/Projects/Games/River Run/riverrun/River Run.sublime-workspace",
-		"/Users/mandarin/Projects/Games/River Run/riverrun/River Run.sublime-project",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/browserify.js",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Behaviours/SpaceshipBehaviour.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Entities/EntityType.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/EnergyStations.cs",
@@ -687,35 +778,7 @@
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Entities/Resource.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/EnitytDiedInBattle.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/FightController.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Interfaces/IClickable.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/Fighting.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/InputHandler.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/FightingAI.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Behaviours/Spaceship.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Raycasters/RayCaster.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Pooltest.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/EntityKiller.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Plugins/PathologicalGames/PoolManager/SpawnPool.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Editor/AnimalBehaviourInspector.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Editor/AnimalDrawer.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Behaviours/AI/AnimalAI.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/UIPanel.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Editor/AnimalAIDrawer.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Playa/FuelCell.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Utility/PivotScale.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Behaviours/Agent.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/PanelType.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Shaders/VertexColor.shader",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Minimap.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/PanelSwitcher.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Positioner.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Editor/CharacterManagerDrawer.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/Sheets/CharacterSheet.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Data/Animal.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Data/Entity.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Characters/Character.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/CharacterController.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Characters/CharacterManager.cs"
+		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Interfaces/IClickable.cs"
 	],
 	"find":
 	{
@@ -771,6 +834,44 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"per",
+			"0001",
+			"meta",
+			"size",
+			"list",
+			"data_grid",
+			"map",
+			"meta_data",
+			"width",
+			"grid",
+			"map",
+			"data",
+			"value",
+			"upper",
+			"lower",
+			"config",
+			"data_value",
+			"size",
+			"length",
+			"_length",
+			"data",
+			"_",
+			"grid",
+			"list",
+			"S",
+			"mousePress",
+			"charTyped",
+			"d",
+			"mousePress",
+			"W",
+			"config",
+			"f",
+			"fill",
+			"fillValues",
+			"map",
+			"y",
+			"i",
+			"game_state",
 			"Perlin",
 			"game",
 			"ClearListeners(",
@@ -860,45 +961,7 @@
 			"victim",
 			"attacker",
 			"enemy",
-			"FightingOptions",
-			"StartBattle",
-			"attackerFightingState",
-			"FightingState",
-			"fightingState",
-			"Fighting",
-			"FightingState",
-			"fightingState",
-			"Fighting",
-			"FightingDone",
-			"Transition.Flee",
-			".Flee",
-			"StartFighting",
-			"fui",
-			"enemy",
-			"attackerState",
-			"state",
-			"FightController",
-			"ClearListeners",
-			"enemyIF",
-			"otherIF",
-			"FightingAI",
-			"fightState",
-			"fighting",
-			"Fighting",
-			"EntityType",
-			"IFightable",
-			"OnAttack",
-			".Entity",
-			".HitBy(",
-			".Activate()",
-			"gotoEntity",
-			"OnClickedItem",
-			"i",
-			"entityConfig",
-			"e",
-			"i",
-			"entities",
-			"instance"
+			"FightingOptions"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -933,7 +996,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -942,26 +1005,240 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 328,
+						"buffer_size": 1188,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								122,
-								122
+								724,
+								724
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/states/generate.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 305,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								262,
+								250
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/tilemapper.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1936,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1307,
+								1326
+							]
+						],
+						"settings":
+						{
+							"auto_name": "module.exports.map = function(data) {};",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 115.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2207,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1559,
+								1559
+							]
+						],
+						"settings":
+						{
+							"auto_name": "2 tiles: 14",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 204.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/utils/list.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1500,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								395,
+								395
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/generators/worldmap.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1126,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1086,
+								1086
+							]
+						],
+						"settings":
+						{
+							"auto_name": "var config          = require('config');",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/data/grid.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1526,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								161,
+								161
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "public/config.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 933,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								886,
+								886
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
@@ -1017,6 +1294,50 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"boo",
+				"src/states/boot.js"
+			],
+			[
+				"typ",
+				"src/utils/type.js"
+			],
+			[
+				"gri",
+				"src/data/grid.js"
+			],
+			[
+				"list",
+				"src/utils/list.js"
+			],
+			[
+				".js",
+				"src/transforms/config/tile_index_lookup.js"
+			],
+			[
+				"bo",
+				"src/states/boot.js"
+			],
+			[
+				"fi",
+				"src/fishing.js"
+			],
+			[
+				"con",
+				"src/config.js"
+			],
+			[
+				"gene",
+				"src/states/generate.js"
+			],
+			[
+				"pre",
+				"src/states/preloader.js"
+			],
+			[
+				"fish",
+				"src/fishing.js"
+			],
 			[
 				"scrip",
 				"Editor/ScriptableObjectUtility.cs"
@@ -1160,10 +1481,6 @@
 			[
 				"posi",
 				"Editor/PositionerInspector.cs"
-			],
-			[
-				"con",
-				"Controllers/PlantController.cs"
 			],
 			[
 				"poi",
@@ -1434,10 +1751,6 @@
 				"UI/Panel/FightUI.cs"
 			],
 			[
-				"fi",
-				"FSM/States/Fighting.cs"
-			],
-			[
 				"cha",
 				"Controllers/CharacterManager.cs"
 			],
@@ -1492,42 +1805,6 @@
 			[
 				"rop",
 				"Core/Properties.cs"
-			],
-			[
-				"mast",
-				"Controllers/Master.cs"
-			],
-			[
-				"fightin",
-				"FSM/States/Fighting.cs"
-			],
-			[
-				"conf",
-				"Data/Config.cs"
-			],
-			[
-				"circ",
-				"Raycasters/CircleCast.cs"
-			],
-			[
-				"ray",
-				"Raycasters/RayCaster.cs"
-			],
-			[
-				"ien",
-				"Interfaces/IEntity.cs"
-			],
-			[
-				"ener",
-				"UI/Panel/EnergyStationUI.cs"
-			],
-			[
-				"pres",
-				"FSM/States/SensePresence.cs"
-			],
-			[
-				"in",
-				"Controllers/InputHandler.cs"
 			]
 		],
 		"width": 0.0

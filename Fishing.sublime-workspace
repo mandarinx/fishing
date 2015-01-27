@@ -4,8 +4,68 @@
 		"selected_items":
 		[
 			[
+				"roo",
+				"room_tiles"
+			],
+			[
+				"valu",
+				"value"
+			],
+			[
+				"get",
+				"getDataTypeValue"
+			],
+			[
 				"tile",
-				"tileindexes"
+				"tile_index"
+			],
+			[
+				"ma",
+				"map_cfg"
+			],
+			[
+				"word",
+				"worldmap"
+			],
+			[
+				"re",
+				"remapper"
+			],
+			[
+				"va",
+				"value_a"
+			],
+			[
+				"value",
+				"value_a"
+			],
+			[
+				"gene",
+				"generateIsland"
+			],
+			[
+				"return",
+				"returnToWorldmap"
+			],
+			[
+				"key",
+				"key_map"
+			],
+			[
+				"width",
+				"width-1"
+			],
+			[
+				"data",
+				"data_types"
+			],
+			[
+				"ex",
+				"exists"
+			],
+			[
+				"map",
+				"map_type"
 			],
 			[
 				"pr",
@@ -32,20 +92,12 @@
 				"timely"
 			],
 			[
-				"data",
-				"data_value"
-			],
-			[
 				"wo",
 				"world_width"
 			],
 			[
 				"project",
 				"projectname"
-			],
-			[
-				"get",
-				"getAll"
 			],
 			[
 				"att",
@@ -462,58 +514,6 @@
 			[
 				"sta",
 				"startTime"
-			],
-			[
-				"Trans",
-				"Transition"
-			],
-			[
-				"Tran",
-				"Transition"
-			],
-			[
-				"Tr",
-				"Transition"
-			],
-			[
-				"age",
-				"agentDest"
-			],
-			[
-				"rem",
-				"remainingDistance"
-			],
-			[
-				"walk",
-				"walkState"
-			],
-			[
-				"Nav",
-				"NavMeshPath"
-			],
-			[
-				"ad",
-				"addMoreWaypoints"
-			],
-			[
-				"Find",
-				"FindWaypoint"
-			],
-			[
-				"cur",
-				"curAngle"
-			],
-			[
-				"w",
-				"waypoint"
-			],
-			[
-				"Way",
-				"WaypointsOptions"
-			],
-			[
-				"got",
-				"gotWaypoint"
 			]
 		]
 	},
@@ -523,15 +523,31 @@
 			"file": "src/states/game.js",
 			"settings":
 			{
-				"buffer_size": 1188,
+				"buffer_size": 1412,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/states/generate.js",
+			"file": "src/generators/segment.js",
 			"settings":
 			{
-				"buffer_size": 305,
+				"buffer_size": 4239,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/transforms/grid/rooms.js",
+			"settings":
+			{
+				"buffer_size": 2142,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/generators/cellular_automata.js",
+			"settings":
+			{
+				"buffer_size": 4134,
 				"line_ending": "Unix"
 			}
 		},
@@ -539,42 +555,64 @@
 			"file": "src/tilemapper.js",
 			"settings":
 			{
-				"buffer_size": 1936,
-				"line_ending": "Unix",
-				"name": "module.exports.map = function(data) {};"
-			}
-		},
-		{
-			"contents": "2 tiles: 14\n - vann\n - jord\n\n3 tiles: ??\n - vann\n - jord\n - gress\n\n2,2,2,2 = 16  \n3,3,3,3 = 81\n4,4,4,4 = 256 \n\n1,2,4,8       = 16  2x\n2,4,8,16      = 30\n4,8,16,32     = 60\n8,16,32,64    = 120 3x\n16,32,64,128  = 240\n32,64,128,256 = 480 4x\n\n1000 = 1 >> 1 = 0\n0100 = 2 >> 1 = 1\n1100 = 3 >> 1 = 1\n0010 = 4 >> 1 = 2\n1010 = 5 >> 1 = 2\n\n---------  ---------  ---------  --------- \n| 1 | 1 |  | 1 | 1 |  | 0 | 1 |  | 1 | 0 | \n---------  ---------  ---------  --------- \n| 1 | 0 |  | 0 | 1 |  | 1 | 1 |  | 1 | 1 | \n---------  ---------  ---------  --------- \n                                           \n---------  ---------  ---------  --------- \n| 1 | 0 |  | 1 | 1 |  | 0 | 1 |  | 0 | 0 | \n---------  ---------  ---------  --------- \n| 1 | 0 |  | 0 | 0 |  | 0 | 1 |  | 1 | 1 | \n---------  ---------  ---------  --------- \n                                           \n---------  ---------  ---------  --------- \n| 1 | 0 |  | 0 | 1 |  | 0 | 0 |  | 0 | 0 | \n---------  ---------  ---------  --------- \n| 0 | 0 |  | 0 | 0 |  | 0 | 1 |  | 1 | 0 | \n---------  ---------  ---------  --------- \n                                           \n---------  ---------                       \n| 0 | 0 |  | 1 | 1 |                       \n---------  ---------                       \n| 0 | 0 |  | 1 | 1 |                       \n---------  ---------                       \n\n...............    ...............    ...............\n                   ...............    ...............\n                   ...............    ...............\n                   ...............    ...............\n                   ...............    ...............\n                   .                  ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n                                      ...............\n",
-			"settings":
-			{
-				"buffer_size": 2207,
-				"line_ending": "Unix",
-				"name": "2 tiles: 14"
+				"buffer_size": 274,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "src/utils/list.js",
 			"settings":
 			{
-				"buffer_size": 1500,
+				"buffer_size": 1407,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/generators/worldmap.js",
+			"file": "src/states/worldmap.js",
 			"settings":
 			{
-				"buffer_size": 1126,
+				"buffer_size": 1630,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/helpers/phaser/tilemaps.js",
+			"settings":
+			{
+				"buffer_size": 668,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/states/generate.js",
+			"settings":
+			{
+				"buffer_size": 688,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/generators/world.js",
+			"settings":
+			{
+				"buffer_size": 1302,
 				"line_ending": "Unix",
 				"name": "var config          = require('config');"
+			}
+		},
+		{
+			"file": "src/utils/type.js",
+			"settings":
+			{
+				"buffer_size": 1655,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "src/data/grid.js",
 			"settings":
 			{
-				"buffer_size": 1526,
+				"buffer_size": 2025,
 				"line_ending": "Unix"
 			}
 		},
@@ -582,7 +620,7 @@
 			"file": "public/config.json",
 			"settings":
 			{
-				"buffer_size": 933,
+				"buffer_size": 1886,
 				"line_ending": "Unix"
 			}
 		}
@@ -647,39 +685,51 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/mandarin/Projects/Games/Fishing/fishing"
+		"/Users/mandarin/Projects/Games/Fishing/fishing",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators"
 	],
 	"file_history":
 	[
-		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/generators/dungeon.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boot.js",
-		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/states/game.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/README.md",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/map/remap.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/island_name.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/index.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/segment.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/package.json",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/preloader.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/fishing.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/extensions.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/fishing.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/main.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/list.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/tilemapper.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/dom.js",
+		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/generators/dungeon.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/browserify.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boot.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tileset_index_range.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tile_index_lookup.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/states.js",
+		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/generators/tilemapper.js",
+		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/states/game.js",
+		"/Users/mandarin/Library/Application Support/Sublime Text 3/Packages/Terminal/Default (OSX).sublime-keymap",
+		"/Users/mandarin/Library/Application Support/Sublime Text 3/Packages/Terminal/Terminal.sublime-settings",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/libs.json",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/test/marching_squares_01.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/Fishing.sublime-project",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tile_index_lookup.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tileset_index_range.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tile_settings.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/preloader.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/index.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/pipeline.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/fishing.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/public/fishing.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/dom.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/main.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/browserify.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/.yo-rc.json",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/package.json",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/index.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/.gitignore",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/Fishing.sublime-workspace",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/boxy_bold_8.xml",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/index.html",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/config.json",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/README.md",
 		"/Users/mandarin/Projects/Games/River Run/riverrun/River Run.sublime-project",
 		"/Users/mandarin/Projects/Games/River Run/riverrun/src/states/game.js",
 		"/Users/mandarin/Projects/_experiments/generator-phaser-simple/generators/app/index.js",
@@ -768,27 +818,18 @@
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Editor/WaterShaderGUI.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/Panel/SpaceStationUI.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Core/Attributes/MinMaxAttribute.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Master.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/StateOptions.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/SetAgentDestination.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/Idle.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Interfaces/IFightable.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/UI.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Raycasters/Editor/CircleCastInspector.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Entities/Resource.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/EnitytDiedInBattle.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/FightController.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Interfaces/IClickable.cs"
+		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Master.cs"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 37.0
 	},
 	"find_in_files":
 	{
 		"height": 95.0,
 		"where_history":
 		[
+			"/Users/mandarin/Projects/Games/Fishing/fishing/src",
 			"/Users/mandarin/Projects/Games/Fishing/fishing",
 			"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts",
 			"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Scripts",
@@ -834,6 +875,72 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"list",
+			"data_types",
+			"data",
+			"value",
+			"seed",
+			"name",
+			"seed",
+			"data_t",
+			"data_",
+			"data_types",
+			"info",
+			"data_types",
+			"list",
+			"getFilteredMetaData",
+			"insertCache",
+			"insert",
+			"filter",
+			"data_types",
+			"grid",
+			"onDown",
+			"key1",
+			"get",
+			"data_types",
+			"cfg",
+			"config",
+			"filter",
+			"max",
+			"1",
+			"smoothness",
+			"1",
+			"smoothness",
+			"segment",
+			"data",
+			"grid",
+			".fill(",
+			"data",
+			"width",
+			"_options",
+			"world",
+			"worldmap",
+			"world_height",
+			"world_width",
+			"list",
+			"coordinate",
+			"worldmap",
+			"seed",
+			"x",
+			"tile_value",
+			"map",
+			"game",
+			"32",
+			"state_utils",
+			"tilemap",
+			"getFilteredMetaData",
+			"getMetaTileIDs",
+			"getTileIDs",
+			"tile_value",
+			"exact",
+			"value",
+			"wm_cfg",
+			"data",
+			"list",
+			"getMetaCoord",
+			"str",
+			"gettersetter",
+			"getter",
 			"per",
 			"0001",
 			"meta",
@@ -895,73 +1002,7 @@
 			"QuitBattle(",
 			"FledFromBattle",
 			"coll",
-			"ySize",
-			"Positioner",
-			".Spawn(",
-			"position",
-			"rect",
-			"value",
-			"xSize",
-			"x",
-			"Positioner",
-			"Vector3",
-			"Positioner",
-			"segSizeLength",
-			"x",
-			"y",
-			"Vector3",
-			"positionerHeight",
-			"attribute",
-			"property",
-			"position",
-			"Two",
-			"oneFloat",
-			"OneOptions",
-			"One",
-			"ThreeOptions",
-			"TwoOptions",
-			"attacker",
-			"BattleOptions",
-			"one",
-			"();",
-			"One",
-			"one",
-			"idle",
-			"one",
-			"One",
-			"idle",
-			"Idle",
-			"pathCalc",
-			"EntityDiedInBattle",
-			"resource",
-			"EnitytDiedInBattle",
-			"entity",
-			"AnimalBehaviour",
-			"EntityBehaviour",
-			"FightController",
-			"add",
-			"other",
-			"enmEnt",
-			"attEnt",
-			"opt",
-			"quitterOption",
-			"enemy",
-			"attackerEntity",
-			"BattleOption",
-			"enemy",
-			"attacker",
-			"enemyOptions",
-			"attackerOption",
-			"enemyBattleState",
-			"FSMState",
-			"options",
-			"attacker",
-			"eneEnt",
-			"vicEnt",
-			"victim",
-			"attacker",
-			"enemy",
-			"FightingOptions"
+			"ySize"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -996,7 +1037,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 12,
 			"sheets":
 			[
 				{
@@ -1005,15 +1046,106 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1188,
+						"buffer_size": 1412,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								724,
-								724
+								1137,
+								1137
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/generators/segment.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4239,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2681,
+								2681
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 878.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/transforms/grid/rooms.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2142,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2142,
+								2142
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 639.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/generators/cellular_automata.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4134,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								477,
+								477
 							]
 						],
 						"settings":
@@ -1026,24 +1158,54 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "src/states/generate.js",
+					"buffer": 4,
+					"file": "src/tilemapper.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 305,
+						"buffer_size": 274,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								262,
-								250
+								218,
+								218
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/utils/list.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1407,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								52,
+								52
 							]
 						],
 						"settings":
@@ -1060,81 +1222,149 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/tilemapper.js",
+					"buffer": 6,
+					"file": "src/states/worldmap.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1936,
+						"buffer_size": 1630,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1307,
-								1326
+								978,
+								978
 							]
 						],
 						"settings":
 						{
-							"auto_name": "module.exports.map = function(data) {};",
+							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 24.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/helpers/phaser/tilemaps.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 668,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								323,
+								323
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 115.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/states/generate.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 688,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								332,
+								298
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "src/generators/world.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1302,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1031,
+								1031
+							],
+							[
+								1075,
+								1075
+							]
+						],
+						"settings":
+						{
+							"auto_name": "var config          = require('config');",
+							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 10,
+					"file": "src/utils/type.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2207,
+						"buffer_size": 1655,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1559,
-								1559
-							]
-						],
-						"settings":
-						{
-							"auto_name": "2 tiles: 14",
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 204.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/utils/list.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1500,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								395,
-								395
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1151,55 +1381,25 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "src/generators/worldmap.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1126,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1086,
-								1086
-							]
-						],
-						"settings":
-						{
-							"auto_name": "var config          = require('config');",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
+					"buffer": 11,
 					"file": "src/data/grid.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1526,
+						"buffer_size": 2025,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								161,
-								161
+								1673,
+								1673
 							]
 						],
 						"settings":
 						{
+							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -1208,37 +1408,38 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 12,
 					"file": "public/config.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 933,
+						"buffer_size": 1886,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								886,
-								886
+								1335,
+								1335
 							]
 						],
 						"settings":
 						{
+							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
 							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 232.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -1295,20 +1496,68 @@
 		"selected_items":
 		[
 			[
-				"boo",
-				"src/states/boot.js"
-			],
-			[
 				"typ",
 				"src/utils/type.js"
 			],
 			[
-				"gri",
-				"src/data/grid.js"
-			],
-			[
 				"list",
 				"src/utils/list.js"
+			],
+			[
+				"roo",
+				"src/transforms/grid/rooms.js"
+			],
+			[
+				"isl",
+				"src/generators/island_name.js"
+			],
+			[
+				"seg",
+				"src/generators/segment.js"
+			],
+			[
+				"e",
+				"src/utils/extensions.js"
+			],
+			[
+				"ex",
+				"src/utils/extensions.js"
+			],
+			[
+				"prel",
+				"src/states/preloader.js"
+			],
+			[
+				"fi",
+				"src/fishing.js"
+			],
+			[
+				"ma",
+				"src/main.js"
+			],
+			[
+				"ty",
+				"src/utils/type.js"
+			],
+			[
+				"re",
+				"README.md"
+			],
+			[
+				"tile",
+				"src/helpers/phaser/tilemaps.js"
+			],
+			[
+				"fish",
+				"src/fishing.js"
+			],
+			[
+				"boo",
+				"src/states/boot.js"
+			],
+			[
+				"gri",
+				"src/data/grid.js"
 			],
 			[
 				".js",
@@ -1317,10 +1566,6 @@
 			[
 				"bo",
 				"src/states/boot.js"
-			],
-			[
-				"fi",
-				"src/fishing.js"
 			],
 			[
 				"con",
@@ -1333,10 +1578,6 @@
 			[
 				"pre",
 				"src/states/preloader.js"
-			],
-			[
-				"fish",
-				"src/fishing.js"
 			],
 			[
 				"scrip",
@@ -1765,46 +2006,6 @@
 			[
 				"panel",
 				"UI/PanelType.cs"
-			],
-			[
-				"panel/",
-				"UI/Panel/EnergyStationUI.cs"
-			],
-			[
-				"stats",
-				"UI/Panel/PlayerStatsUI.cs"
-			],
-			[
-				"mini",
-				"Controllers/Minimap.cs"
-			],
-			[
-				"plainv",
-				"Playa/PlayerInventory.cs"
-			],
-			[
-				"plan",
-				"Behaviours/Plant.cs"
-			],
-			[
-				"set",
-				"FSM/States/SetAgentDestination.cs"
-			],
-			[
-				"master",
-				"Controllers/Master.cs"
-			],
-			[
-				"enti",
-				"Entities/Entity.cs"
-			],
-			[
-				"animdr",
-				"Editor/AnimalDrawer.cs"
-			],
-			[
-				"rop",
-				"Core/Properties.cs"
 			]
 		],
 		"width": 0.0

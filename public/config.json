@@ -6,15 +6,27 @@
         "dom_element_id": "__game__",
         "host": "http://localhost:5000/",
         "font": "Boxy-Bold",
-        "font_size": 8
+        "font_size": 8,
+        "boot_sequence": ["Boot", "Preloader", "Generate", "Worldmap"]
     },
-    "worldmap": {
-        "world_width": 16,
-        "world_height": 16,
-        "noise_scale": 0.5
+    "world": {
+        "width": 16,
+        "height": 16,
+        "noise_scale": 1
+    },
+    "world_segment": {
+        "width": 32,
+        "height": 32,
+        "smoothness": 4,
+        "padding": 3
+
     },
     "map": {
         "data_types": [{
+            "name": "Sand",
+            "value": 3,
+            "tile_row_offset": 0
+        },{
             "name": "Island",
             "value": 2,
             "tile_row_offset": 0,
@@ -29,7 +41,20 @@
             "value": 0,
             "tile_row_offset": 2,
             "lower": 0.0, "upper": 1.0
-        }]
+        }],
+        "tilemaps": {
+            "worldmap": {
+                "0": 2,
+                "1": 1,
+                "2": 3
+            },
+            "segment": {
+                "0": 2,
+                "1": 1,
+                "2": 3,
+                "3": 4
+            }
+        }
     },
     "preload": {
         "bitmapFont": {
@@ -38,12 +63,15 @@
             "Gamegirl":                 ["assets/fonts/game_girl_16_shadow.png", "assets/fonts/game_girl_16_shadow.xml"]
         },
         "spritesheet": {
-            "sprites":      ["assets/sprites.png", 32, 32]
+            "sprites":                  ["assets/sprites.png", 32, 32],
+            "sprites01":                ["assets/sprites_01.png", 16, 16]
         },
         "image": {
-            "tilemap":      ["assets/tilemap.png"],
-            "worldmap":     ["assets/worldmap.png"],
-            "indexdebug":   ["assets/index-debug.png"]
+            "tilemap":                  ["assets/tilemap.png"],
+            "tilemap-simple":           ["assets/tilemap-simple.png"],
+            "worldmap-simple":          ["assets/worldmap-simple.png"],
+            "indexdebug":               ["assets/index-debug.png"],
+            "label-pick-island":        ["assets/label-pick-island.png"]
         }
     }
 }

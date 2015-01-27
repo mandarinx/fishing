@@ -17,6 +17,7 @@ function _boot() {
 
         window.log = console.log.bind(console);
 
+        var extensions = require('utils/extensions');
         var fishing = require('fishing');
         fishing();
     }

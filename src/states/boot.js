@@ -28,5 +28,7 @@ module.exports.create = function() {
     game.context.webkitImageSmoothingEnabled = false;
     game.context.msImageSmoothingEnabled = false;
 
+    game.renderer.renderSession.roundPixels = true;
+
     game.state.start('Preloader');
 };

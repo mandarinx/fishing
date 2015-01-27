@@ -11,6 +11,7 @@ var boot        = require('states/boot');
 var preloader   = require('states/preloader');
 var generate    = require('states/generate');
 var worldmap    = require('states/worldmap');
+var boat        = require('states/boat');
 var game_state  = require('states/game');
 
 module.exports = function() {
@@ -28,6 +29,7 @@ module.exports = function() {
         game.state.add('Generate',  generate);
         game.state.add('Worldmap',  worldmap);
         game.state.add('Game',      game_state);
+        game.state.add('Boat',      boat);
 
         game.state.start('Boot');
     });

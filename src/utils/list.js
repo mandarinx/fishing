@@ -22,19 +22,15 @@ module.exports.set = function(arr, x, y, width, value) {
     arr[(width * y) + x] = value;
 };
 
-module.exports.fill = function(arr, width, length, callback) {
-    if (!arr) {
-        arr = [];
-    }
-
-    var x = 0;
-    var y = 0;
+module.exports.fill = function(arr, length, value) {
+    arr = arr || [];
+    value = value || 0;
 
     for (var i=0; i<length; i+=1) {
-        x = i % width !== 0 ? x + 1 : 0;
-        y = i > 0 && x === 0 ? y + 1 : y;
-        callback(x, y, i);
+        arr.push(value);
     }
+
+    return module.exports;
 };
 
 module.exports.print = function(list, width) {

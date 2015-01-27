@@ -33,7 +33,9 @@
     },
     "preload": {
         "bitmapFont": {
-            "Boxy-Bold":    ["assets/fonts/boxy_bold_8.png", "assets/fonts/boxy_bold_8.xml"]
+            "Boxy-Bold":                ["assets/fonts/boxy_bold_8.png", "assets/fonts/boxy_bold_8.xml"],
+            "Press_Start":              ["assets/fonts/press_start_16_shadow.png", "assets/fonts/press_start_16_shadow.xml"],
+            "Gamegirl":                 ["assets/fonts/game_girl_16_shadow.png", "assets/fonts/game_girl_16_shadow.xml"]
         },
         "spritesheet": {
             "sprites":      ["assets/sprites.png", 32, 32]

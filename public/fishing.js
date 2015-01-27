@@ -18,12 +18,13 @@ function _boot() {
 
         window.log = console.log.bind(console);
 
+        var extensions = require('./utils/extensions.js');
         var fishing = require('./fishing.js');
         fishing();
     }
 };
 
-},{"./fishing.js":7}],2:[function(require,module,exports){
+},{"./fishing.js":8,"./utils/extensions.js":24}],2:[function(require,module,exports){
 // PERLIN NOISE
 // based 99.999% on Processing's implementation, found here:
 // https://github.com/processing/processing/blob/master/core/src/processing/core/PApplet.java
@@ -823,21 +824,24 @@ function crawl(args) {
     return obj;
 }
 
-},{"./utils/type.js":19,"qwest":4}],6:[function(require,module,exports){
+},{"./utils/type.js":26,"qwest":4}],6:[function(require,module,exports){
 var list = require('./../utils/list.js');
 
 function Grid(width, height, value) {
     var w = width;
     var h = height;
-    var data = [];
-    var tiles = [];
 
     var instance = {
+        data:   [],
+        tiles:  [],
+        name:   'Unnamed',
+        seed:   1,
+
         init: function(value) {
             value = value || 0;
             for (var i=0, l=w * h; i<l; i++) {
-                data.push(value);
-                tiles.push(value);
+                this.data.push(value);
+                this.tiles.push(value);
             }
         }
     };
@@ -851,35 +855,86 @@ function Grid(width, height, value) {
     });
 
     get(instance, 'height', function() {
-        return data.length / w;
+        return this.data.length / w;
     });
 
     get(instance, 'length', function() {
-        return data.length;
+        return this.data.length;
     });
-
-    getset(instance, 'data', function() { return data; },
-                             function() { data = value; });
-
-    getset(instance, 'tiles', function() { return tiles; },
-                              function() { tiles = value; });
 
     return instance;
 }
 
 function get(obj, prop, cb) {
-    Object.defineProperty(obj, prop, { get: cb });
+    Object.defineProperty(obj, prop, {
+        get: cb,
+        enumerable: true
+    });
+}
+
+function set(obj, prop, cb) {
+    Object.defineProperty(obj, prop, {
+        set:        cb,
+        enumerable: true
+    });
 }
 
 function getset(obj, prop, get_cb, set_cb) {
-    Object.defineProperty(obj, prop, { get: get_cb, set: set_cb });
+    Object.defineProperty(obj, prop, {
+        // get:        get_cb,
+        // set:        set_cb,
+        enumerable: true,
+        writable:   true,
+        configurable:   true
+    });
 }
 
 module.exports.create = function(width, height, value) {
     return new Grid(width, height, value);
 }
 
-},{"./../utils/list.js":18}],7:[function(require,module,exports){
+},{"./../utils/list.js":25}],7:[function(require,module,exports){
+"use strict";
+
+// THOUGHTS:
+// - To add a more boat-like feel to the movement, a slowdown on stop would
+//   be nice. Also a bit of slowness at start.
+// - Turning radius should be a factor of speed. Greater radius at greater
+//   speeds.
+var sprite;
+var speed = 2;
+var dir = {x:0, y:0};
+
+module.exports.create = function(game, x, y) {
+    sprite = game.add.sprite(x, y, 'sprites01');
+    sprite.anchor.setTo(0.5, 0.5);
+};
+
+module.exports.update = function(cursors, pointer) {
+
+    if (cursors.up.isDown) {
+        dir.y = -1;
+        dir.x = !cursors.right.isDown && !cursors.left.isDown ? 0 : dir.x;
+    } else if (cursors.down.isDown) {
+        dir.y = 1;
+        dir.x = !cursors.right.isDown && !cursors.left.isDown ? 0 : dir.x;
+    }
+
+    if (cursors.right.isDown) {
+        dir.x = 1;
+        dir.y = !cursors.up.isDown && !cursors.down.isDown ? 0 : dir.y;
+    } else if (cursors.left.isDown) {
+        dir.x = -1;
+        dir.y = !cursors.up.isDown && !cursors.down.isDown ? 0 : dir.y;
+    }
+
+    // sprite.x -= speed;
+    // sprite.y -= speed;
+
+    log(Math.atan2(dir.y, dir.x));
+};
+
+},{}],8:[function(require,module,exports){
 "use strict";
 
 var config      = require('./config.js');
@@ -893,6 +948,7 @@ var boot        = require('./states/boot.js');
 var preloader   = require('./states/preloader.js');
 var generate    = require('./states/generate.js');
 var worldmap    = require('./states/worldmap.js');
+var boat        = require('./states/boat.js');
 var game_state  = require('./states/game.js');
 
 module.exports = function() {
@@ -910,72 +966,370 @@ module.exports = function() {
         game.state.add('Generate',  generate);
         game.state.add('Worldmap',  worldmap);
         game.state.add('Game',      game_state);
+        game.state.add('Boat',      boat);
 
         game.state.start('Boot');
     });
 }
 
-},{"./config.js":5,"./states/boot.js":11,"./states/game.js":12,"./states/generate.js":13,"./states/preloader.js":14,"./states/worldmap.js":15,"./utils/dom.js":17}],8:[function(require,module,exports){
+},{"./config.js":5,"./states/boat.js":14,"./states/boot.js":15,"./states/game.js":16,"./states/generate.js":17,"./states/preloader.js":18,"./states/worldmap.js":19,"./utils/dom.js":23}],9:[function(require,module,exports){
+var list        = require('./../utils/list.js');
+// var inverter    = require('transforms/grid/inverter');
+// var rooms       = require('transforms/grid/rooms');
+
+var data = null;
+var data_string = null;
+var options = {};
+
+module.exports = {
+    generate: function(grid, opt) {
+        options = opt || {
+            seed:       1,
+            smoothness: 1,
+            padding:    1,
+            value_a:    0,
+            value_b:    1
+        };
+
+        Math.seed = options.seed;
+
+        list.each(grid.data, grid.width, function(item, x, y, i) {
+            if ((x < options.padding) ||
+                (y < options.padding) ||
+                (x >= grid.width - options.padding) ||
+                (y >= grid.width - options.padding)) {
+                grid.data[i] = 0;
+            } else {
+                grid.data[i] = ~~Math.seededRandom(0, 2);
+            }
+        });
+
+        generateCells(grid, options);
+
+        // inverter.invert(data);
+
+        // rooms.identify(0, data);
+        // rooms.closeAll(data);
+        // rooms.open(0, data);
+
+        // addOutlineWalls();
+        // addHeight();
+
+        // list.print(grid.data);
+
+    }
+};
+
+function generateCells(grid, options) {
+    for (var i = 0; i < options.smoothness; i++) {
+
+        var new_map = [];
+        list.fill(new_map, grid.width * grid.width, 0);
+
+        var x_low = -1;
+        var x_high = -1;
+        var y_low = -1;
+        var y_high = -1;
+        var neighbours = 0;
+        var cur_tile_value = -1;
+        var corner = false;
+        var val = -1;
+
+        list.each(new_map, grid.width, function(tile, x, y, i) {
+
+            x_low = Math.max(0, x - 1);
+            x_high = Math.min(grid.width - 1, x + 1);
+
+            y_low = Math.max(0, y - 1);
+            y_high = Math.min(grid.width - 1, y + 1);
+
+            neighbours = 0;
+
+            for (var a = x_low; a <= x_high; a++) {
+                for (var b = y_low; b <= y_high; b++) {
+                    if ((a === x) && (b === y)) {
+                        continue;
+                    }
+                    neighbours += 1 - get(grid, a, b);
+                }
+            }
+
+            cur_tile_value = get(grid, x, y);
+
+            corner = (x === 0 && y === 0) ||
+                     (x === grid.width-1 && y === 0) ||
+                     (x === 0 && y === grid.height-1) ||
+                     (x === grid.width-1 && y === grid.height-1);
+
+            val = (corner ||
+                  (cur_tile_value === 0 && neighbours >= 4) ||
+                  (cur_tile_value === 1 && neighbours >= 5)) ? 0 : 1;
+
+            list.set(new_map, x, y, grid.width, val);
+
+        });
+
+        new_map.forEach(function(value, i) {
+            grid.data[i] = new_map[i];
+        });
+    }
+
+    grid.data.forEach(function(value, i) {
+        grid.data[i] = value === 0 ? options.value_a : options.value_b;
+    });
+}
+
+function get(grid, x, y) {
+    return list.get(grid.data, x, y, grid.width);
+}
+
+// function filter(data, data_types) {
+//     data.forEach(function(data_value, i) {
+//         data[i] = filterValue(data_value, data_types);
+//     });
+// }
+
+// function filterValue(value, data_types) {
+//     for (var i=0; i<data_types.length; i++) {
+//         var dtype = data_types[i];
+//         if (value >= dtype.lower && value < dtype.upper) {
+//             return dtype.value;
+//         }
+//     }
+// }
+
+// TODO:
+// addHeight and addOutlineWalls are actually transformers, and should
+// be put in separate files.
+
+// function addHeight() {
+//     data.each(function(tile, x, y) {
+//         if (tile === 0 &&
+//             data.get(x, y - 1) === 1) {
+//             data.set(x, y, 2);
+//         }
+//     });
+// }
+
+// function addOutlineWalls() {
+//     data.each(function(tile, x, y) {
+//         if (tile === 0) {
+//             if (((x > 0) && (data.get(x - 1, y) === 1)) ||
+//                 ((y > 0) && (data.get(x, y - 1) === 1)) ||
+//                 ((x < data.width - 1) && (data.get(x + 1, y) === 1)) ||
+//                 ((y < data.width - 1) && (data.get(x, y + 1) === 1))) {
+//                     data.set(x, y, 2);
+//                 }
+//         }
+
+//     });
+// }
+
+},{"./../utils/list.js":25}],10:[function(require,module,exports){
+
+var endings = ['os', 'ia'];
+var beginnings = ['Nax', 'Lesb', 'K', 'Icar', 'Tin', 'Skyr'];
+
+module.exports.generate = function() {
+    var b = rnd(beginnings);
+    var e = rnd(endings);
+    return b+e;
+};
+
+function rnd(list) {
+    return list[Math.round(Math.random() * (list.length-1))];
+}
+
+},{}],11:[function(require,module,exports){
 "use strict";
 
 var list            = require('./../utils/list.js');
+var type            = require('./../utils/type.js');
+var grid            = require('./../data/grid.js');
+var automata        = require('./cellular_automata.js');
+var automata        = require('./cellular_automata.js');
+var island_name     = require('./island_name.js');
+// var remapper        = require('transforms/grid/remap');
+var rooms           = require('./../transforms/grid/rooms.js');
+var config          = require('./../config.js');
+var tilemapper      = require('./../tilemapper.js');
 
-var world = [];
+var world           = {};
+var cfg             = null;
+var map_cfg         = null;
+var data_types      = null;
 
 module.exports.generate = function(x, y, type) {
     if (exists(x, y)) {
         return;
     }
 
-    // pick a seed for the world
-    // use cellular automata to generate a map
-    // put the map in world[]
+    cfg = config.get('world_segment');
+    map_cfg = config.get('map');
+    data_types = map_cfg.data_types;
+    addToCache(x, y);
+
+    var segment = world[x][y] = grid.create(cfg.width, cfg.height, 0);
+    segment.seed = Math.round(Math.random() * 10000);
+
+    // info(data_types, type, x, y, segment.seed);
+
+    if (type === 0) {
+        // TODO: Generate sea name
+        segment.name = 'Fishing sea';
+        generateFishingSea(segment);
+    }
+
+    if (type === 1) {
+        segment.name = 'null';
+        generateShallowSea(segment);
+    }
+
+    if (type === 2) {
+        segment.name = island_name.generate();
+        generateIsland(segment, {
+            seed:       segment.seed,
+            smoothness: cfg.smoothness,
+            padding:    cfg.padding,
+            value_a:    getDataTypeValue('Shallow sea'),
+            value_b:    getDataTypeValue('Island')
+        });
+    }
+
+    // list.print(segment.data);
+
+    tilemapper.map(segment, data_types, map_cfg.tilemaps.segment);
 };
 
-module.exports.get = function(x, y, type) {
-    // check if segment(x, y) has a tiles array
-    // if not > run tilemapper.natural
-    // return the segment
+module.exports.get = function(x, y) {
+    if (!exists(x, y)) {
+        return null;
+    }
+
+    return world[x][y];
 };
 
-function exists(x, y) {
-    var segment = null;
-    for (var i=0; i<world.length; i++) {
-        segment = world[i];
-        if (segment.x === x && segment.y === y) {
-            break;
+// put this somewhere else. In config? Maybe a map helper, or something.
+function getDataTypeValue(name) {
+    var dt;
+    for (var i=0; i<data_types.length; i++) {
+        dt = data_types[i];
+        if (dt.name === name) {
+            return dt.value;
         }
     }
-    return segment ? true : false;
+    return null;
 }
 
-},{"./../utils/list.js":18}],9:[function(require,module,exports){
+function generateIsland(segment, opts) {
+
+    // TODO: Make automata a Stream
+    // https://github.com/winterbe/streamjs
+    automata.generate(segment, opts);
+
+    // Remap 0's to 1's and 1's to 2's.
+    // Should be better integrated with config.
+    // datatype.get('Island')
+    // datatype.get('Shallow sea')
+    // remapper.remap(segment.data, {
+    //     0: 1,
+    //     1: 2
+    // });
+
+    rooms.identify(getDataTypeValue('Island'), segment);
+
+    Object.keys(rooms.rooms).forEach(function(index) {
+        var room_tiles = rooms.rooms[index];
+        if (room_tiles.length < 10) {
+            room_tiles.forEach(function(tile_index) {
+                segment.data[tile_index] = getDataTypeValue('Sand');
+            });
+        }
+    });
+}
+
+function generateFishingSea(segment) {
+    list.each(segment.data, segment.width, function(tile, x, y, i) {
+        if ((x < 5) ||
+            (x > segment.width - 6) ||
+            (y < 5) ||
+            (y > segment.height - 6)) {
+            segment.data[i] = getDataTypeValue('Shallow sea');
+        } else {
+            segment.data[i] = getDataTypeValue('Deep sea');
+        }
+    });
+}
+
+function generateShallowSea(segment) {
+    list.each(segment.data, segment.width, function(tile, x, y, i) {
+        segment.data[i] = getDataTypeValue('Shallow sea');
+    });
+}
+
+function exists(x, y) {
+    if (type(x).is_undefined) {
+        console.log('Segment.exists : Missing x');
+        return false;
+    }
+
+    if (!type(world[x]).is_undefined) {
+        if (type(y).is_undefined) {
+            return true;
+        }
+        if (!type(world[x][y]).is_undefined) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function addToCache(x, y) {
+    if (!exists(x)) {
+        world[x] = {};
+    }
+    if (!exists(x, y)) {
+        world[x][y] = {};
+    }
+}
+
+function info(data_types, type, x, y, seed) {
+    var n = '';
+    data_types.forEach(function(dt) {
+        if (dt.value === type) {
+            n = dt.name;
+        }
+    });
+
+    log('segment type:'+n+' ('+type+') x:'+x+' y:'+y+' seed:'+seed);
+}
+
+},{"./../config.js":5,"./../data/grid.js":6,"./../tilemapper.js":20,"./../transforms/grid/rooms.js":21,"./../utils/list.js":25,"./../utils/type.js":26,"./cellular_automata.js":9,"./island_name.js":10}],12:[function(require,module,exports){
 var config          = require('./../config.js');
 var PerlinGenerator = require('proc-noise');
 var grid            = require('./../data/grid.js');
 var list            = require('./../utils/list.js');
+var type            = require('./../utils/type.js');
 
 var map = {};
 var cfg = {};
 
-module.exports.generate = function(data_types) {
-    cfg = config.get('worldmap');
+module.exports.generate = function(data_types, seed) {
+    cfg = config.get('world');
 
-    var seed = Math.round(Math.random * 10000);
     var Perlin = new PerlinGenerator(seed);
     var noise = [];
     var scale = 1 / cfg.noise_scale;
 
-    map = grid.create(cfg.world_width, cfg.world_height, 0);
+    map = grid.create(cfg.width, cfg.height, 0);
 
-    list.fill(noise, map.width, map.length, function(x, y, i) {
-        noise[i] = Perlin.noise(x * scale, y * scale);
-    });
+    list.fill(noise, map.width * map.height, 0)
+        .each(noise, map.width, function(tile, x, y, i) {
+            noise[i] = Perlin.noise(x * scale, y * scale);
+        });
 
     filter(noise, map, data_types);
-};
 
-module.exports.print = function() {
     list.print(map.data);
 };
 
@@ -988,6 +1342,10 @@ function filter(data, grid, config) {
 function filterValue(value, config) {
     for (var i=0; i<config.length; i++) {
         var cfg = config[i];
+        if (type(cfg.lower).is_undefined &&
+            type(cfg.upper).is_undefined) {
+            continue;
+        }
         if (value >= cfg.lower && value < cfg.upper) {
             return cfg.value;
         }
@@ -998,7 +1356,7 @@ Object.defineProperty(module.exports, 'map', {
     get: function() { return map; }
 });
 
-},{"./../config.js":5,"./../data/grid.js":6,"./../utils/list.js":18,"proc-noise":2}],10:[function(require,module,exports){
+},{"./../config.js":5,"./../data/grid.js":6,"./../utils/list.js":25,"./../utils/type.js":26,"proc-noise":2}],13:[function(require,module,exports){
 "use strict";
 
 var tilemaps = {};
@@ -1023,7 +1381,67 @@ module.exports.layer = function(name) {
     return tilemap ? tilemap.layer : null;
 }
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+"use strict";
+
+module.exports = new Phaser.State();
+
+var config          = require('./../config.js');
+var list            = require('./../utils/list.js');
+var tilemaps        = require('./../helpers/phaser/tilemaps.js');
+var segment         = require('./../generators/segment.js');
+var boat            = require('./../entities/boat.js');
+
+var game;
+// TODO: Bundle cursors and pointer in an input manager. The input manager
+// accepts a key mapping object from config
+var cursors;
+var pointer;
+
+module.exports.init = function(options) {
+    segment.generate(0, 0, 1);
+};
+
+module.exports.create = function() {
+    var game_config = config.get('game');
+
+    game = this.game;
+    game.stage.backgroundColor = game_config.background_color;
+
+    var seg = segment.get(0, 0);
+
+    tilemaps.loadTilemap(game, {
+        map_name:   'BoatPracticing',
+        data:       list.printString(seg.tiles),
+        tileset:    'tilemap-simple'
+    });
+
+    cursors = game.input.keyboard.createCursorKeys();
+    pointer = game.input.activePointer;
+
+    var map = tilemaps.layer('BoatPracticing').map;
+
+    boat.create(game, map.tileWidth * 16, map.tileHeight * 16);
+
+    // cursor keys
+    // add boat
+        // can be driven by cursor keys
+        // can be driven by point and click
+            // needs to know the mouse cursor position to rotate
+            // needs pathfinding
+    // set collision tiles
+
+    // keep in mind:
+    // - boat needs an update routine that knows that kind of tile it is on.
+        // Use Phaser tile callbacks? They need to be reset between each
+        // map switch.
+};
+
+module.exports.update = function() {
+    boat.update(cursors, pointer);
+};
+
+},{"./../config.js":5,"./../entities/boat.js":7,"./../generators/segment.js":11,"./../helpers/phaser/tilemaps.js":13,"./../utils/list.js":25}],15:[function(require,module,exports){
 "use strict";
 
 var config = require('./../config.js');
@@ -1054,10 +1472,12 @@ module.exports.create = function() {
     game.context.webkitImageSmoothingEnabled = false;
     game.context.msImageSmoothingEnabled = false;
 
+    game.renderer.renderSession.roundPixels = true;
+
     game.state.start('Preloader');
 };
 
-},{"./../config.js":5}],12:[function(require,module,exports){
+},{"./../config.js":5}],16:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -1065,10 +1485,11 @@ module.exports = new Phaser.State();
 var config          = require('./../config.js');
 var list            = require('./../utils/list.js');
 var tilemaps        = require('./../helpers/phaser/tilemaps.js');
-var world           = require('./../generators/world.js');
+var segment         = require('./../generators/segment.js');
 
-var game = null;
-var coordinate = {x: -1, y: -1};
+var game            = null;
+var coordinate      = {x: -1, y: -1};
+var key_map         = null;
 
 module.exports.init = function(options) {
     if (typeof options === 'undefined') {
@@ -1079,7 +1500,7 @@ module.exports.init = function(options) {
     coordinate.x = options.x;
     coordinate.y = options.y;
 
-    world.generate(options.x, options.y, options.map_type);
+    segment.generate(options.x, options.y, options.map_type);
 };
 
 module.exports.create = function() {
@@ -1088,44 +1509,59 @@ module.exports.create = function() {
     game = this.game;
     game.stage.backgroundColor = game_config.background_color;
 
-    // var segment = world.get(coordinate.x, coordinate.y);
-    // segment: {
-    //     tiles: []
-    //     width: 16
-    //     name: ''
-    // }
+    var seg = segment.get(coordinate.x, coordinate.y);
 
-    // tilemaps.loadTilemap(game, {
-    //     map_name:   segment.name,
-    //     data:       list.printString(segment.tiles),
-    //     tileset:    'worldmap'
-    // });
+    tilemaps.loadTilemap(game, {
+        map_name:   seg.name,
+        data:       list.printString(seg.tiles),
+        tileset:    'tilemap-simple'
+    });
 
+    game.add.bitmapText(16, 16, 'Gamegirl', '[M] Return to worldmap', 8);
+    game.add.bitmapText(16, 32, 'Gamegirl', seg.name, 8);
+
+    key_map = game.input.keyboard.addKey(Phaser.Keyboard.M);
+    key_map.onUp.add(returnToWorldmap, this);
 };
 
-},{"./../config.js":5,"./../generators/world.js":8,"./../helpers/phaser/tilemaps.js":10,"./../utils/list.js":18}],13:[function(require,module,exports){
+module.exports.shutdown = function() {
+    key_map.onUp.remove(returnToWorldmap);
+};
+
+function returnToWorldmap() {
+    game.state.start('Worldmap');
+}
+
+},{"./../config.js":5,"./../generators/segment.js":11,"./../helpers/phaser/tilemaps.js":13,"./../utils/list.js":25}],17:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
 
-var worldmap        = require('./../generators/worldmap.js');
-var tilemapper      = require('./../tilemapper.js');
-var config          = require('./../config.js');
+var world       = require('./../generators/world.js');
+var tilemapper  = require('./../tilemapper.js');
+var config      = require('./../config.js');
 
 module.exports.create = function() {
 
+    // TODO: Store the seed in a save game, e.g. localStorage.
+    window.seed = Math.round(Math.random() * 10000);
+
     var map_cfg = config.get('map');
+    world.generate(map_cfg.data_types, window.seed);
 
-    worldmap.generate(map_cfg.data_types);
-    worldmap.print();
-
-    tilemapper.direct(worldmap.map, map_cfg.data_types);
+    tilemapper.map(world.map, map_cfg.data_types, map_cfg.tilemaps.worldmap);
 
     this.game.state.start('Worldmap');
 
+    // this.game.state.start('Game', true, false, {
+    //     map_type:   2,
+    //     x:          0,
+    //     y:          0
+    // });
+
 };
 
-},{"./../config.js":5,"./../generators/worldmap.js":9,"./../tilemapper.js":16}],14:[function(require,module,exports){
+},{"./../config.js":5,"./../generators/world.js":12,"./../tilemapper.js":20}],18:[function(require,module,exports){
 "use strict";
 
 var config = require('./../config.js');
@@ -1149,11 +1585,13 @@ module.exports.update = function() {
         // There should be an easy way to get the next state without
         // knowing the name of the state
 
-        this.game.state.start('Generate');
+        this.game.state.start('Boat');
+        // this.game.state.start('Generate');
+
     }
 };
 
-},{"./../config.js":5}],15:[function(require,module,exports){
+},{"./../config.js":5}],19:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -1161,7 +1599,8 @@ module.exports = new Phaser.State();
 var config          = require('./../config.js');
 var list            = require('./../utils/list.js');
 var tilemaps        = require('./../helpers/phaser/tilemaps.js');
-var worldmap        = require('./../generators/worldmap.js');
+var world           = require('./../generators/world.js');
+var unobtrusive     = require('./../ui/components/unobtrusive_label.js');
 
 var marker      = {x:0, y:0};
 var cur_tile    = {x:0, y:0};
@@ -1169,6 +1608,8 @@ var layer       = {};
 var tilesize    = 32;
 var pointer     = {};
 var game        = null;
+
+var pick_island_label = null;
 
 module.exports.create = function() {
     var game_config = config.get('game');
@@ -1180,13 +1621,20 @@ module.exports.create = function() {
 
     tilemaps.loadTilemap(game, {
         map_name:       mapname,
-        data:           list.printString(worldmap.map.tiles),
+        data:           list.printString(world.map.tiles),
         tile_size:      tilesize,
-        tileset:        'worldmap'
+        tileset:        'worldmap-simple'
     });
 
     marker = game.add.sprite(0, 0, 'sprites');
     layer = tilemaps.layer(mapname);
+
+    game.add.bitmapText(16, 16, 'Gamegirl', 'Worldmap', 8);
+
+    pick_island_label = unobtrusive.create({
+        game:   game,
+        sprite: 'label-pick-island'
+    });
 
     game.input.onUp.add(click, this);
 };
@@ -1197,13 +1645,15 @@ module.exports.update = function() {
 
     marker.x = cur_tile.x * tilesize;
     marker.y = cur_tile.y * tilesize;
+
+    pick_island_label.update(pointer);
 };
 
 function click() {
-    var map_type = list.get(worldmap.map.data,
+    var map_type = list.get(world.map.data,
                             cur_tile.x,
                             cur_tile.y,
-                            worldmap.map.width);
+                            world.map.width);
 
     game.input.onUp.remove(click, this);
 
@@ -1214,85 +1664,189 @@ function click() {
     });
 }
 
-},{"./../config.js":5,"./../generators/worldmap.js":9,"./../helpers/phaser/tilemaps.js":10,"./../utils/list.js":18}],16:[function(require,module,exports){
+},{"./../config.js":5,"./../generators/world.js":12,"./../helpers/phaser/tilemaps.js":13,"./../ui/components/unobtrusive_label.js":22,"./../utils/list.js":25}],20:[function(require,module,exports){
 var gridcreator     = require('./data/grid.js');
 var list            = require('./utils/list.js');
 
-var meta = {};
-
-module.exports.natural = function(grid, data_types) {
-    meta = gridcreator.create(grid.width + 1, grid.height + 1);
-    getMetaData(grid, meta);
-
-    data_types.forEach(function(type) {
-        getMetaTileIDs(grid, type);
-    });
-};
-
-module.exports.direct = function(grid, data_types) {
-    data_types.forEach(function(type) {
-        getTileIDs(grid, type);
-    });
-};
-
-// Creates ID's ranging from 0 to 15 based on a binary input
-function getTileIDs(grid, data_type) {
+module.exports.map = function(grid, data_types, tilemap) {
     list.each(grid.data, grid.width, function(tile_value, x, y, i) {
-        if (tile_value === data_type.value) {
-            var id = getID(1, 1, 1, 1);
-            var offset = data_type.tile_row_offset * 16;
-            // console.log('x:'+x+' y:'+y+' id:'+id+' off:'+(id + offset));
-            grid.tiles[i] = id + offset;
+        grid.tiles[i] = tilemap[tile_value];
+    });
+};
+
+},{"./data/grid.js":6,"./utils/list.js":25}],21:[function(require,module,exports){
+var list = require('./../../utils/list.js');
+
+var rooms = {};
+
+module.exports = {
+    identify: function(index, grid) {
+
+        var data = [];
+        var rooms_tmp = [];
+
+        list.each(grid.data, grid.width, function(tile, x, y, i) {
+            data.push(tile);
+        });
+
+        data.forEach(function(tile, i) {
+            if (tile === index && !inCache(rooms_tmp, tile)) {
+                rooms_tmp.push({});
+                crawl(data, grid.width, i, rooms_tmp[rooms_tmp.length-1]);
+            }
+        });
+
+        rooms_tmp.forEach(function(room, i) {
+            var indexes = Object.keys(room);
+            rooms[i] = [];
+            var r = rooms[i];
+
+            indexes.forEach(function(index) {
+                r.push(parseInt(index));
+            });
+        });
+    },
+
+    closeAll: function(grid) {
+        Object.keys(rooms).forEach(function(room_num) {
+            close(room_num, grid);
+        });
+    },
+
+    open: function(room_num, grid) {
+        if (!rooms[room_num]) {
+            return;
         }
 
-    });
+        var room = rooms[room_num];
+        room.forEach(function(tile) {
+            grid._[tile] = 0;
+        });
+    }
 };
 
-// Creates ID's ranging from 0 to 15 based on a binary input
-function getMetaTileIDs(grid, data_type) {
-    list.each(grid.data, grid.width, function(tile_value, x, y, i) {
-        var tl = getFilteredMetaData(x,   y,   data_type.value);
-        var tr = getFilteredMetaData(x+1, y,   data_type.value);
-        var bl = getFilteredMetaData(x,   y+1, data_type.value);
-        var br = getFilteredMetaData(x+1, y+1, data_type.value);
-
-        var id = getID(tl, tr, bl, br);
-
-        // var sig = tl+' '+tr+' '+bl+' '+br;
-        // console.log('x:'+x+' y:'+y+' ('+sig+') id:'+id);
-
-        grid.tiles[i] = id + data_type.tile_row_offset;
+function close(room_num, grid) {
+    var room = rooms[room_num];
+    room.forEach(function(tile) {
+        grid._[tile] = 1;
     });
-};
-
-function getFilteredMetaData(x, y, filter) {
-    var value = list.get(meta.data, x, y, meta.width);
-    return value === filter ? 1 : 0;
 }
 
-function getID(a, b, c, d) {
-    return (a & 1) | (b & 1) << 1 | (c & 1) << 2 | (d & 1) << 3;
-}
-
-function getMetaData(grid, meta) {
-    // Add the upper left corner
-    meta.data.push(grid.data[0]);
-
-    // Fill the first row
-    for (var i=0; i<grid.width; i++) {
-        meta.data.push(grid.data[i]);
+function inCache(cache, index) {
+    if (cache.length === 0) {
+        return false;
     }
 
-    // Fill the rest, duplication the left most column
-    list.fill(meta.data, grid.width, grid.length, function(x, y, i) {
-        if (i % grid.width === 0) {
-            meta.data.push(grid.data[i]);
-        }
-        meta.data.push(grid.data[i]);
-    });
+    for (var i=0; i<cache.length; i+=1) {
+        var group = cache[i];
+        return group[index] ? true : false;
+    }
 }
 
-},{"./data/grid.js":6,"./utils/list.js":18}],17:[function(require,module,exports){
+function crawl(data, width, i, container) {
+    var index = data[i];
+    var right = i+1;
+    var left = i-1;
+    var below = i+width;
+    var above = i-width;
+
+    data[i] = 3;
+    container[i] = true;
+
+    if (data[right] === index) {
+        crawl(data, width, right, container);
+    }
+    if (data[left] === index) {
+        crawl(data, width, left, container);
+    }
+    if (data[below] === index) {
+        crawl(data, width, below, container);
+    }
+    if (data[above] === index) {
+        crawl(data, width, above, container);
+    }
+}
+
+Object.defineProperty(module.exports, 'rooms', {
+    get: function() { return rooms; }
+});
+
+},{"./../../utils/list.js":25}],22:[function(require,module,exports){
+"use strict";
+
+// TODO:
+// - set anchor
+// - add support for bitmap text
+// - use 9grid slicing for the background. Blit everything to a bitmapdata
+
+function UnobtrusiveLabel(opts) {
+    this.opts = opts || {
+        game:   null,
+        sprite: 'N/A'
+    };
+
+    if (opts.game === null) {
+        console.log('Unobtrusive label could not be created. '+
+                    'Pass a reference to game.');
+        return;
+    }
+
+    this.label = this.opts.game.add.image(0, 0, this.opts.sprite);
+    this.bottom = this.opts.game.world.height - (this.label.height * 2);
+    this.top = this.label.height;
+
+    this.label.x = this.opts.game.world.centerX - (this.label.width / 2);
+    this.label.y = this.bottom;
+
+    this.labelAtBottom = true;
+
+    // this.tweenBottomOut = this.opts.game.add.tween(this.label);
+    // this.tweenBottomIn = this.opts.game.add.tween(this.label);
+    // this.tweenTopIn = this.opts.game.add.tween(this.label);
+    // this.tweenTopOut = this.opts.game.add.tween(this.label);
+}
+
+UnobtrusiveLabel.prototype.update = function(pointer) {
+    if (pointer.worldY > this.bottom && this.labelAtBottom) {
+        this.labelAtBottom = false;
+        this.tweenBottomOut = this.opts.game.add.tween(this.label).to({ y: this.opts.game.world.height }, 200, Phaser.Easing.Quadratic.Out, true);
+        this.tweenBottomOut.onComplete.addOnce(this.fromAbove, this);
+    }
+
+    if (pointer.worldY < (this.top * 2) && !this.labelAtBottom) {
+        this.labelAtBottom = true;
+        this.tweenTopOut = this.opts.game.add.tween(this.label).to({ y: -this.label.height }, 200, Phaser.Easing.Quadratic.Out, true);
+        this.tweenTopOut.onComplete.addOnce(this.fromBelow, this);
+    }
+};
+
+UnobtrusiveLabel.prototype.fromAbove = function() {
+    this.tweenBottomOut.onComplete.removeAll();
+    this.label.y = -this.label.height;
+    this.tweenTopIn = this.opts.game.add.tween(this.label).to({ y: this.top }, 100, Phaser.Easing.Quadratic.In, true);
+    this.tweenTopIn.onComplete.addOnce(this.topInDone, this);
+};
+
+UnobtrusiveLabel.prototype.fromBelow = function() {
+    this.tweenTopOut.onComplete.removeAll();
+    this.label.y = this.opts.game.world.height;
+    this.tweenBottomIn = this.opts.game.add.tween(this.label).to({ y: this.bottom }, 100, Phaser.Easing.Quadratic.In, true);
+    this.tweenBottomIn.onComplete.addOnce(this.bottomInDone, this);
+};
+
+UnobtrusiveLabel.prototype.topInDone = function() {
+    this.tweenTopIn.onComplete.removeAll();
+};
+
+UnobtrusiveLabel.prototype.bottomInDone = function() {
+    this.tweenBottomIn.onComplete.removeAll();
+};
+
+module.exports.create = function(opts) {
+    return new UnobtrusiveLabel(opts);
+}
+
+},{}],23:[function(require,module,exports){
 "use strict";
 
 var config  = require('./../config.js');
@@ -1357,7 +1911,48 @@ Object.defineProperty(module.exports, 'game_node', {
     get: function() { return game_node; }
 });
 
-},{"./../config.js":5,"./type.js":19}],18:[function(require,module,exports){
+},{"./../config.js":5,"./type.js":26}],24:[function(require,module,exports){
+Math.seededRandom = function(min, max) {
+    min = min || 0;
+    max = max || 1;
+
+    Math.seed = (Math.seed * 9301 + 49297) % 233280;
+    return min + (Math.seed / 233280) * (max - min);
+}
+
+Array.prototype.equals = function (array) {
+    // if the other array is a falsy value, return
+    if (!array)
+        return false;
+
+    // compare lengths - can save a lot of time
+    if (this.length != array.length)
+        return false;
+
+    for (var i = 0, l=this.length; i < l; i++) {
+        // Check if we have nested arrays
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            // recurse into the nested arrays
+            if (!this[i].equals(array[i]))
+                return false;
+        }
+        else if (this[i] != array[i]) {
+            // Warning - two different object instances will never be equal: {x:20} != {x:20}
+            return false;
+        }
+    }
+    return true;
+}
+
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+}
+
+},{}],25:[function(require,module,exports){
 module.exports.each = function(list, width, callback) {
     if (!callback) {
         console.warn('each() missing callback');
@@ -1382,19 +1977,15 @@ module.exports.set = function(arr, x, y, width, value) {
     arr[(width * y) + x] = value;
 };
 
-module.exports.fill = function(arr, width, length, callback) {
-    if (!arr) {
-        arr = [];
-    }
-
-    var x = 0;
-    var y = 0;
+module.exports.fill = function(arr, length, value) {
+    arr = arr || [];
+    value = value || 0;
 
     for (var i=0; i<length; i+=1) {
-        x = i % width !== 0 ? x + 1 : 0;
-        y = i > 0 && x === 0 ? y + 1 : y;
-        callback(x, y, i);
+        arr.push(value);
     }
+
+    return module.exports;
 };
 
 module.exports.print = function(list, width) {
@@ -1426,7 +2017,7 @@ module.exports.printString = function(list, width) {
     return str;
 }
 
-},{}],19:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 "use strict";
 
 var type = '';

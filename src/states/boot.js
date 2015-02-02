@@ -22,6 +22,7 @@ module.exports.create = function() {
     scale.setScreenSize(true);
 
     // TODO: Doesn't work in Chrome. Get's reset
+    // Apparently Chrome 41 has added pixel rendering
     game.context.imageSmoothingEnabled = false;
     game.context.mozImageSmoothingEnabled = false;
     game.context.oImageSmoothingEnabled = false;

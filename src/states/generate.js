@@ -16,7 +16,7 @@ module.exports.create = function() {
 
     tilemapper.map(world.map, map_cfg.data_types, map_cfg.tilemaps.worldmap);
 
-    this.game.state.start('Worldmap');
+    this.game.state.start(config.get('game', 'states').next());
 
     // this.game.state.start('Game', true, false, {
     //     map_type:   2,

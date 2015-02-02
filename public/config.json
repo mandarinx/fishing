@@ -7,7 +7,7 @@
         "host": "http://localhost:5000/",
         "font": "Boxy-Bold",
         "font_size": 8,
-        "boot_sequence": ["Boot", "Preloader", "Generate", "Worldmap"]
+        "states": ["Boot", "Preloader", "Boat"],
     },
     "world": {
         "width": 16,

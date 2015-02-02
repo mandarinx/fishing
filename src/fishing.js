@@ -31,6 +31,6 @@ module.exports = function() {
         game.state.add('Game',      game_state);
         game.state.add('Boat',      boat);
 
-        game.state.start('Boot');
+        game.state.start(config.get('game', 'states').next());
     });
 }

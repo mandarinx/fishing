@@ -30,5 +30,5 @@ module.exports.create = function() {
 
     game.renderer.renderSession.roundPixels = true;
 
-    game.state.start('Preloader');
+    game.state.start(config.get('game', 'states').next());
 };

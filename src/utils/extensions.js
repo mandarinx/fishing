@@ -6,6 +6,20 @@ Math.seededRandom = function(min, max) {
     return min + (Math.seed / 233280) * (max - min);
 }
 
+Array.prototype.next = function() {
+    if (typeof this.__counter === 'undefined') {
+        this.__counter = -1;
+    }
+
+    this.__counter++;
+
+    if (this.__counter < this.length) {
+        return this[this.__counter];
+    }
+
+    return null;
+}
+
 Array.prototype.equals = function (array) {
     // if the other array is a falsy value, return
     if (!array)

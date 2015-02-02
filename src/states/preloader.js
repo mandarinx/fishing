@@ -16,13 +16,6 @@ module.exports.preload = function() {
 
 module.exports.update = function() {
     if (this.game.load.hasLoaded) {
-
-        // TODO:
-        // There should be an easy way to get the next state without
-        // knowing the name of the state
-
-        // this.game.state.start('Boat');
-        this.game.state.start('Generate');
-
+        this.game.state.start(config.get('game', 'states').next());
     }
 };

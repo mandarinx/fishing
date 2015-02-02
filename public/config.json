@@ -2,12 +2,13 @@
     "game": {
         "width": 512,
         "height": 512,
-        "background_color": "#000000",
+        "background_color": "#FF0000",
         "dom_element_id": "__game__",
         "host": "http://localhost:5000/",
         "font": "Boxy-Bold",
         "font_size": 8,
         "states": ["Boot", "Preloader", "Boat"],
+        "physics_system": "ARCADE"
     },
     "world": {
         "width": 16,
@@ -63,8 +64,7 @@
             "Gamegirl":                 ["assets/fonts/game_girl_16_shadow.png", "assets/fonts/game_girl_16_shadow.xml"]
         },
         "spritesheet": {
-            "sprites":                  ["assets/sprites.png", 32, 32],
-            "sprites01":                ["assets/sprites_01.png", 16, 16]
+            "sprites":                  ["assets/sprites.png", 16, 16]
         },
         "image": {
             "tilemap":                  ["assets/tilemap.png"],

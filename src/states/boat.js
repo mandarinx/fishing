@@ -20,9 +20,14 @@ module.exports.init = function(options) {
 
 module.exports.create = function() {
     var game_config = config.get('game');
+    var physics_system = config.get('game', 'physics_system');
 
     game = this.game;
     game.stage.backgroundColor = game_config.background_color;
+    game.physics.startSystem(Phaser.Physics[physics_system]);
+
+    //  Stop the following keys from propagating up to the browser
+    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR ]);
 
     var seg = segment.get(0, 0);
 
@@ -38,19 +43,6 @@ module.exports.create = function() {
     var map = tilemaps.layer('BoatPracticing').map;
 
     boat.create(game, map.tileWidth * 16, map.tileHeight * 16);
-
-    // cursor keys
-    // add boat
-        // can be driven by cursor keys
-        // can be driven by point and click
-            // needs to know the mouse cursor position to rotate
-            // needs pathfinding
-    // set collision tiles
-
-    // keep in mind:
-    // - boat needs an update routine that knows that kind of tile it is on.
-        // Use Phaser tile callbacks? They need to be reset between each
-        // map switch.
 };
 
 module.exports.update = function() {

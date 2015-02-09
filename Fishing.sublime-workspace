@@ -4,6 +4,110 @@
 		"selected_items":
 		[
 			[
+				"st",
+				"start_index"
+			],
+			[
+				"wat",
+				"water_segments"
+			],
+			[
+				"per",
+				"pier_positions"
+			],
+			[
+				"coo",
+				"coord"
+			],
+			[
+				"to",
+				"to_y"
+			],
+			[
+				"from",
+				"from_y"
+			],
+			[
+				"path",
+				"pathfinder"
+			],
+			[
+				"pier",
+				"pier_positions"
+			],
+			[
+				"at_",
+				"at_right"
+			],
+			[
+				"tile",
+				"tile_index"
+			],
+			[
+				"key",
+				"key_space"
+			],
+			[
+				"sail",
+				"sail_is_up"
+			],
+			[
+				"sai",
+				"sail_up"
+			],
+			[
+				"sail_",
+				"sail_is_up"
+			],
+			[
+				"phys",
+				"physics_system"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"cur",
+				"cursors"
+			],
+			[
+				"bottom",
+				"bottomInDown"
+			],
+			[
+				"twee",
+				"tweenDone"
+			],
+			[
+				"tw",
+				"tweenDonw"
+			],
+			[
+				"lab",
+				"labelAtBottom"
+			],
+			[
+				"labe",
+				"labelAtBottom"
+			],
+			[
+				"po",
+				"pointerAtBottom"
+			],
+			[
+				"Uno",
+				"UnobtrusiveLabel"
+			],
+			[
+				"Un",
+				"UnobtrusiveLabel"
+			],
+			[
+				"Game",
+				"Gamegirl"
+			],
+			[
 				"roo",
 				"room_tiles"
 			],
@@ -14,10 +118,6 @@
 			[
 				"get",
 				"getDataTypeValue"
-			],
-			[
-				"tile",
-				"tile_index"
 			],
 			[
 				"ma",
@@ -46,10 +146,6 @@
 			[
 				"return",
 				"returnToWorldmap"
-			],
-			[
-				"key",
-				"key_map"
 			],
 			[
 				"width",
@@ -82,10 +178,6 @@
 			[
 				"for",
 				"forEach"
-			],
-			[
-				"con",
-				"config"
 			],
 			[
 				"time",
@@ -160,10 +252,6 @@
 				"coords"
 			],
 			[
-				"coo",
-				"coords"
-			],
-			[
 				"D",
 				"Distance	a, b"
 			],
@@ -174,10 +262,6 @@
 			[
 				"la",
 				"labelPadding"
-			],
-			[
-				"lab",
-				"labelWidth"
 			],
 			[
 				"Ran",
@@ -430,100 +514,16 @@
 			[
 				"Sc",
 				"ScriptableObject"
-			],
-			[
-				"Seriali",
-				"SerializedPropertyType"
-			],
-			[
-				"Entit",
-				"Entity"
-			],
-			[
-				"En",
-				"EntityPool"
-			],
-			[
-				"per",
-				"personalSpace"
-			],
-			[
-				"fri",
-				"friendly"
-			],
-			[
-				"hit",
-				"hitPoints"
-			],
-			[
-				"he",
-				"health"
-			],
-			[
-				"st",
-				"statsUI"
-			],
-			[
-				"pan",
-				"panelType"
-			],
-			[
-				"otio",
-				"options"
-			],
-			[
-				"way",
-				"waypoint"
-			],
-			[
-				"Navm",
-				"NavMeshHit"
-			],
-			[
-				"NavM",
-				"NavMeshHit"
-			],
-			[
-				"navM",
-				"NavMeshHit"
-			],
-			[
-				"nav",
-				"navHit"
-			],
-			[
-				"Fin",
-				"FindPointOnNavMesh"
-			],
-			[
-				"Rayc",
-				"RaycastHit"
-			],
-			[
-				"GetCom",
-				"GetComponent	type"
-			],
-			[
-				"tran",
-				"transform"
-			],
-			[
-				"State",
-				"StateID"
-			],
-			[
-				"sta",
-				"startTime"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "src/states/game.js",
+			"file": "src/states/boat.js",
 			"settings":
 			{
-				"buffer_size": 1412,
+				"buffer_size": 1496,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,80 +531,7 @@
 			"file": "src/generators/segment.js",
 			"settings":
 			{
-				"buffer_size": 4239,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/transforms/grid/rooms.js",
-			"settings":
-			{
-				"buffer_size": 2142,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/generators/cellular_automata.js",
-			"settings":
-			{
-				"buffer_size": 4134,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/tilemapper.js",
-			"settings":
-			{
-				"buffer_size": 274,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/utils/list.js",
-			"settings":
-			{
-				"buffer_size": 1407,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/states/worldmap.js",
-			"settings":
-			{
-				"buffer_size": 1630,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/helpers/phaser/tilemaps.js",
-			"settings":
-			{
-				"buffer_size": 668,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/states/generate.js",
-			"settings":
-			{
-				"buffer_size": 688,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/generators/world.js",
-			"settings":
-			{
-				"buffer_size": 1302,
-				"line_ending": "Unix",
-				"name": "var config          = require('config');"
-			}
-		},
-		{
-			"file": "src/utils/type.js",
-			"settings":
-			{
-				"buffer_size": 1655,
+				"buffer_size": 9309,
 				"line_ending": "Unix"
 			}
 		},
@@ -612,7 +539,15 @@
 			"file": "src/data/grid.js",
 			"settings":
 			{
-				"buffer_size": 2025,
+				"buffer_size": 2836,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/entities/boat.js",
+			"settings":
+			{
+				"buffer_size": 2093,
 				"line_ending": "Unix"
 			}
 		},
@@ -620,7 +555,7 @@
 			"file": "public/config.json",
 			"settings":
 			{
-				"buffer_size": 1886,
+				"buffer_size": 2398,
 				"line_ending": "Unix"
 			}
 		}
@@ -687,29 +622,50 @@
 	[
 		"/Users/mandarin/Projects/Games/Fishing/fishing",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators"
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/entities",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/ui",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/ui/components"
 	],
 	"file_history":
 	[
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/cellular_automata.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/list.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/generate.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/data/grid.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/preloader.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boot.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/fishing.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/extensions.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/package.json",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/ui/components/unobtrusive_label.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/tilemaps.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/segment.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/tilemapper.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/worldmap.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/world.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boat.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/game.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/grid/rooms.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/game_girl_16_shadow.xml",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/game_girl_8_shadow.xml",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_8_shadow.xml",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_8.xml",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_16_shadow.xml",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_16.xml",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/README.md",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/map/remap.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/island_name.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/index.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/segment.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/package.json",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/preloader.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/fishing.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/extensions.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/fishing.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/main.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/list.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/tilemapper.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/dom.js",
 		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/generators/dungeon.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/browserify.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boot.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tileset_index_range.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tile_index_lookup.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/states.js",
@@ -723,7 +679,6 @@
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tile_settings.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/index.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/pipeline.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/.yo-rc.json",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/.gitignore",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/Fishing.sublime-workspace",
@@ -802,23 +757,7 @@
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/Panel/PlayerStatsUI.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/FogOfWar.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/Panel/EnergyStationUI.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Controller.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Entities/EntitySpawnConfig.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Behaviours/ResourceDetector.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/PlantController.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/WaypointsDebugger.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/Waypoints.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Utilities/Positioner.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Core/Seed.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Core/Attributes/SegmentAttribute.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Data/Config.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Tests/Music mixer/MinMaxSliderAttribute.cs",
-		"/Users/mandarin/Projects/_experiments/generator-phaser-simple/templates/index.js",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Spawner/AreaSpawner.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Editor/WaterShaderGUI.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/Panel/SpaceStationUI.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Core/Attributes/MinMaxAttribute.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Master.cs"
+		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Controller.cs"
 	],
 	"find":
 	{
@@ -875,6 +814,45 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"start_index",
+			"s",
+			"tile_index",
+			"segment",
+			"swh",
+			"pathfinding",
+			"segment",
+			"pier_positions",
+			"v_island",
+			"nl",
+			"v_sea",
+			"n",
+			"i",
+			"island",
+			"boat",
+			"sail_up",
+			"speed",
+			"sprite",
+			"velocity",
+			"y",
+			"2",
+			"pointer",
+			"map_name",
+			"worldmap",
+			"map_type",
+			"key_map",
+			"32",
+			"tweenTopIn",
+			"tweenBottomOut",
+			"tweenIn",
+			"tweenOut",
+			"tweenDonw",
+			"tween",
+			"topY",
+			"bottomY",
+			"opts",
+			"label",
+			"game",
+			"Press_Start",
 			"list",
 			"data_types",
 			"data",
@@ -963,46 +941,7 @@
 			"_length",
 			"data",
 			"_",
-			"grid",
-			"list",
-			"S",
-			"mousePress",
-			"charTyped",
-			"d",
-			"mousePress",
-			"W",
-			"config",
-			"f",
-			"fill",
-			"fillValues",
-			"map",
-			"y",
-			"i",
-			"game_state",
-			"Perlin",
-			"game",
-			"ClearListeners(",
-			"health.ClearListeners",
-			"health.OnUpdate",
-			"UpdateDelegate",
-			"GetEnemyBehaviour",
-			"AddListeners(",
-			"inCache",
-			"temper",
-			"temperament",
-			"attackTime",
-			"temper",
-			"threatThreshold",
-			"override",
-			"bool",
-			"public",
-			"otherEB",
-			"GetEnemyBehaviour",
-			"enemy",
-			"QuitBattle(",
-			"FledFromBattle",
-			"coll",
-			"ySize"
+			"grid"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1037,29 +976,28 @@
 	"groups":
 	[
 		{
-			"selected": 12,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/states/game.js",
+					"file": "src/states/boat.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1412,
+						"buffer_size": 1496,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1137,
-								1137
+								530,
+								530
 							]
 						],
 						"settings":
 						{
-							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -1068,7 +1006,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -1077,15 +1015,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4239,
+						"buffer_size": 9309,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2681,
-								2681
+								5662,
+								5662
 							]
 						],
 						"settings":
@@ -1095,27 +1033,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 878.0,
+						"translation.y": 2328.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "src/transforms/grid/rooms.js",
+					"file": "src/data/grid.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2142,
+						"buffer_size": 2836,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2142,
-								2142
+								695,
+								718
 							]
 						],
 						"settings":
@@ -1125,250 +1063,32 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 639.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/generators/cellular_automata.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4134,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								477,
-								477
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/tilemapper.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 274,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								218,
-								218
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "src/utils/list.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1407,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								52,
-								52
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "src/states/worldmap.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1630,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								978,
-								978
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": -0.0,
-						"translation.y": 24.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "src/helpers/phaser/tilemaps.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 668,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								323,
-								323
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "src/states/generate.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 688,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								332,
-								298
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "src/generators/world.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1302,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1031,
-								1031
-							],
-							[
-								1075,
-								1075
-							]
-						],
-						"settings":
-						{
-							"auto_name": "var config          = require('config');",
-							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 90.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
-					"file": "src/utils/type.js",
+					"buffer": 3,
+					"file": "src/entities/boat.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1655,
+						"buffer_size": 2093,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								975,
+								975
 							]
 						],
 						"settings":
 						{
+							"auto_name": "",
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -1377,55 +1097,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "src/data/grid.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2025,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1673,
-								1673
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/JavaScriptNext - ES6 Syntax/Monokai Phoenix.tmTheme",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
+					"buffer": 4,
 					"file": "public/config.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1886,
+						"buffer_size": 2398,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1335,
-								1335
+								622,
+								622
 							]
 						],
 						"settings":
@@ -1436,10 +1125,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 232.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -1496,12 +1185,84 @@
 		"selected_items":
 		[
 			[
-				"typ",
-				"src/utils/type.js"
+				"gri",
+				"src/data/grid.js"
 			],
 			[
 				"list",
 				"src/utils/list.js"
+			],
+			[
+				"seg",
+				"src/generators/segment.js"
+			],
+			[
+				"prel",
+				"src/states/preloader.js"
+			],
+			[
+				"ex",
+				"src/utils/extensions.js"
+			],
+			[
+				"fish",
+				"src/fishing.js"
+			],
+			[
+				"con",
+				"src/config.js"
+			],
+			[
+				"boo",
+				"src/states/boot.js"
+			],
+			[
+				"pre",
+				"src/states/preloader.js"
+			],
+			[
+				"gene",
+				"src/states/generate.js"
+			],
+			[
+				"pac",
+				"package.json"
+			],
+			[
+				"tilem",
+				"src/helpers/phaser/tilemaps.js"
+			],
+			[
+				"segm",
+				"src/generators/segment.js"
+			],
+			[
+				"world",
+				"src/states/worldmap.js"
+			],
+			[
+				"boa",
+				"src/states/boat.js"
+			],
+			[
+				"game",
+				"src/states/game.js"
+			],
+			[
+				"tile",
+				"src/tilemapper.js"
+			],
+			[
+				"wor",
+				"src/states/worldmap.js"
+			],
+			[
+				"worl",
+				"src/states/worldmap.js"
+			],
+			[
+				"typ",
+				"src/utils/type.js"
 			],
 			[
 				"roo",
@@ -1512,20 +1273,8 @@
 				"src/generators/island_name.js"
 			],
 			[
-				"seg",
-				"src/generators/segment.js"
-			],
-			[
 				"e",
 				"src/utils/extensions.js"
-			],
-			[
-				"ex",
-				"src/utils/extensions.js"
-			],
-			[
-				"prel",
-				"src/states/preloader.js"
 			],
 			[
 				"fi",
@@ -1544,40 +1293,12 @@
 				"README.md"
 			],
 			[
-				"tile",
-				"src/helpers/phaser/tilemaps.js"
-			],
-			[
-				"fish",
-				"src/fishing.js"
-			],
-			[
-				"boo",
-				"src/states/boot.js"
-			],
-			[
-				"gri",
-				"src/data/grid.js"
-			],
-			[
 				".js",
 				"src/transforms/config/tile_index_lookup.js"
 			],
 			[
 				"bo",
 				"src/states/boot.js"
-			],
-			[
-				"con",
-				"src/config.js"
-			],
-			[
-				"gene",
-				"src/states/generate.js"
-			],
-			[
-				"pre",
-				"src/states/preloader.js"
 			],
 			[
 				"scrip",
@@ -1974,38 +1695,6 @@
 			[
 				"ania",
 				"Behaviours/AI/AnimalAI.cs"
-			],
-			[
-				"cre",
-				"Editor/ScriptableObjectCreator.cs"
-			],
-			[
-				"anicon",
-				"Controllers/AnimalController.cs"
-			],
-			[
-				"pla",
-				"Playa/Player.cs"
-			],
-			[
-				"fight",
-				"UI/Panel/FightUI.cs"
-			],
-			[
-				"cha",
-				"Controllers/CharacterManager.cs"
-			],
-			[
-				"uip",
-				"UI/UIPanel.cs"
-			],
-			[
-				"dayn",
-				"Behaviours/DayNight.cs"
-			],
-			[
-				"panel",
-				"UI/PanelType.cs"
 			]
 		],
 		"width": 0.0
@@ -2038,7 +1727,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": false,
-	"side_bar_width": 150.0,
+	"side_bar_width": 227.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

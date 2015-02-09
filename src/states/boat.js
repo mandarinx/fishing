@@ -13,9 +13,10 @@ var game;
 // accepts a key mapping object from config
 var cursors;
 var pointer;
+var layer;
 
 module.exports.init = function(options) {
-    segment.generate(0, 0, 1);
+    segment.generate(0, 0, 2);
 };
 
 module.exports.create = function() {
@@ -29,20 +30,22 @@ module.exports.create = function() {
     //  Stop the following keys from propagating up to the browser
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR ]);
 
-    var seg = segment.get(0, 0);
+    var map_data = segment.get(0, 0);
 
     tilemaps.loadTilemap(game, {
         map_name:   'BoatPracticing',
-        data:       list.printString(seg.tiles),
+        data:       list.printString(map_data.tiles),
         tileset:    'tilemap-simple'
     });
 
+    layer = tilemaps.layer('BoatPracticing');
     cursors = game.input.keyboard.createCursorKeys();
     pointer = game.input.activePointer;
 
-    var map = tilemaps.layer('BoatPracticing').map;
+    boat.create(game,
+                layer.map.tileWidth * map_data.meta.boat_pos.x,
+                layer.map.tileHeight * map_data.meta.boat_pos.y);
 
-    boat.create(game, map.tileWidth * 16, map.tileHeight * 16);
 };
 
 module.exports.update = function() {

@@ -8,6 +8,7 @@ var automata        = require('generators/cellular_automata');
 var island_name     = require('generators/island_name');
 // var remapper        = require('transforms/grid/remap');
 var rooms           = require('transforms/grid/rooms');
+var pier            = require('transforms/grid/pier');
 var config          = require('config');
 var cu              = require('config_utils');
 var tilemapper      = require('tilemapper');
@@ -29,8 +30,13 @@ module.exports.generate = function(x, y, type) {
 
     var segment = world[x][y] = grid.create(cfg.width, cfg.height, 0);
     segment.seed = Math.round(Math.random() * 10000);
+    // segment.seed = 5388;
+    log(segment.seed);
 
     // info(data_types, type, x, y, segment.seed);
+
+    // TODO: Define the generators for each type as a recipe, and store
+    // each recipe in an object with type as index
 
     if (type === 0) {
         // TODO: Generate sea name
@@ -84,6 +90,7 @@ function generateIsland(segment, opts) {
 
     rooms.identify(cu.getDataTypeValue(data_types, 'Island'), segment);
 
+    // Paint each room as sand
     Object.keys(rooms.rooms).forEach(function(index) {
         var room_tiles = rooms.rooms[index];
         if (room_tiles.length < 10) {
@@ -92,6 +99,20 @@ function generateIsland(segment, opts) {
             });
         }
     });
+
+    // Find the biggest island
+    var l = 0;
+    var i = -1;
+    Object.keys(rooms.rooms).forEach(function(index) {
+        var r = rooms.rooms[index];
+        if (r.length > l) {
+            l = r.length;
+            i = index;
+        }
+    });
+
+    pier.place(segment, rooms.rooms[i]);
+
 }
 
 function generateFishingSea(segment) {

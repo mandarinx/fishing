@@ -9,6 +9,7 @@ var island_name     = require('generators/island_name');
 // var remapper        = require('transforms/grid/remap');
 var rooms           = require('transforms/grid/rooms');
 var config          = require('config');
+var cu              = require('config_utils');
 var tilemapper      = require('tilemapper');
 
 var world           = {};
@@ -48,8 +49,8 @@ module.exports.generate = function(x, y, type) {
             seed:       segment.seed,
             smoothness: cfg.smoothness,
             padding:    cfg.padding,
-            value_a:    getDataTypeValue('Shallow sea'),
-            value_b:    getDataTypeValue('Island')
+            value_a:    cu.getDataTypeValue(data_types, 'Shallow sea'),
+            value_b:    cu.getDataTypeValue(data_types, 'Island')
         });
     }
 
@@ -66,18 +67,6 @@ module.exports.get = function(x, y) {
     return world[x][y];
 };
 
-// put this somewhere else. In config? Maybe a map helper, or something.
-function getDataTypeValue(name) {
-    var dt;
-    for (var i=0; i<data_types.length; i++) {
-        dt = data_types[i];
-        if (dt.name === name) {
-            return dt.value;
-        }
-    }
-    return null;
-}
-
 function generateIsland(segment, opts) {
 
     // TODO: Make automata a Stream
@@ -93,13 +82,13 @@ function generateIsland(segment, opts) {
     //     1: 2
     // });
 
-    rooms.identify(getDataTypeValue('Island'), segment);
+    rooms.identify(cu.getDataTypeValue(data_types, 'Island'), segment);
 
     Object.keys(rooms.rooms).forEach(function(index) {
         var room_tiles = rooms.rooms[index];
         if (room_tiles.length < 10) {
             room_tiles.forEach(function(tile_index) {
-                segment.data[tile_index] = getDataTypeValue('Sand');
+                segment.data[tile_index] = cu.getDataTypeValue(data_types, 'Sand');
             });
         }
     });
@@ -111,16 +100,16 @@ function generateFishingSea(segment) {
             (x > segment.width - 6) ||
             (y < 5) ||
             (y > segment.height - 6)) {
-            segment.data[i] = getDataTypeValue('Shallow sea');
+            segment.data[i] = cu.getDataTypeValue(data_types, 'Shallow sea');
         } else {
-            segment.data[i] = getDataTypeValue('Deep sea');
+            segment.data[i] = cu.getDataTypeValue(data_types, 'Deep sea');
         }
     });
 }
 
 function generateShallowSea(segment) {
     list.each(segment.data, segment.width, function(tile, x, y, i) {
-        segment.data[i] = getDataTypeValue('Shallow sea');
+        segment.data[i] = cu.getDataTypeValue(data_types, 'Shallow sea');
     });
 }
 

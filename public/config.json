@@ -10,6 +10,11 @@
         "states": ["Boot", "Preloader", "Boat"],
         "physics_system": "ARCADE"
     },
+    "entities": {
+        "player": {
+            "speed": 1
+        }
+    },
     "world": {
         "width": 16,
         "height": 16,
@@ -24,6 +29,10 @@
     },
     "map": {
         "data_types": [{
+            "name": "Pier",
+            "value": 4,
+            "tile_row_offset": 0
+        },{
             "name": "Sand",
             "value": 3,
             "tile_row_offset": 0
@@ -53,7 +62,8 @@
                 "0": 2,
                 "1": 1,
                 "2": 3,
-                "3": 4
+                "3": 4,
+                "4": 5
             }
         }
     },

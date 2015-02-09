@@ -23,30 +23,41 @@ var sail_down = 2;
 var sail_is_up = false;
 // var key_space;
 
-module.exports.create = function(_game, x, y) {
-    game = _game;
-
+module.exports.create = function(g, x, y) {
+    game = g;
     boat = game.add.sprite();
 
-    hull = boat.addChild(game.make.sprite(x, y, 'sprites'));
+    hull = boat.addChild(game.make.sprite(0, 0, 'sprites'));
     hull.anchor.setTo(0.5, 0.5);
     hull.frame = 0;
 
-    sails = boat.addChild(game.make.sprite(x, y, 'sprites'));
+    sails = boat.addChild(game.make.sprite(0, 0, 'sprites'));
     sails.anchor.setTo(0.5, 1);
     sails.x += 1;
     setSail();
 
+    // Get these values from somewhere. They are the half of the sprite's
+    // dimensions
+    x += 8;
+    y += 8;
+    boat.x = x;
+    boat.y = y;
+    boat.anchor.setTo(0.5, 0.5);
+
     var physics_system = config.get('game', 'physics_system');
     game.physics.enable(boat, Phaser.Physics[physics_system]);
     game.physics.enable(hull, Phaser.Physics[physics_system]);
+
+    boat.body.setSize(12, 12, 0, 0);
 
     // Keep for action button, like fishing
     // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     // key_space.onUp.add(onSpace);
 };
 
-module.exports.update = function(cursors, pointer) {
+module.exports.update = function(cursors, pointer, layer) {
+    game.physics.arcade.collide(boat, layer);
+
     boat.body.velocity.x *= 0.9;
     boat.body.velocity.y *= 0.9;
     hull.body.angularVelocity *= 0.9;
@@ -73,3 +84,8 @@ function setSail() {
 
 // function onSpace() {
 // }
+
+Object.defineProperty(module.exports, 'sprite', {
+    get: function() { return boat; },
+    enumerable: true
+});

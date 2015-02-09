@@ -4,6 +4,7 @@
   "description": "A Phaser game",
   "main": "./src/main.js",
   "dependencies": {
+    "pathfinding": "^0.4.16",
     "phaser": "2.2.2",
     "qwest": "1.5.4"
   },

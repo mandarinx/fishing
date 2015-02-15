@@ -77,6 +77,8 @@ function generateIsland(segment, opts) {
 
     // TODO: Make automata a Stream
     // https://github.com/winterbe/streamjs
+    // or use async
+    // https://www.npmjs.com/package/async
     automata.generate(segment, opts);
 
     // Remap 0's to 1's and 1's to 2's.

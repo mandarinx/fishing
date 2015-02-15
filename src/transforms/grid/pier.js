@@ -83,6 +83,7 @@ module.exports.place = function(segment, area) {
             if (end[0] === 0 && end[1] === 0) {
                 var pier_pos = (pos.y * segment.width) + pos.x;
                 segment.data[pier_pos] = type.pier;
+                segment.meta.pier_pos = {x: pos.x, y: pos.y};
                 segment.meta.boat_pos = getBoatPos(segment, pier_pos);
                 found = true;
             }

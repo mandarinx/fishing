@@ -81,7 +81,8 @@
             "tilemap-simple":           ["assets/tilemap-simple.png"],
             "worldmap-simple":          ["assets/worldmap-simple.png"],
             "indexdebug":               ["assets/index-debug.png"],
-            "label-pick-island":        ["assets/label-pick-island.png"]
+            "label-pick-island":        ["assets/label-pick-island.png"],
+            "label":                    ["assets/label.png"]
         }
     }
 }

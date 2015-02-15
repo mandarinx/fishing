@@ -5,9 +5,12 @@ module.exports = new Phaser.State();
 var config          = require('config');
 var list            = require('utils/list');
 var tilemaps        = require('helpers/phaser/tilemaps');
+var physics         = require('helpers/phaser/physics');
 var segment         = require('generators/segment');
 var boat            = require('entities/boat');
 var player          = require('entities/player');
+var pier            = require('entities/pier');
+var ui              = require('ui/ui_manager');
 
 var game;
 // TODO: Bundle cursors and pointer in an input manager. The input manager
@@ -23,11 +26,11 @@ module.exports.init = function(options) {
 
 module.exports.create = function() {
     var game_config = config.get('game');
-    var physics_system = config.get('game', 'physics_system');
 
     game = this.game;
     game.stage.backgroundColor = game_config.background_color;
-    game.physics.startSystem(Phaser.Physics[physics_system]);
+
+    physics.init(game);
 
     // Stop the following keys from propagating up to the browser
     game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT,
@@ -51,13 +54,19 @@ module.exports.create = function() {
     cursors = game.input.keyboard.createCursorKeys();
     pointer = game.input.activePointer;
 
+    pier.create(layer, map_data);
+
+    // TODO: Merge boat and player
     boat.create(game,
                 layer.map.tileWidth * map_data.meta.boat_pos.x,
                 layer.map.tileHeight * map_data.meta.boat_pos.y);
 
-    player.create(game,
-                  layer.map.tileWidth * 16,
-                  layer.map.tileHeight * 16);
+    // player.create(game,
+    //               layer.map.tileWidth * 16,
+    //               layer.map.tileHeight * 16);
+
+    ui.init(game);
+
 };
 
 module.exports.update = function() {
@@ -65,7 +74,7 @@ module.exports.update = function() {
     coord.y = layer.getTileY(pointer.worldY);
 
     boat.update(cursors, pointer, layer);
-    player.update(cursors, pointer, layer);
+    // player.update(cursors, pointer, layer);
 };
 
 module.exports.render = function() {

@@ -24,7 +24,7 @@ function _boot() {
     }
 };
 
-},{"./fishing.js":34,"./utils/extensions.js":51}],2:[function(require,module,exports){
+},{"./fishing.js":35,"./utils/extensions.js":56}],2:[function(require,module,exports){
 module.exports = require('./src/PathFinding');
 
 },{"./src/PathFinding":5}],3:[function(require,module,exports){
@@ -3366,7 +3366,7 @@ function crawl(args) {
     return obj;
 }
 
-},{"./utils/type.js":53,"qwest":28}],30:[function(require,module,exports){
+},{"./utils/type.js":58,"qwest":28}],30:[function(require,module,exports){
 "use strict";
 
 module.exports.getDataTypeValue = function(data_types, name) {
@@ -3494,7 +3494,7 @@ module.exports.create = function(width, height, value) {
     return new Grid(width, height, value);
 }
 
-},{"./../utils/list.js":52,"./../utils/type.js":53,"pathfinding":2}],32:[function(require,module,exports){
+},{"./../utils/list.js":57,"./../utils/type.js":58,"pathfinding":2}],32:[function(require,module,exports){
 "use strict";
 
 // NOTES
@@ -3507,10 +3507,11 @@ module.exports.create = function(width, height, value) {
 //   Use Phaser tile callbacks? They need to be reset between each
 //   map switch.
 
-var config = require('./../config.js');
+var config          = require('./../config.js');
+var physics         = require('./../helpers/phaser/physics.js');
 
 var speed_rotate = 90;
-var speed_forward = 60;
+var speed_forward = 40;
 var game;
 var boat;
 var hull;
@@ -3547,6 +3548,7 @@ module.exports.create = function(g, x, y) {
 
     boat.body.setSize(12, 12, 0, 0);
 
+    physics.setPlayer(this);
     // Keep for action button, like fishing
     // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     // key_space.onUp.add(onSpace);
@@ -3587,7 +3589,31 @@ Object.defineProperty(module.exports, 'sprite', {
     enumerable: true
 });
 
-},{"./../config.js":29}],33:[function(require,module,exports){
+},{"./../config.js":29,"./../helpers/phaser/physics.js":40}],33:[function(require,module,exports){
+"use strict";
+
+var physics         = require('./../helpers/phaser/physics.js');
+var ui              = require('./../ui/ui_manager.js');
+
+var bounds;
+
+module.exports.create = function(layer, map_data) {
+    var tw = layer.map.tileWidth;
+    var th = layer.map.tileHeight;
+    var x = (tw * map_data.meta.pier_pos.x) - tw;
+    var y = (th * map_data.meta.pier_pos.y) - th;
+
+    bounds = new Phaser.Rectangle(x, y, tw * 3, th * 3);
+    physics.addOverlap(bounds, this.overlap);
+}
+
+module.exports.overlap = function(player) {
+    // show label in UI
+    // set some state variable on player
+    ui.action_label.text = 'Dock [Space]';
+}
+
+},{"./../helpers/phaser/physics.js":40,"./../ui/ui_manager.js":54}],34:[function(require,module,exports){
 "use strict";
 
 // NOTE:
@@ -3648,7 +3674,7 @@ Object.defineProperty(module.exports, 'sprite', {
     enumerable: true
 });
 
-},{"./../config.js":29}],34:[function(require,module,exports){
+},{"./../config.js":29}],35:[function(require,module,exports){
 "use strict";
 
 var config      = require('./config.js');
@@ -3686,7 +3712,7 @@ module.exports = function() {
     });
 }
 
-},{"./config.js":29,"./states/boat.js":40,"./states/boot.js":41,"./states/game.js":42,"./states/generate.js":43,"./states/preloader.js":44,"./states/worldmap.js":45,"./utils/dom.js":50}],35:[function(require,module,exports){
+},{"./config.js":29,"./states/boat.js":43,"./states/boot.js":44,"./states/game.js":45,"./states/generate.js":46,"./states/preloader.js":47,"./states/worldmap.js":48,"./utils/dom.js":55}],36:[function(require,module,exports){
 var list        = require('./../utils/list.js');
 // var inverter    = require('transforms/grid/inverter');
 // var rooms       = require('transforms/grid/rooms');
@@ -3839,7 +3865,7 @@ function get(grid, x, y) {
 //     });
 // }
 
-},{"./../utils/list.js":52}],36:[function(require,module,exports){
+},{"./../utils/list.js":57}],37:[function(require,module,exports){
 
 var endings = ['os', 'ia'];
 var beginnings = ['Nax', 'Lesb', 'K', 'Icar', 'Tin', 'Skyr'];
@@ -3854,7 +3880,7 @@ function rnd(list) {
     return list[Math.round(Math.random() * (list.length-1))];
 }
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 var list            = require('./../utils/list.js');
@@ -3934,6 +3960,8 @@ function generateIsland(segment, opts) {
 
     // TODO: Make automata a Stream
     // https://github.com/winterbe/streamjs
+    // or use async
+    // https://www.npmjs.com/package/async
     automata.generate(segment, opts);
 
     // Remap 0's to 1's and 1's to 2's.
@@ -4028,7 +4056,7 @@ function info(data_types, type, x, y, seed) {
     log('segment type:'+n+' ('+type+') x:'+x+' y:'+y+' seed:'+seed);
 }
 
-},{"./../config.js":29,"./../config_utils.js":30,"./../data/grid.js":31,"./../tilemapper.js":46,"./../transforms/grid/pier.js":47,"./../transforms/grid/rooms.js":48,"./../utils/list.js":52,"./../utils/type.js":53,"./cellular_automata.js":35,"./island_name.js":36}],38:[function(require,module,exports){
+},{"./../config.js":29,"./../config_utils.js":30,"./../data/grid.js":31,"./../tilemapper.js":49,"./../transforms/grid/pier.js":50,"./../transforms/grid/rooms.js":51,"./../utils/list.js":57,"./../utils/type.js":58,"./cellular_automata.js":36,"./island_name.js":37}],39:[function(require,module,exports){
 var config          = require('./../config.js');
 var PerlinGenerator = require('proc-noise');
 var grid            = require('./../data/grid.js');
@@ -4080,7 +4108,51 @@ Object.defineProperty(module.exports, 'map', {
     get: function() { return map; }
 });
 
-},{"./../config.js":29,"./../data/grid.js":31,"./../utils/list.js":52,"./../utils/type.js":53,"proc-noise":26}],39:[function(require,module,exports){
+},{"./../config.js":29,"./../data/grid.js":31,"./../utils/list.js":57,"./../utils/type.js":58,"proc-noise":26}],40:[function(require,module,exports){
+"use strict";
+
+var config          = require('./../../config.js');
+var update          = require('./update.js');
+
+var overlaps = [];
+var player_bounds;
+var player;
+
+module.exports.init = function(game) {
+    var physics_system = config.get('game', 'physics_system');
+    game.physics.startSystem(Phaser.Physics[physics_system]);
+    update.register(this);
+}
+
+// enableForSprite(sprite)
+    // enable physics for the given sprite, using the defined physics system
+
+// all sprites collide with player by default
+
+// addTrigger(sprite, options, callback)
+    // add physics to sprite if not added
+    // scale up the hit area using options
+    // add sprite and callback to an object in a list of triggers
+
+module.exports.setPlayer = function(p) {
+    player = p;
+}
+
+module.exports.addOverlap = function(bounds, callback) {
+    overlaps.push({bounds: bounds, callback: callback});
+}
+
+module.exports.update = function() {
+    player_bounds = player.sprite.getBounds();
+
+    overlaps.forEach(function(overlap) {
+        if (Phaser.Rectangle.intersects(player_bounds, overlap.bounds)) {
+            overlap.callback(player);
+        }
+    });
+}
+
+},{"./../../config.js":29,"./update.js":42}],41:[function(require,module,exports){
 "use strict";
 
 var tilemaps = {};
@@ -4105,7 +4177,47 @@ module.exports.layer = function(name) {
     return tilemap ? tilemap.layer : null;
 }
 
-},{}],40:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
+"use strict";
+
+// Use this module to hook up an update function to Phaser's update loop
+
+// TODO: Figure out a way to get rid of the init function so the module
+// can initialize itself
+
+var updates = [];
+var inited = false;
+
+module.exports = {
+    init: function() {
+        var game = require('./../../states/boot.js').game;
+        game.world.children.push(this);
+        inited = true;
+    },
+
+    register: function(entity) {
+        if (!inited) {
+            this.init();
+        }
+
+        updates.push(entity);
+    },
+
+    update: function() {
+        for (var i=0, j=updates.length; i<j; i++) {
+            updates[i].update();
+        }
+    },
+
+    // When adding a non-Phaser object to Phaser's update loop, the object
+    // needs these functions in order not to throw errors.
+    preUpdate: function() {},
+    postUpdate: function() {},
+    updateTransform: function() {},
+    _renderCanvas: function() {},
+};
+
+},{"./../../states/boot.js":44}],43:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -4113,9 +4225,12 @@ module.exports = new Phaser.State();
 var config          = require('./../config.js');
 var list            = require('./../utils/list.js');
 var tilemaps        = require('./../helpers/phaser/tilemaps.js');
+var physics         = require('./../helpers/phaser/physics.js');
 var segment         = require('./../generators/segment.js');
 var boat            = require('./../entities/boat.js');
 var player          = require('./../entities/player.js');
+var pier            = require('./../entities/pier.js');
+var ui              = require('./../ui/ui_manager.js');
 
 var game;
 // TODO: Bundle cursors and pointer in an input manager. The input manager
@@ -4131,11 +4246,11 @@ module.exports.init = function(options) {
 
 module.exports.create = function() {
     var game_config = config.get('game');
-    var physics_system = config.get('game', 'physics_system');
 
     game = this.game;
     game.stage.backgroundColor = game_config.background_color;
-    game.physics.startSystem(Phaser.Physics[physics_system]);
+
+    physics.init(game);
 
     // Stop the following keys from propagating up to the browser
     game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT,
@@ -4159,13 +4274,19 @@ module.exports.create = function() {
     cursors = game.input.keyboard.createCursorKeys();
     pointer = game.input.activePointer;
 
+    pier.create(layer, map_data);
+
+    // TODO: Merge boat and player
     boat.create(game,
                 layer.map.tileWidth * map_data.meta.boat_pos.x,
                 layer.map.tileHeight * map_data.meta.boat_pos.y);
 
-    player.create(game,
-                  layer.map.tileWidth * 16,
-                  layer.map.tileHeight * 16);
+    // player.create(game,
+    //               layer.map.tileWidth * 16,
+    //               layer.map.tileHeight * 16);
+
+    ui.init(game);
+
 };
 
 module.exports.update = function() {
@@ -4173,7 +4294,7 @@ module.exports.update = function() {
     coord.y = layer.getTileY(pointer.worldY);
 
     boat.update(cursors, pointer, layer);
-    player.update(cursors, pointer, layer);
+    // player.update(cursors, pointer, layer);
 };
 
 module.exports.render = function() {
@@ -4181,7 +4302,7 @@ module.exports.render = function() {
     // game.debug.body(boat.sprite);
 };
 
-},{"./../config.js":29,"./../entities/boat.js":32,"./../entities/player.js":33,"./../generators/segment.js":37,"./../helpers/phaser/tilemaps.js":39,"./../utils/list.js":52}],41:[function(require,module,exports){
+},{"./../config.js":29,"./../entities/boat.js":32,"./../entities/pier.js":33,"./../entities/player.js":34,"./../generators/segment.js":38,"./../helpers/phaser/physics.js":40,"./../helpers/phaser/tilemaps.js":41,"./../ui/ui_manager.js":54,"./../utils/list.js":57}],44:[function(require,module,exports){
 "use strict";
 
 var config = require('./../config.js');
@@ -4218,7 +4339,7 @@ module.exports.create = function() {
     game.state.start(config.get('game', 'states').next());
 };
 
-},{"./../config.js":29}],42:[function(require,module,exports){
+},{"./../config.js":29}],45:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -4273,7 +4394,7 @@ function returnToWorldmap() {
     game.state.start('Worldmap');
 }
 
-},{"./../config.js":29,"./../generators/segment.js":37,"./../helpers/phaser/tilemaps.js":39,"./../utils/list.js":52}],43:[function(require,module,exports){
+},{"./../config.js":29,"./../generators/segment.js":38,"./../helpers/phaser/tilemaps.js":41,"./../utils/list.js":57}],46:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -4302,7 +4423,7 @@ module.exports.create = function() {
 
 };
 
-},{"./../config.js":29,"./../generators/world.js":38,"./../tilemapper.js":46}],44:[function(require,module,exports){
+},{"./../config.js":29,"./../generators/world.js":39,"./../tilemapper.js":49}],47:[function(require,module,exports){
 "use strict";
 
 var config = require('./../config.js');
@@ -4325,7 +4446,7 @@ module.exports.update = function() {
     }
 };
 
-},{"./../config.js":29}],45:[function(require,module,exports){
+},{"./../config.js":29}],48:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -4398,7 +4519,7 @@ function click() {
     });
 }
 
-},{"./../config.js":29,"./../generators/world.js":38,"./../helpers/phaser/tilemaps.js":39,"./../ui/components/unobtrusive_label.js":49,"./../utils/list.js":52}],46:[function(require,module,exports){
+},{"./../config.js":29,"./../generators/world.js":39,"./../helpers/phaser/tilemaps.js":41,"./../ui/components/unobtrusive_label.js":53,"./../utils/list.js":57}],49:[function(require,module,exports){
 var gridcreator     = require('./data/grid.js');
 var list            = require('./utils/list.js');
 
@@ -4408,7 +4529,7 @@ module.exports.map = function(grid, data_types, tilemap) {
     });
 };
 
-},{"./data/grid.js":31,"./utils/list.js":52}],47:[function(require,module,exports){
+},{"./data/grid.js":31,"./utils/list.js":57}],50:[function(require,module,exports){
 "use strict";
 
 var config          = require('./../../config.js');
@@ -4494,6 +4615,7 @@ module.exports.place = function(segment, area) {
             if (end[0] === 0 && end[1] === 0) {
                 var pier_pos = (pos.y * segment.width) + pos.x;
                 segment.data[pier_pos] = type.pier;
+                segment.meta.pier_pos = {x: pos.x, y: pos.y};
                 segment.meta.boat_pos = getBoatPos(segment, pier_pos);
                 found = true;
             }
@@ -4551,7 +4673,7 @@ function coordForIndex(index, w) {
     };
 }
 
-},{"./../../config.js":29,"./../../config_utils.js":30}],48:[function(require,module,exports){
+},{"./../../config.js":29,"./../../config_utils.js":30}],51:[function(require,module,exports){
 var list = require('./../../utils/list.js');
 
 var rooms = {};
@@ -4648,7 +4770,45 @@ Object.defineProperty(module.exports, 'rooms', {
     get: function() { return rooms; }
 });
 
-},{"./../../utils/list.js":52}],49:[function(require,module,exports){
+},{"./../../utils/list.js":57}],52:[function(require,module,exports){
+"use strict";
+
+// function Label(_game, _x, _y, _width, _height) {
+//     this.game = _game;
+//     this.x = _x;
+//     this.y = _y;
+//     this.width = _width;
+//     this.height = _height;
+//     // this.caption = null;
+
+//     this.label = this.game.add.bitmapText(this.x, this.y,
+//                                          'Gamegirl', this.caption, 16);
+// }
+
+// Label.prototype = {
+//     show: function(text) {
+//         this.label.text = text;
+//         this.label.visible = true;
+//     },
+
+//     render: function() {
+//         if (!this.label.visible) {
+//             return;
+//         }
+//         this.label.visible = false;
+//     }
+
+// };
+
+
+module.exports.create = function(game, x, y, width, height) {
+    // TODO: replace font and size with settings from config
+    var label = game.add.bitmapText(x, y, 'Gamegirl', 'a', 16);
+    // label.visible = false;
+    return label;
+}
+
+},{}],53:[function(require,module,exports){
 "use strict";
 
 // TODO:
@@ -4723,7 +4883,49 @@ module.exports.create = function(opts) {
     return new UnobtrusiveLabel(opts);
 }
 
-},{}],50:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
+"use strict";
+
+// module.exports = new Phaser.Group();
+
+// TODO: UI manager should have a very high z index in order to be rendered
+// on top of everything else. The manager must therefore be an object
+// that gets a z index (a sprite?), and the state needs to run sort() on world.
+
+// UI manager should manage ui panels. A panel is a self contained set of
+// components that is attached to a game state. It has properties and functions
+// for transitioning in and out, hooking up to the update loop and other events
+// by itself. Panels should transition in an out when state changes.
+
+var label           = require('./components/label.js');
+
+var action_label;
+
+module.exports.init = function(game) {
+    var group = game.add.group();
+    group.update = this.update;
+
+    // var image = game.cache.getImage('label');
+    // log(image);
+
+    // action_label = nine_slice_scale.create(game, 'label', {
+    //     top: 0, bottom: 22, left: 28, right: 28
+    // });
+
+    action_label = label.create(game, 16, 16);
+}
+
+module.exports.update = function() {
+
+    // This is not the way to do it. The label should handle this itself.
+    action_label.text = '';
+};
+
+Object.defineProperty(module.exports, 'action_label', {
+    get: function() { return action_label; }
+});
+
+},{"./components/label.js":52}],55:[function(require,module,exports){
 "use strict";
 
 var config  = require('./../config.js');
@@ -4788,7 +4990,7 @@ Object.defineProperty(module.exports, 'game_node', {
     get: function() { return game_node; }
 });
 
-},{"./../config.js":29,"./type.js":53}],51:[function(require,module,exports){
+},{"./../config.js":29,"./type.js":58}],56:[function(require,module,exports){
 Math.seededRandom = function(min, max) {
     min = min || 0;
     max = max || 1;
@@ -4843,7 +5045,7 @@ Object.size = function(obj) {
     return size;
 }
 
-},{}],52:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports.each = function(list, width, callback) {
     if (!callback) {
         console.warn('each() missing callback');
@@ -4908,7 +5110,7 @@ module.exports.printString = function(list, width) {
     return str;
 }
 
-},{}],53:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 "use strict";
 
 var type = '';

@@ -10,10 +10,11 @@
 //   Use Phaser tile callbacks? They need to be reset between each
 //   map switch.
 
-var config = require('config');
+var config          = require('config');
+var physics         = require('helpers/phaser/physics');
 
 var speed_rotate = 90;
-var speed_forward = 60;
+var speed_forward = 40;
 var game;
 var boat;
 var hull;
@@ -50,6 +51,7 @@ module.exports.create = function(g, x, y) {
 
     boat.body.setSize(12, 12, 0, 0);
 
+    physics.setPlayer(this);
     // Keep for action button, like fishing
     // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     // key_space.onUp.add(onSpace);

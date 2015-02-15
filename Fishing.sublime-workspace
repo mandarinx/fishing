@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"player",
+				"player_cfg"
+			],
+			[
+				"pier",
+				"pier_pos"
+			],
+			[
+				"map",
+				"map_data"
+			],
+			[
 				"st",
 				"start_index"
 			],
@@ -30,10 +42,6 @@
 			[
 				"path",
 				"pathfinder"
-			],
-			[
-				"pier",
-				"pier_positions"
 			],
 			[
 				"at_",
@@ -158,10 +166,6 @@
 			[
 				"ex",
 				"exists"
-			],
-			[
-				"map",
-				"map_type"
 			],
 			[
 				"pr",
@@ -510,10 +514,6 @@
 			[
 				"Seri",
 				"SerializedProperty"
-			],
-			[
-				"Sc",
-				"ScriptableObject"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "src/states/boat.js",
 			"settings":
 			{
-				"buffer_size": 1496,
+				"buffer_size": 2296,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,7 +531,24 @@
 			"file": "src/generators/segment.js",
 			"settings":
 			{
-				"buffer_size": 9309,
+				"buffer_size": 4692,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/transforms/grid/pier.js",
+			"settings":
+			{
+				"buffer_size": 4405,
+				"line_ending": "Unix",
+				"name": "var config          = require('config');"
+			}
+		},
+		{
+			"file": "src/config_utils.js",
+			"settings":
+			{
+				"buffer_size": 260,
 				"line_ending": "Unix"
 			}
 		},
@@ -539,7 +556,7 @@
 			"file": "src/data/grid.js",
 			"settings":
 			{
-				"buffer_size": 2836,
+				"buffer_size": 2878,
 				"line_ending": "Unix"
 			}
 		},
@@ -547,7 +564,15 @@
 			"file": "src/entities/boat.js",
 			"settings":
 			{
-				"buffer_size": 2093,
+				"buffer_size": 2472,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/entities/player.js",
+			"settings":
+			{
+				"buffer_size": 1795,
 				"line_ending": "Unix"
 			}
 		},
@@ -555,7 +580,7 @@
 			"file": "public/config.json",
 			"settings":
 			{
-				"buffer_size": 2398,
+				"buffer_size": 2476,
 				"line_ending": "Unix"
 			}
 		}
@@ -630,6 +655,7 @@
 	],
 	"file_history":
 	[
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/worldmap.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/cellular_automata.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/list.js",
@@ -645,7 +671,6 @@
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/tilemaps.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/segment.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/tilemapper.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/worldmap.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/world.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boat.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/game.js",
@@ -814,6 +839,30 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"4",
+			"boat",
+			"hull",
+			"_game",
+			"x",
+			"get {",
+			"tile_index",
+			"seg",
+			"pickRandomPosition",
+			"ni",
+			"ns",
+			"at_left",
+			"at_below",
+			"at_above",
+			"v_sea",
+			"v_island",
+			"island",
+			"getDataTypeValue",
+			"pointer",
+			"map",
+			"layer",
+			"cur_tile",
+			"pointer",
+			"pos",
 			"start_index",
 			"s",
 			"tile_index",
@@ -917,31 +966,7 @@
 			"list",
 			"getMetaCoord",
 			"str",
-			"gettersetter",
-			"getter",
-			"per",
-			"0001",
-			"meta",
-			"size",
-			"list",
-			"data_grid",
-			"map",
-			"meta_data",
-			"width",
-			"grid",
-			"map",
-			"data",
-			"value",
-			"upper",
-			"lower",
-			"config",
-			"data_value",
-			"size",
-			"length",
-			"_length",
-			"data",
-			"_",
-			"grid"
+			"gettersetter"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -985,15 +1010,196 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1496,
+						"buffer_size": 2296,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								530,
-								530
+								2106,
+								2106
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 249.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/generators/segment.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4692,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2347,
+								2347
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 684.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/transforms/grid/pier.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4405,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3734,
+								3734
+							]
+						],
+						"settings":
+						{
+							"auto_name": "var config          = require('config');",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1041.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/config_utils.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 260,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14,
+								14
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/data/grid.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2878,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2317,
+								2406
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 894.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/entities/boat.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2472,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2472,
+								2359
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 579.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/entities/player.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1795,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								764,
+								764
 							]
 						],
 						"settings":
@@ -1010,111 +1216,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "src/generators/segment.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9309,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5662,
-								5662
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2328.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/data/grid.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2836,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								695,
-								718
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 90.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/entities/boat.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2093,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								975,
-								975
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
+					"buffer": 7,
 					"file": "public/config.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2398,
+						"buffer_size": 2476,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								622,
-								622
+								384,
+								384
 							]
 						],
 						"settings":
@@ -1128,7 +1243,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -1184,6 +1299,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"worl",
+				"src/states/worldmap.js"
+			],
 			[
 				"gri",
 				"src/data/grid.js"
@@ -1254,10 +1373,6 @@
 			],
 			[
 				"wor",
-				"src/states/worldmap.js"
-			],
-			[
-				"worl",
 				"src/states/worldmap.js"
 			],
 			[

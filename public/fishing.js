@@ -24,7 +24,7 @@ function _boot() {
     }
 };
 
-},{"./fishing.js":35,"./utils/extensions.js":56}],2:[function(require,module,exports){
+},{"./fishing.js":37,"./utils/extensions.js":58}],2:[function(require,module,exports){
 module.exports = require('./src/PathFinding');
 
 },{"./src/PathFinding":5}],3:[function(require,module,exports){
@@ -3366,21 +3366,87 @@ function crawl(args) {
     return obj;
 }
 
-},{"./utils/type.js":58,"qwest":28}],30:[function(require,module,exports){
+},{"./utils/type.js":60,"qwest":28}],30:[function(require,module,exports){
 "use strict";
 
-module.exports.getDataTypeValue = function(data_types, name) {
-    var dt;
+var config = require('./config.js');
+
+module.exports.getDataTypeValue = function(name) {
+    var data_types = config.get('map', 'data_types');
+    var dt = null;
     for (var i=0; i<data_types.length; i++) {
         dt = data_types[i];
         if (dt.name === name) {
-            return dt.value;
+            break;
         }
     }
-    return null;
+    return dt.value;
 }
 
-},{}],31:[function(require,module,exports){
+module.exports.getDataType = function(value) {
+    var data_types = config.get('map', 'data_types');
+    var dt = null;
+    for (var i=0; i<data_types.length; i++) {
+        dt = data_types[i];
+        if (dt.value === value) {
+            break;
+        }
+    }
+    return dt.name;
+}
+
+},{"./config.js":29}],31:[function(require,module,exports){
+"use strict";
+
+var config          = require('./../config.js');
+
+var input_config;
+var inputs = {};
+var key_codes = [];
+var pointer;
+
+module.exports.init = function(game) {
+    input_config = config.get('input');
+    registerKeys(game, input_config);
+    pointer = game.input.activePointer;
+    // Stop the configured keys from propagating up to the browser
+    game.input.keyboard.addKeyCapture(key_codes);
+}
+
+function registerKeys(game, keys) {
+    Object.keys(keys).forEach(function(key) {
+        var key_id = keys[key];
+        key_codes.push(Phaser.Keyboard[key_id]);
+        inputs[key] = game.input.keyboard.addKey(key_codes[key_codes.length-1]);
+        inputs[key].name = key_id;
+    });
+}
+
+Object.defineProperty(module.exports, 'action', {
+    get: function() { return inputs.action; }
+});
+
+Object.defineProperty(module.exports, 'up', {
+    get: function() { return inputs.up; }
+});
+
+Object.defineProperty(module.exports, 'down', {
+    get: function() { return inputs.down; }
+});
+
+Object.defineProperty(module.exports, 'left', {
+    get: function() { return inputs.left; }
+});
+
+Object.defineProperty(module.exports, 'right', {
+    get: function() { return inputs.right; }
+});
+
+Object.defineProperty(module.exports, 'pointer', {
+    get: function() { return pointer; }
+});
+
+},{"./../config.js":29}],32:[function(require,module,exports){
 "use strict";
 
 var list    = require('./../utils/list.js');
@@ -3494,7 +3560,7 @@ module.exports.create = function(width, height, value) {
     return new Grid(width, height, value);
 }
 
-},{"./../utils/list.js":57,"./../utils/type.js":58,"pathfinding":2}],32:[function(require,module,exports){
+},{"./../utils/list.js":59,"./../utils/type.js":60,"pathfinding":2}],33:[function(require,module,exports){
 "use strict";
 
 // NOTES
@@ -3509,6 +3575,7 @@ module.exports.create = function(width, height, value) {
 
 var config          = require('./../config.js');
 var physics         = require('./../helpers/phaser/physics.js');
+var input           = require('./../controllers/input.js');
 
 var speed_rotate = 90;
 var speed_forward = 40;
@@ -3519,9 +3586,14 @@ var sails;
 var sail_up = 1;
 var sail_down = 2;
 var sail_is_up = false;
+
+var settings = {
+    spawn_tile: 'Shallow sea'
+};
+
 // var key_space;
 
-module.exports.create = function(g, x, y) {
+module.exports.init = function(g, x, y) {
     game = g;
     boat = game.add.sprite();
 
@@ -3542,26 +3614,26 @@ module.exports.create = function(g, x, y) {
     boat.y = y;
     boat.anchor.setTo(0.5, 0.5);
 
-    var physics_system = config.get('game', 'physics_system');
-    game.physics.enable(boat, Phaser.Physics[physics_system]);
-    game.physics.enable(hull, Phaser.Physics[physics_system]);
+    physics.enable(boat);
+    physics.enable(hull);
 
     boat.body.setSize(12, 12, 0, 0);
 
-    physics.setPlayer(this);
     // Keep for action button, like fishing
     // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     // key_space.onUp.add(onSpace);
 };
 
-module.exports.update = function(cursors, pointer, layer) {
-    game.physics.arcade.collide(boat, layer);
+module.exports.update = function() {
+    if (!boat.visible) {
+        return;
+    }
 
     boat.body.velocity.x *= 0.9;
     boat.body.velocity.y *= 0.9;
     hull.body.angularVelocity *= 0.9;
 
-    sail_is_up = cursors.up.isDown ? true : false;
+    sail_is_up = input.up.isDown ? true : false;
     setSail();
 
     if (sail_is_up) {
@@ -3570,12 +3642,20 @@ module.exports.update = function(cursors, pointer, layer) {
                                                      boat.body.velocity);
     }
 
-    if (cursors.right.isDown) {
+    if (input.right.isDown) {
         hull.body.angularVelocity = speed_rotate;
-    } else if (cursors.left.isDown) {
+    } else if (input.left.isDown) {
         hull.body.angularVelocity = -speed_rotate;
     }
 };
+
+module.exports.show = function() {
+    boat.visible = true;
+}
+
+module.exports.hide = function() {
+    boat.visible = false;
+}
 
 function setSail() {
     sails.frame = sail_is_up ? sail_up : sail_down;
@@ -3589,31 +3669,12 @@ Object.defineProperty(module.exports, 'sprite', {
     enumerable: true
 });
 
-},{"./../config.js":29,"./../helpers/phaser/physics.js":40}],33:[function(require,module,exports){
-"use strict";
+Object.defineProperty(module.exports, 'settings', {
+    get: function() { return settings; },
+    enumerable: true
+});
 
-var physics         = require('./../helpers/phaser/physics.js');
-var ui              = require('./../ui/ui_manager.js');
-
-var bounds;
-
-module.exports.create = function(layer, map_data) {
-    var tw = layer.map.tileWidth;
-    var th = layer.map.tileHeight;
-    var x = (tw * map_data.meta.pier_pos.x) - tw;
-    var y = (th * map_data.meta.pier_pos.y) - th;
-
-    bounds = new Phaser.Rectangle(x, y, tw * 3, th * 3);
-    physics.addOverlap(bounds, this.overlap);
-}
-
-module.exports.overlap = function(player) {
-    // show label in UI
-    // set some state variable on player
-    ui.action_label.text = 'Dock [Space]';
-}
-
-},{"./../helpers/phaser/physics.js":40,"./../ui/ui_manager.js":54}],34:[function(require,module,exports){
+},{"./../config.js":29,"./../controllers/input.js":31,"./../helpers/phaser/physics.js":42}],34:[function(require,module,exports){
 "use strict";
 
 // NOTE:
@@ -3634,47 +3695,182 @@ module.exports.overlap = function(player) {
 //    Callbacks for triggers and collisions are kept in a list. All callbacks
 //    are called for every collision and overlap.
 
-var config = require('./../config.js');
-var player;
+var config          = require('./../config.js');
+var physics         = require('./../helpers/phaser/physics.js');
+var input           = require('./../controllers/input.js');
+
+var fisherman;
 var game;
 var player_cfg;
+var settings = {
+    spawn_tile: ['Island', 'Pier']
+};
 
-module.exports.create = function(g, x, y) {
+module.exports.init = function(g, x, y) {
     game = g;
     player_cfg = config.get('entities', 'player');
 
-    player = game.add.sprite(x, y, 'sprites');
-    player.anchor.setTo(0.5, 0);
-    player.frame = 3;
+    fisherman = game.add.sprite(x, y, 'sprites');
+    fisherman.anchor.setTo(0.5, 0);
+    fisherman.frame = 3;
 
-    var physics_system = config.get('game', 'physics_system');
-    game.physics.enable(player, Phaser.Physics[physics_system]);
-
-    player.body.setSize(12, 12, 0, 0);
+    physics.enable(fisherman);
+    fisherman.body.setSize(12, 12, 0, 0);
 };
 
-module.exports.update = function(cursors, pointer, layer) {
-    game.physics.arcade.collide(player, layer);
-
-    if (cursors.up.isDown) {
-        player.y -= player_cfg.speed;
-    } else if (cursors.down.isDown) {
-        player.y += player_cfg.speed;
+module.exports.update = function() {
+    if (!fisherman.visible) {
+        return;
     }
 
-    if (cursors.left.isDown) {
-        player.x -= player_cfg.speed;
-    } else if (cursors.right.isDown) {
-        player.x += player_cfg.speed;
+    if (input.up.isDown) {
+        fisherman.y -= player_cfg.speed;
+    } else if (input.down.isDown) {
+        fisherman.y += player_cfg.speed;
+    }
+
+    if (input.left.isDown) {
+        fisherman.x -= player_cfg.speed;
+    } else if (input.right.isDown) {
+        fisherman.x += player_cfg.speed;
     }
 };
+
+module.exports.show = function() {
+    fisherman.visible = true;
+}
+
+module.exports.hide = function() {
+    fisherman.visible = false;
+}
 
 Object.defineProperty(module.exports, 'sprite', {
-    get: function() { return player; },
+    get: function() { return fisherman; },
     enumerable: true
 });
 
-},{"./../config.js":29}],35:[function(require,module,exports){
+Object.defineProperty(module.exports, 'settings', {
+    get: function() { return settings; },
+    enumerable: true
+});
+
+},{"./../config.js":29,"./../controllers/input.js":31,"./../helpers/phaser/physics.js":42}],35:[function(require,module,exports){
+"use strict";
+
+var physics         = require('./../helpers/phaser/physics.js');
+var ui              = require('./../ui/ui_manager.js');
+
+var bounds;
+
+module.exports.create = function(layer, map_data) {
+    var tw = layer.map.tileWidth;
+    var th = layer.map.tileHeight;
+    var x = (tw * map_data.meta.pier_pos.x) - tw;
+    var y = (th * map_data.meta.pier_pos.y) - th;
+
+    bounds = new Phaser.Rectangle(x, y, tw * 3, th * 3);
+    physics.addTrigger(this);
+}
+
+module.exports.triggerEnter = function(player) {
+    ui.dispatch('action_label', 'Dock');
+}
+
+module.exports.triggerLeave = function(player) {
+    ui.dispatch('action_label');
+}
+
+// Should be part of a decorator
+module.exports.triggerStay = function(player) {}
+
+Object.defineProperty(module.exports, 'bounds', {
+    get: function() { return bounds; },
+    enumerable: true
+});
+
+},{"./../helpers/phaser/physics.js":42,"./../ui/ui_manager.js":56}],36:[function(require,module,exports){
+"use strict";
+
+var cu              = require('./../config_utils.js');
+var boat            = require('./boat.js');
+var fisherman       = require('./fisherman.js');
+var physics         = require('./../helpers/phaser/physics.js');
+var update          = require('./../helpers/phaser/update.js');
+var list            = require('./../utils/list.js');
+
+var current;
+var game;
+var layer;
+var map_data;
+
+module.exports.init = function(g, l, md) {
+    game = g;
+    layer = l;
+    map_data = md;
+
+    var x = layer.map.tileWidth * map_data.meta.boat_pos.x;
+    var y = layer.map.tileHeight * map_data.meta.boat_pos.y;
+
+    fisherman.init(game, x, y);
+    boat.init(game, x, y);
+    setDefault();
+
+    // load and init all states. Read from config?
+
+    physics.setPlayer(this);
+    update.register(this);
+}
+
+module.exports.update = function() {
+    physics.collide(current.sprite, layer);
+    current.update();
+}
+
+// add triggerEnter, Leave and Stay
+    // get name of entity passed
+    // append 'on_' to the name
+    // switch to state with name
+
+function switchToBoat() {
+    fisherman.hide();
+    boat.show();
+    current = boat;
+}
+
+function switchToFisherman() {
+    boat.hide();
+    fisherman.show();
+    current = fisherman;
+}
+
+function setDefault() {
+    var tile_type = cu.getDataType(list.get(map_data.data,
+                                            map_data.meta.boat_pos.x,
+                                            map_data.meta.boat_pos.y,
+                                            map_data.width));
+
+    if (matchSpawnTile(fisherman, tile_type)) {
+        switchToFisherman();
+    }
+    if (matchSpawnTile(boat, tile_type)) {
+        switchToBoat();
+    }
+}
+
+function matchSpawnTile(entity, type) {
+    if (entity.settings.spawn_tile instanceof Array) {
+        return entity.settings.spawn_tile.indexOf(type) > -1;
+    } else {
+        return entity.settings.spawn_tile === type;
+    }
+}
+
+Object.defineProperty(module.exports, 'sprite', {
+    get: function() { return current.sprite; },
+    enumerable: true
+});
+
+},{"./../config_utils.js":30,"./../helpers/phaser/physics.js":42,"./../helpers/phaser/update.js":44,"./../utils/list.js":59,"./boat.js":33,"./fisherman.js":34}],37:[function(require,module,exports){
 "use strict";
 
 var config      = require('./config.js');
@@ -3712,7 +3908,7 @@ module.exports = function() {
     });
 }
 
-},{"./config.js":29,"./states/boat.js":43,"./states/boot.js":44,"./states/game.js":45,"./states/generate.js":46,"./states/preloader.js":47,"./states/worldmap.js":48,"./utils/dom.js":55}],36:[function(require,module,exports){
+},{"./config.js":29,"./states/boat.js":45,"./states/boot.js":46,"./states/game.js":47,"./states/generate.js":48,"./states/preloader.js":49,"./states/worldmap.js":50,"./utils/dom.js":57}],38:[function(require,module,exports){
 var list        = require('./../utils/list.js');
 // var inverter    = require('transforms/grid/inverter');
 // var rooms       = require('transforms/grid/rooms');
@@ -3865,7 +4061,7 @@ function get(grid, x, y) {
 //     });
 // }
 
-},{"./../utils/list.js":57}],37:[function(require,module,exports){
+},{"./../utils/list.js":59}],39:[function(require,module,exports){
 
 var endings = ['os', 'ia'];
 var beginnings = ['Nax', 'Lesb', 'K', 'Icar', 'Tin', 'Skyr'];
@@ -3880,7 +4076,7 @@ function rnd(list) {
     return list[Math.round(Math.random() * (list.length-1))];
 }
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 "use strict";
 
 var list            = require('./../utils/list.js');
@@ -3938,14 +4134,16 @@ module.exports.generate = function(x, y, type) {
             seed:       segment.seed,
             smoothness: cfg.smoothness,
             padding:    cfg.padding,
-            value_a:    cu.getDataTypeValue(data_types, 'Shallow sea'),
-            value_b:    cu.getDataTypeValue(data_types, 'Island')
+            value_a:    cu.getDataTypeValue('Shallow sea'),
+            value_b:    cu.getDataTypeValue('Island')
         });
     }
 
     // list.print(segment.data);
 
     tilemapper.map(segment, data_types, map_cfg.tilemaps.segment);
+
+    return this.get(x, y);
 };
 
 module.exports.get = function(x, y) {
@@ -3973,14 +4171,14 @@ function generateIsland(segment, opts) {
     //     1: 2
     // });
 
-    rooms.identify(cu.getDataTypeValue(data_types, 'Island'), segment);
+    rooms.identify(cu.getDataTypeValue('Island'), segment);
 
     // Paint each room as sand
     Object.keys(rooms.rooms).forEach(function(index) {
         var room_tiles = rooms.rooms[index];
         if (room_tiles.length < 10) {
             room_tiles.forEach(function(tile_index) {
-                segment.data[tile_index] = cu.getDataTypeValue(data_types, 'Sand');
+                segment.data[tile_index] = cu.getDataTypeValue('Sand');
             });
         }
     });
@@ -4006,16 +4204,16 @@ function generateFishingSea(segment) {
             (x > segment.width - 6) ||
             (y < 5) ||
             (y > segment.height - 6)) {
-            segment.data[i] = cu.getDataTypeValue(data_types, 'Shallow sea');
+            segment.data[i] = cu.getDataTypeValue('Shallow sea');
         } else {
-            segment.data[i] = cu.getDataTypeValue(data_types, 'Deep sea');
+            segment.data[i] = cu.getDataTypeValue('Deep sea');
         }
     });
 }
 
 function generateShallowSea(segment) {
     list.each(segment.data, segment.width, function(tile, x, y, i) {
-        segment.data[i] = cu.getDataTypeValue(data_types, 'Shallow sea');
+        segment.data[i] = cu.getDataTypeValue('Shallow sea');
     });
 }
 
@@ -4056,7 +4254,7 @@ function info(data_types, type, x, y, seed) {
     log('segment type:'+n+' ('+type+') x:'+x+' y:'+y+' seed:'+seed);
 }
 
-},{"./../config.js":29,"./../config_utils.js":30,"./../data/grid.js":31,"./../tilemapper.js":49,"./../transforms/grid/pier.js":50,"./../transforms/grid/rooms.js":51,"./../utils/list.js":57,"./../utils/type.js":58,"./cellular_automata.js":36,"./island_name.js":37}],39:[function(require,module,exports){
+},{"./../config.js":29,"./../config_utils.js":30,"./../data/grid.js":32,"./../tilemapper.js":51,"./../transforms/grid/pier.js":52,"./../transforms/grid/rooms.js":53,"./../utils/list.js":59,"./../utils/type.js":60,"./cellular_automata.js":38,"./island_name.js":39}],41:[function(require,module,exports){
 var config          = require('./../config.js');
 var PerlinGenerator = require('proc-noise');
 var grid            = require('./../data/grid.js');
@@ -4108,51 +4306,66 @@ Object.defineProperty(module.exports, 'map', {
     get: function() { return map; }
 });
 
-},{"./../config.js":29,"./../data/grid.js":31,"./../utils/list.js":57,"./../utils/type.js":58,"proc-noise":26}],40:[function(require,module,exports){
+},{"./../config.js":29,"./../data/grid.js":32,"./../utils/list.js":59,"./../utils/type.js":60,"proc-noise":26}],42:[function(require,module,exports){
 "use strict";
 
 var config          = require('./../../config.js');
 var update          = require('./update.js');
 
-var overlaps = [];
-var player_bounds;
+var triggers = [];
 var player;
+var system_type;
+var system;
+var game;
 
-module.exports.init = function(game) {
-    var physics_system = config.get('game', 'physics_system');
-    game.physics.startSystem(Phaser.Physics[physics_system]);
+module.exports.init = function(g) {
+    game = g;
+    var system_id = config.get('game', 'physics_system');
+    system_type = Phaser.Physics[system_id];
+    game.physics.startSystem(system_type);
+    system = game.physics[system_id.toLowerCase()];
     update.register(this);
 }
 
-// enableForSprite(sprite)
-    // enable physics for the given sprite, using the defined physics system
+module.exports.enable = function(sprite) {
+    game.physics.enable(sprite, system_type);
+}
 
-// all sprites collide with player by default
-
-// addTrigger(sprite, options, callback)
-    // add physics to sprite if not added
-    // scale up the hit area using options
-    // add sprite and callback to an object in a list of triggers
+module.exports.collide = function(a, b) {
+    system.collide(a, b);
+}
 
 module.exports.setPlayer = function(p) {
     player = p;
 }
 
-module.exports.addOverlap = function(bounds, callback) {
-    overlaps.push({bounds: bounds, callback: callback});
+module.exports.addTrigger = function(owner) {
+    triggers.push({
+        owner:      owner,
+        entered:    false
+    });
 }
 
 module.exports.update = function() {
-    player_bounds = player.sprite.getBounds();
+    triggers.forEach(function(trigger) {
+        if (Phaser.Rectangle.intersects(player.sprite.getBounds(),
+                                        trigger.owner.bounds)) {
+            if (!trigger.entered) {
+                trigger.owner.triggerEnter(player);
+                trigger.entered = true;
+            }
 
-    overlaps.forEach(function(overlap) {
-        if (Phaser.Rectangle.intersects(player_bounds, overlap.bounds)) {
-            overlap.callback(player);
+            trigger.owner.triggerStay(player);
+        } else {
+            if (trigger.entered) {
+                trigger.owner.triggerLeave(player);
+                trigger.entered = false;
+            }
         }
     });
 }
 
-},{"./../../config.js":29,"./update.js":42}],41:[function(require,module,exports){
+},{"./../../config.js":29,"./update.js":44}],43:[function(require,module,exports){
 "use strict";
 
 var tilemaps = {};
@@ -4177,7 +4390,7 @@ module.exports.layer = function(name) {
     return tilemap ? tilemap.layer : null;
 }
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 "use strict";
 
 // Use this module to hook up an update function to Phaser's update loop
@@ -4217,7 +4430,7 @@ module.exports = {
     _renderCanvas: function() {},
 };
 
-},{"./../../states/boot.js":44}],43:[function(require,module,exports){
+},{"./../../states/boot.js":46}],45:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -4227,21 +4440,18 @@ var list            = require('./../utils/list.js');
 var tilemaps        = require('./../helpers/phaser/tilemaps.js');
 var physics         = require('./../helpers/phaser/physics.js');
 var segment         = require('./../generators/segment.js');
-var boat            = require('./../entities/boat.js');
 var player          = require('./../entities/player.js');
 var pier            = require('./../entities/pier.js');
+var input           = require('./../controllers/input.js');
 var ui              = require('./../ui/ui_manager.js');
 
 var game;
-// TODO: Bundle cursors and pointer in an input manager. The input manager
-// accepts a key mapping object from config
-var cursors;
-var pointer;
 var coord = {};
 var layer;
+var map_data;
 
 module.exports.init = function(options) {
-    segment.generate(0, 0, 2);
+    map_data = segment.generate(0, 0, 2);
 };
 
 module.exports.create = function() {
@@ -4251,13 +4461,7 @@ module.exports.create = function() {
     game.stage.backgroundColor = game_config.background_color;
 
     physics.init(game);
-
-    // Stop the following keys from propagating up to the browser
-    game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT,
-                                      Phaser.Keyboard.RIGHT,
-                                      Phaser.Keyboard.SPACEBAR]);
-
-    var map_data = segment.get(0, 0);
+    input.init(game);
 
     tilemaps.loadTilemap(game, {
         map_name:   'BoatPracticing',
@@ -4269,32 +4473,24 @@ module.exports.create = function() {
     // layer.debug = true;
 
     // Need to switch collision between player/boat switches
-    layer.map.setCollision([3, 4, 5], 'BoatPracticing');
+    // Dispatch a player switch event that the layer controller can listen
+    // to and toggle the collisions
+    // Get collisions from config
+    layer.map.setCollision([3, 4, 5], layer);
 
-    cursors = game.input.keyboard.createCursorKeys();
-    pointer = game.input.activePointer;
-
+    // Use a factory instead. Pass the level data and let the factory
+    // create as many piers as necessary
     pier.create(layer, map_data);
 
-    // TODO: Merge boat and player
-    boat.create(game,
-                layer.map.tileWidth * map_data.meta.boat_pos.x,
-                layer.map.tileHeight * map_data.meta.boat_pos.y);
-
-    // player.create(game,
-    //               layer.map.tileWidth * 16,
-    //               layer.map.tileHeight * 16);
+    player.init(game, layer, map_data);
 
     ui.init(game);
 
 };
 
 module.exports.update = function() {
-    coord.x = layer.getTileX(pointer.worldX);
-    coord.y = layer.getTileY(pointer.worldY);
-
-    boat.update(cursors, pointer, layer);
-    // player.update(cursors, pointer, layer);
+    coord.x = layer.getTileX(input.pointer.worldX);
+    coord.y = layer.getTileY(input.pointer.worldY);
 };
 
 module.exports.render = function() {
@@ -4302,7 +4498,7 @@ module.exports.render = function() {
     // game.debug.body(boat.sprite);
 };
 
-},{"./../config.js":29,"./../entities/boat.js":32,"./../entities/pier.js":33,"./../entities/player.js":34,"./../generators/segment.js":38,"./../helpers/phaser/physics.js":40,"./../helpers/phaser/tilemaps.js":41,"./../ui/ui_manager.js":54,"./../utils/list.js":57}],44:[function(require,module,exports){
+},{"./../config.js":29,"./../controllers/input.js":31,"./../entities/pier.js":35,"./../entities/player.js":36,"./../generators/segment.js":40,"./../helpers/phaser/physics.js":42,"./../helpers/phaser/tilemaps.js":43,"./../ui/ui_manager.js":56,"./../utils/list.js":59}],46:[function(require,module,exports){
 "use strict";
 
 var config = require('./../config.js');
@@ -4339,7 +4535,7 @@ module.exports.create = function() {
     game.state.start(config.get('game', 'states').next());
 };
 
-},{"./../config.js":29}],45:[function(require,module,exports){
+},{"./../config.js":29}],47:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -4394,7 +4590,7 @@ function returnToWorldmap() {
     game.state.start('Worldmap');
 }
 
-},{"./../config.js":29,"./../generators/segment.js":38,"./../helpers/phaser/tilemaps.js":41,"./../utils/list.js":57}],46:[function(require,module,exports){
+},{"./../config.js":29,"./../generators/segment.js":40,"./../helpers/phaser/tilemaps.js":43,"./../utils/list.js":59}],48:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -4423,7 +4619,7 @@ module.exports.create = function() {
 
 };
 
-},{"./../config.js":29,"./../generators/world.js":39,"./../tilemapper.js":49}],47:[function(require,module,exports){
+},{"./../config.js":29,"./../generators/world.js":41,"./../tilemapper.js":51}],49:[function(require,module,exports){
 "use strict";
 
 var config = require('./../config.js');
@@ -4446,7 +4642,7 @@ module.exports.update = function() {
     }
 };
 
-},{"./../config.js":29}],48:[function(require,module,exports){
+},{"./../config.js":29}],50:[function(require,module,exports){
 "use strict";
 
 module.exports = new Phaser.State();
@@ -4519,7 +4715,7 @@ function click() {
     });
 }
 
-},{"./../config.js":29,"./../generators/world.js":39,"./../helpers/phaser/tilemaps.js":41,"./../ui/components/unobtrusive_label.js":53,"./../utils/list.js":57}],49:[function(require,module,exports){
+},{"./../config.js":29,"./../generators/world.js":41,"./../helpers/phaser/tilemaps.js":43,"./../ui/components/unobtrusive_label.js":55,"./../utils/list.js":59}],51:[function(require,module,exports){
 var gridcreator     = require('./data/grid.js');
 var list            = require('./utils/list.js');
 
@@ -4529,7 +4725,7 @@ module.exports.map = function(grid, data_types, tilemap) {
     });
 };
 
-},{"./data/grid.js":31,"./utils/list.js":57}],50:[function(require,module,exports){
+},{"./data/grid.js":32,"./utils/list.js":59}],52:[function(require,module,exports){
 "use strict";
 
 var config          = require('./../../config.js');
@@ -4543,9 +4739,9 @@ module.exports.place = function(segment, area) {
 
     data_types = config.get('map').data_types;
     type = {
-        shallow_sea:    cu.getDataTypeValue(data_types, 'Shallow sea'),
-        island:         cu.getDataTypeValue(data_types, 'Island'),
-        pier:           cu.getDataTypeValue(data_types, 'Pier')
+        shallow_sea:    cu.getDataTypeValue('Shallow sea'),
+        island:         cu.getDataTypeValue('Island'),
+        pier:           cu.getDataTypeValue('Pier')
     }
 
     segment.generatePathfindingData([type.shallow_sea]);
@@ -4648,7 +4844,6 @@ function getBoatPos(segment, pier_pos) {
 }
 
 function getNeighbouringWaterTile(tile_index, segment) {
-    var v_sea = cu.getDataTypeValue(data_types, 'Shallow sea');
     var neighbours = [
         tile_index - segment.width,
         tile_index + 1,
@@ -4658,7 +4853,7 @@ function getNeighbouringWaterTile(tile_index, segment) {
 
     for (var i=0; i<neighbours.length; i++) {
         var n = neighbours[i];
-        if (segment.data[n] === v_sea) {
+        if (segment.data[n] === type.shallow_sea) {
             return coordForIndex(n, segment.width);
         }
     }
@@ -4673,7 +4868,7 @@ function coordForIndex(index, w) {
     };
 }
 
-},{"./../../config.js":29,"./../../config_utils.js":30}],51:[function(require,module,exports){
+},{"./../../config.js":29,"./../../config_utils.js":30}],53:[function(require,module,exports){
 var list = require('./../../utils/list.js');
 
 var rooms = {};
@@ -4770,7 +4965,7 @@ Object.defineProperty(module.exports, 'rooms', {
     get: function() { return rooms; }
 });
 
-},{"./../../utils/list.js":57}],52:[function(require,module,exports){
+},{"./../../utils/list.js":59}],54:[function(require,module,exports){
 "use strict";
 
 // function Label(_game, _x, _y, _width, _height) {
@@ -4808,7 +5003,7 @@ module.exports.create = function(game, x, y, width, height) {
     return label;
 }
 
-},{}],53:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 "use strict";
 
 // TODO:
@@ -4883,7 +5078,7 @@ module.exports.create = function(opts) {
     return new UnobtrusiveLabel(opts);
 }
 
-},{}],54:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 "use strict";
 
 // module.exports = new Phaser.Group();
@@ -4898,12 +5093,13 @@ module.exports.create = function(opts) {
 // by itself. Panels should transition in an out when state changes.
 
 var label           = require('./components/label.js');
+var input           = require('./../controllers/input.js');
 
 var action_label;
 
 module.exports.init = function(game) {
-    var group = game.add.group();
-    group.update = this.update;
+    // var group = game.add.group();
+    // group.update = this.update;
 
     // var image = game.cache.getImage('label');
     // log(image);
@@ -4915,17 +5111,29 @@ module.exports.init = function(game) {
     action_label = label.create(game, 16, 16);
 }
 
-module.exports.update = function() {
+// module.exports.update = function() {
+// };
 
-    // This is not the way to do it. The label should handle this itself.
-    action_label.text = '';
+// Replace this with an event system. The events will need to be picked up
+// by the various panels and components
+module.exports.dispatch = function(name, payload) {
+    if (typeof payload === 'undefined') {
+        action_label.visible = false;
+        return;
+    }
+
+    action_label.visible = true;
+
+    if (name === 'action_label') {
+        action_label.text = payload + ' [' + input.action.name + ']';
+    }
 };
 
-Object.defineProperty(module.exports, 'action_label', {
-    get: function() { return action_label; }
-});
+// Object.defineProperty(module.exports, 'action_label', {
+//     get: function() { return action_label; }
+// });
 
-},{"./components/label.js":52}],55:[function(require,module,exports){
+},{"./../controllers/input.js":31,"./components/label.js":54}],57:[function(require,module,exports){
 "use strict";
 
 var config  = require('./../config.js');
@@ -4990,7 +5198,7 @@ Object.defineProperty(module.exports, 'game_node', {
     get: function() { return game_node; }
 });
 
-},{"./../config.js":29,"./type.js":58}],56:[function(require,module,exports){
+},{"./../config.js":29,"./type.js":60}],58:[function(require,module,exports){
 Math.seededRandom = function(min, max) {
     min = min || 0;
     max = max || 1;
@@ -5045,7 +5253,7 @@ Object.size = function(obj) {
     return size;
 }
 
-},{}],57:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports.each = function(list, width, callback) {
     if (!callback) {
         console.warn('each() missing callback');
@@ -5110,7 +5318,7 @@ module.exports.printString = function(list, width) {
     return str;
 }
 
-},{}],58:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 "use strict";
 
 var type = '';

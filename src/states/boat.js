@@ -19,9 +19,10 @@ var cursors;
 var pointer;
 var coord = {};
 var layer;
+var map_data;
 
 module.exports.init = function(options) {
-    segment.generate(0, 0, 2);
+    map_data = segment.generate(0, 0, 2);
 };
 
 module.exports.create = function() {
@@ -37,7 +38,6 @@ module.exports.create = function() {
                                       Phaser.Keyboard.RIGHT,
                                       Phaser.Keyboard.SPACEBAR]);
 
-    var map_data = segment.get(0, 0);
 
     tilemaps.loadTilemap(game, {
         map_name:   'BoatPracticing',

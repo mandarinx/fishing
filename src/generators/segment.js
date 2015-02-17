@@ -63,6 +63,8 @@ module.exports.generate = function(x, y, type) {
     // list.print(segment.data);
 
     tilemapper.map(segment, data_types, map_cfg.tilemaps.segment);
+
+    return this.get(x, y);
 };
 
 module.exports.get = function(x, y) {

@@ -55,8 +55,8 @@ module.exports.generate = function(x, y, type) {
             seed:       segment.seed,
             smoothness: cfg.smoothness,
             padding:    cfg.padding,
-            value_a:    cu.getDataTypeValue(data_types, 'Shallow sea'),
-            value_b:    cu.getDataTypeValue(data_types, 'Island')
+            value_a:    cu.getDataTypeValue('Shallow sea'),
+            value_b:    cu.getDataTypeValue('Island')
         });
     }
 
@@ -90,14 +90,14 @@ function generateIsland(segment, opts) {
     //     1: 2
     // });
 
-    rooms.identify(cu.getDataTypeValue(data_types, 'Island'), segment);
+    rooms.identify(cu.getDataTypeValue('Island'), segment);
 
     // Paint each room as sand
     Object.keys(rooms.rooms).forEach(function(index) {
         var room_tiles = rooms.rooms[index];
         if (room_tiles.length < 10) {
             room_tiles.forEach(function(tile_index) {
-                segment.data[tile_index] = cu.getDataTypeValue(data_types, 'Sand');
+                segment.data[tile_index] = cu.getDataTypeValue('Sand');
             });
         }
     });
@@ -123,16 +123,16 @@ function generateFishingSea(segment) {
             (x > segment.width - 6) ||
             (y < 5) ||
             (y > segment.height - 6)) {
-            segment.data[i] = cu.getDataTypeValue(data_types, 'Shallow sea');
+            segment.data[i] = cu.getDataTypeValue('Shallow sea');
         } else {
-            segment.data[i] = cu.getDataTypeValue(data_types, 'Deep sea');
+            segment.data[i] = cu.getDataTypeValue('Deep sea');
         }
     });
 }
 
 function generateShallowSea(segment) {
     list.each(segment.data, segment.width, function(tile, x, y, i) {
-        segment.data[i] = cu.getDataTypeValue(data_types, 'Shallow sea');
+        segment.data[i] = cu.getDataTypeValue('Shallow sea');
     });
 }
 

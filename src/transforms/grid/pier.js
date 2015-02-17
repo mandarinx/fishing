@@ -11,9 +11,9 @@ module.exports.place = function(segment, area) {
 
     data_types = config.get('map').data_types;
     type = {
-        shallow_sea:    cu.getDataTypeValue(data_types, 'Shallow sea'),
-        island:         cu.getDataTypeValue(data_types, 'Island'),
-        pier:           cu.getDataTypeValue(data_types, 'Pier')
+        shallow_sea:    cu.getDataTypeValue('Shallow sea'),
+        island:         cu.getDataTypeValue('Island'),
+        pier:           cu.getDataTypeValue('Pier')
     }
 
     segment.generatePathfindingData([type.shallow_sea]);

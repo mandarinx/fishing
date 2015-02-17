@@ -3574,8 +3574,8 @@ module.exports.create = function(width, height, value) {
 //   map switch.
 
 var config          = require('./../config.js');
-var physics         = require('./../helpers/phaser/physics.js');
 var input           = require('./../controllers/input.js');
+var physics         = require('./../helpers/phaser/physics.js');
 
 var speed_rotate = 90;
 var speed_forward = 40;
@@ -3590,6 +3590,12 @@ var sail_is_up = false;
 var settings = {
     spawn_tile: 'Shallow sea'
 };
+
+var states = {
+    'dock':     dock,
+    'idle':     idle
+};
+var cur_state;
 
 // var key_space;
 
@@ -3619,6 +3625,10 @@ module.exports.init = function(g, x, y) {
 
     boat.body.setSize(12, 12, 0, 0);
 
+    // TODO: Load and init all states. Read from config
+    // var states = require('states/index');
+    this.setState('idle');
+
     // Keep for action button, like fishing
     // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     // key_space.onUp.add(onSpace);
@@ -3628,6 +3638,8 @@ module.exports.update = function() {
     if (!boat.visible) {
         return;
     }
+
+    cur_state();
 
     boat.body.velocity.x *= 0.9;
     boat.body.velocity.y *= 0.9;
@@ -3651,14 +3663,39 @@ module.exports.update = function() {
 
 module.exports.show = function() {
     boat.visible = true;
+    this.setState('sailing');
 }
 
 module.exports.hide = function() {
     boat.visible = false;
+    this.setState('idle');
+}
+
+module.exports.setState = function(state) {
+    if (state instanceof Array) {
+        for (var i=0; i<state.length; i++) {
+            if (typeof states[state[i]] !== 'undefined') {
+                cur_state = states[state[i]];
+                return;
+            }
+        }
+    }
+
+    if (typeof states[state] !== 'undefined') {
+        cur_state = states[state];
+    }
 }
 
 function setSail() {
     sails.frame = sail_is_up ? sail_up : sail_down;
+}
+
+function idle() {}
+
+function dock() {
+    if (input.action.isDown) {
+        log('dock, damnit!');
+    }
 }
 
 // function onSpace() {
@@ -3706,6 +3743,11 @@ var settings = {
     spawn_tile: ['Island', 'Pier']
 };
 
+var states = {
+    'idle':     idle
+};
+var cur_state;
+
 module.exports.init = function(g, x, y) {
     game = g;
     player_cfg = config.get('entities', 'player');
@@ -3716,12 +3758,16 @@ module.exports.init = function(g, x, y) {
 
     physics.enable(fisherman);
     fisherman.body.setSize(12, 12, 0, 0);
+
+    this.setState('idle');
 };
 
 module.exports.update = function() {
     if (!fisherman.visible) {
         return;
     }
+
+    cur_state();
 
     if (input.up.isDown) {
         fisherman.y -= player_cfg.speed;
@@ -3738,11 +3784,30 @@ module.exports.update = function() {
 
 module.exports.show = function() {
     fisherman.visible = true;
+    this.setState('walking');
 }
 
 module.exports.hide = function() {
     fisherman.visible = false;
+    this.setState('idle');
 }
+
+module.exports.setState = function(state) {
+    if (state instanceof Array) {
+        for (var i=0; i<state.length; i++) {
+            if (typeof states[state[i]] !== 'undefined') {
+                cur_state = states[state[i]];
+                return;
+            }
+        }
+    }
+
+    if (typeof states[state] !== 'undefined') {
+        cur_state = states[state];
+    }
+}
+
+function idle() {}
 
 Object.defineProperty(module.exports, 'sprite', {
     get: function() { return fisherman; },
@@ -3761,6 +3826,7 @@ var physics         = require('./../helpers/phaser/physics.js');
 var ui              = require('./../ui/ui_manager.js');
 
 var bounds;
+var actions = ['dock'];
 
 module.exports.create = function(layer, map_data) {
     var tw = layer.map.tileWidth;
@@ -3785,6 +3851,11 @@ module.exports.triggerStay = function(player) {}
 
 Object.defineProperty(module.exports, 'bounds', {
     get: function() { return bounds; },
+    enumerable: true
+});
+
+Object.defineProperty(module.exports, 'actions', {
+    get: function() { return actions; },
     enumerable: true
 });
 
@@ -3814,9 +3885,6 @@ module.exports.init = function(g, l, md) {
     fisherman.init(game, x, y);
     boat.init(game, x, y);
     setDefault();
-
-    // load and init all states. Read from config?
-
     physics.setPlayer(this);
     update.register(this);
 }
@@ -3826,10 +3894,15 @@ module.exports.update = function() {
     current.update();
 }
 
-// add triggerEnter, Leave and Stay
-    // get name of entity passed
-    // append 'on_' to the name
-    // switch to state with name
+module.exports.triggerEnter = function(entity) {
+    current.setState(entity.actions);
+}
+
+module.exports.triggerLeave = function(entity) {
+    current.setState('idle');
+}
+
+module.exports.triggerStay = function(entity) {}
 
 function switchToBoat() {
     fisherman.hide();
@@ -4352,13 +4425,16 @@ module.exports.update = function() {
                                         trigger.owner.bounds)) {
             if (!trigger.entered) {
                 trigger.owner.triggerEnter(player);
+                player.triggerEnter(trigger.owner);
                 trigger.entered = true;
             }
-
             trigger.owner.triggerStay(player);
+            player.triggerStay(trigger.owner);
+
         } else {
             if (trigger.entered) {
                 trigger.owner.triggerLeave(player);
+                player.triggerLeave(trigger.owner);
                 trigger.entered = false;
             }
         }

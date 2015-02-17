@@ -19,8 +19,9 @@
 //    are called for every collision and overlap.
 
 var config          = require('config');
-var physics         = require('helpers/phaser/physics');
 var input           = require('controllers/input');
+var states          = require('controllers/states');
+var physics         = require('helpers/phaser/physics');
 
 var fisherman;
 var game;
@@ -29,14 +30,11 @@ var settings = {
     spawn_tile: ['Island', 'Pier']
 };
 
-var states = {
-    'idle':     idle
-};
-var cur_state;
-
 module.exports.init = function(g, x, y) {
     game = g;
     player_cfg = config.get('entities', 'player');
+
+    states.add(this, 'idle', idle);
 
     fisherman = game.add.sprite(x, y, 'sprites');
     fisherman.anchor.setTo(0.5, 0);
@@ -45,7 +43,7 @@ module.exports.init = function(g, x, y) {
     physics.enable(fisherman);
     fisherman.body.setSize(12, 12, 0, 0);
 
-    this.setState('idle');
+    states.set(this, 'idle');
 };
 
 module.exports.update = function() {
@@ -53,7 +51,7 @@ module.exports.update = function() {
         return;
     }
 
-    cur_state();
+    states.current(this);
 
     if (input.up.isDown) {
         fisherman.y -= player_cfg.speed;
@@ -70,27 +68,12 @@ module.exports.update = function() {
 
 module.exports.show = function() {
     fisherman.visible = true;
-    this.setState('walking');
+    states.set(this, 'walking');
 }
 
 module.exports.hide = function() {
     fisherman.visible = false;
-    this.setState('idle');
-}
-
-module.exports.setState = function(state) {
-    if (state instanceof Array) {
-        for (var i=0; i<state.length; i++) {
-            if (typeof states[state[i]] !== 'undefined') {
-                cur_state = states[state[i]];
-                return;
-            }
-        }
-    }
-
-    if (typeof states[state] !== 'undefined') {
-        cur_state = states[state];
-    }
+    states.set(this, 'idle');
 }
 
 function idle() {}

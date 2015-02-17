@@ -12,6 +12,7 @@
 
 var config          = require('config');
 var input           = require('controllers/input');
+var states          = require('controllers/states');
 var physics         = require('helpers/phaser/physics');
 
 var speed_rotate = 90;
@@ -28,17 +29,14 @@ var settings = {
     spawn_tile: 'Shallow sea'
 };
 
-var states = {
-    'dock':     dock,
-    'idle':     idle
-};
-var cur_state;
-
 // var key_space;
 
 module.exports.init = function(g, x, y) {
     game = g;
     boat = game.add.sprite();
+
+    states.add(this, 'dock', dock);
+    states.add(this, 'idle', idle);
 
     hull = boat.addChild(game.make.sprite(0, 0, 'sprites'));
     hull.anchor.setTo(0.5, 0.5);
@@ -64,7 +62,7 @@ module.exports.init = function(g, x, y) {
 
     // TODO: Load and init all states. Read from config
     // var states = require('states/index');
-    this.setState('idle');
+    states.set(this, 'idle');
 
     // Keep for action button, like fishing
     // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -76,7 +74,7 @@ module.exports.update = function() {
         return;
     }
 
-    cur_state();
+    states.current(this);
 
     boat.body.velocity.x *= 0.9;
     boat.body.velocity.y *= 0.9;
@@ -100,27 +98,12 @@ module.exports.update = function() {
 
 module.exports.show = function() {
     boat.visible = true;
-    this.setState('sailing');
+    states.set(this, 'sailing');
 }
 
 module.exports.hide = function() {
     boat.visible = false;
-    this.setState('idle');
-}
-
-module.exports.setState = function(state) {
-    if (state instanceof Array) {
-        for (var i=0; i<state.length; i++) {
-            if (typeof states[state[i]] !== 'undefined') {
-                cur_state = states[state[i]];
-                return;
-            }
-        }
-    }
-
-    if (typeof states[state] !== 'undefined') {
-        cur_state = states[state];
-    }
+    states.set(this, 'idle');
 }
 
 function setSail() {

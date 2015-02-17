@@ -1,6 +1,7 @@
 "use strict";
 
 var cu              = require('config_utils');
+var states          = require('controllers/states');
 var boat            = require('entities/boat');
 var fisherman       = require('entities/fisherman');
 var physics         = require('helpers/phaser/physics');
@@ -33,11 +34,11 @@ module.exports.update = function() {
 }
 
 module.exports.triggerEnter = function(entity) {
-    current.setState(entity.actions);
+    states.set(current, entity.actions);
 }
 
 module.exports.triggerLeave = function(entity) {
-    current.setState('idle');
+    states.set(current, 'idle');
 }
 
 module.exports.triggerStay = function(entity) {}

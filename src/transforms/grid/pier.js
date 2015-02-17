@@ -116,7 +116,6 @@ function getBoatPos(segment, pier_pos) {
 }
 
 function getNeighbouringWaterTile(tile_index, segment) {
-    var v_sea = cu.getDataTypeValue(data_types, 'Shallow sea');
     var neighbours = [
         tile_index - segment.width,
         tile_index + 1,
@@ -126,7 +125,7 @@ function getNeighbouringWaterTile(tile_index, segment) {
 
     for (var i=0; i<neighbours.length; i++) {
         var n = neighbours[i];
-        if (segment.data[n] === v_sea) {
+        if (segment.data[n] === type.shallow_sea) {
             return coordForIndex(n, segment.width);
         }
     }

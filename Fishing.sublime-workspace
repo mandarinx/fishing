@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"get",
+				"getBounds"
+			],
+			[
+				"play",
+				"player_bounds"
+			],
+			[
+				"init",
+				"inited"
+			],
+			[
+				"phy",
+				"physics"
+			],
+			[
+				"ph",
+				"physics"
+			],
+			[
 				"player",
 				"player_cfg"
 			],
@@ -122,10 +142,6 @@
 			[
 				"valu",
 				"value"
-			],
-			[
-				"get",
-				"getDataTypeValue"
 			],
 			[
 				"ma",
@@ -498,22 +514,6 @@
 			[
 				"vic",
 				"victim"
-			],
-			[
-				"Animal",
-				"AnimalBehaviour"
-			],
-			[
-				"boo",
-				"boolValue"
-			],
-			[
-				"prop",
-				"propName"
-			],
-			[
-				"Seri",
-				"SerializedProperty"
 			]
 		]
 	},
@@ -523,7 +523,15 @@
 			"file": "src/states/boat.js",
 			"settings":
 			{
-				"buffer_size": 2296,
+				"buffer_size": 2452,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/entities/pier.js",
+			"settings":
+			{
+				"buffer_size": 616,
 				"line_ending": "Unix"
 			}
 		},
@@ -533,15 +541,6 @@
 			{
 				"buffer_size": 4692,
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/transforms/grid/pier.js",
-			"settings":
-			{
-				"buffer_size": 4405,
-				"line_ending": "Unix",
-				"name": "var config          = require('config');"
 			}
 		},
 		{
@@ -564,8 +563,26 @@
 			"file": "src/entities/boat.js",
 			"settings":
 			{
-				"buffer_size": 2472,
+				"buffer_size": 2567,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/ui/ui_manager.js",
+			"settings":
+			{
+				"buffer_size": 1261,
+				"line_ending": "Unix",
+				"name": "\"use strict\";"
+			}
+		},
+		{
+			"file": "src/ui/components/label.js",
+			"settings":
+			{
+				"buffer_size": 898,
+				"line_ending": "Unix",
+				"name": "\"use strict\";"
 			}
 		},
 		{
@@ -580,7 +597,7 @@
 			"file": "public/config.json",
 			"settings":
 			{
-				"buffer_size": 2476,
+				"buffer_size": 2538,
 				"line_ending": "Unix"
 			}
 		}
@@ -588,7 +605,7 @@
 	"build_system": "Packages/Unity3D Build System/Unity.sublime-build",
 	"command_palette":
 	{
-		"height": 375.0,
+		"height": 93.0,
 		"selected_items":
 		[
 			[
@@ -646,6 +663,8 @@
 	"expanded_folders":
 	[
 		"/Users/mandarin/Projects/Games/Fishing/fishing",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/entities",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators",
@@ -655,6 +674,18 @@
 	],
 	"file_history":
 	[
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/update.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/physics.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/README.md",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tileset_index_range.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/island_name.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/preloader.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/grid/pier.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/ui/components/nine_slice_scale.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/npm-debug.log",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_16.xml",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
+		"/Users/mandarin/Projects/Games/Mountain King/src/js/update.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/worldmap.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/cellular_automata.js",
@@ -662,7 +693,6 @@
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/generate.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/data/grid.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/preloader.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boot.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/fishing.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/extensions.js",
@@ -680,18 +710,13 @@
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_8_shadow.xml",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_8.xml",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_16_shadow.xml",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_16.xml",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/README.md",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/map/remap.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/island_name.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/index.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/fishing.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/main.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/dom.js",
 		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/generators/dungeon.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/browserify.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tileset_index_range.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tile_index_lookup.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/states.js",
 		"/Users/mandarin/Projects/Games/Dungeon Generator/dungeon-generator/src/generators/tilemapper.js",
@@ -776,13 +801,7 @@
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Utilities/GameObjectExtensions.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Utilities/PivotScale.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Utility/GameObjectExtensions.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/TakeABreak.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Utilities/PositionerPerlin.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Playa/Player.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/Panel/PlayerStatsUI.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/FogOfWar.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/UI/Panel/EnergyStationUI.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Controllers/Controller.cs"
+		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/TakeABreak.cs"
 	],
 	"find":
 	{
@@ -839,6 +858,21 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"this",
+			"registerUp",
+			"register(",
+			"hooks",
+			"nine_slice_scale",
+			"image",
+			"this",
+			"width",
+			"anchor",
+			"bitmapData",
+			"top",
+			"ScaledImage",
+			"player",
+			"cb",
+			"physics",
 			"4",
 			"boat",
 			"hull",
@@ -951,22 +985,7 @@
 			"x",
 			"tile_value",
 			"map",
-			"game",
-			"32",
-			"state_utils",
-			"tilemap",
-			"getFilteredMetaData",
-			"getMetaTileIDs",
-			"getTileIDs",
-			"tile_value",
-			"exact",
-			"value",
-			"wm_cfg",
-			"data",
-			"list",
-			"getMetaCoord",
-			"str",
-			"gettersetter"
+			"game"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1001,7 +1020,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -1010,15 +1029,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2296,
+						"buffer_size": 2452,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2106,
-								2106
+								2053,
+								2053
 							]
 						],
 						"settings":
@@ -1027,15 +1046,43 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 249.0,
+						"translation.x": -0.0,
+						"translation.y": 459.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "src/entities/pier.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 616,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								614,
+								614
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "src/generators/segment.js",
 					"semi_transient": false,
 					"settings":
@@ -1047,8 +1094,8 @@
 						"selection":
 						[
 							[
-								2347,
-								2347
+								0,
+								14
 							]
 						],
 						"settings":
@@ -1058,41 +1105,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 684.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/transforms/grid/pier.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4405,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3734,
-								3734
-							]
-						],
-						"settings":
-						{
-							"auto_name": "var config          = require('config');",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1041.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -1121,7 +1137,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
@@ -1148,10 +1164,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 894.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -1160,15 +1176,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2472,
+						"buffer_size": 2567,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2472,
-								2359
+								598,
+								598
 							]
 						],
 						"settings":
@@ -1179,14 +1195,72 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 579.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/ui/ui_manager.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1261,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1123,
+								1123
+							]
+						],
+						"settings":
+						{
+							"auto_name": "\"use strict\";",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/ui/components/label.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 898,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								840,
+								840
+							]
+						],
+						"settings":
+						{
+							"auto_name": "\"use strict\";",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 8,
 					"file": "src/entities/player.js",
 					"semi_transient": false,
 					"settings":
@@ -1198,8 +1272,8 @@
 						"selection":
 						[
 							[
-								764,
-								764
+								809,
+								841
 							]
 						],
 						"settings":
@@ -1212,24 +1286,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 9,
 					"file": "public/config.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2476,
+						"buffer_size": 2538,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								384,
-								384
+								1865,
+								1873
 							]
 						],
 						"settings":
@@ -1240,10 +1314,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 519.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -1299,6 +1373,22 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"upd",
+				"src/helpers/phaser/update.js"
+			],
+			[
+				"phy",
+				"src/helpers/phaser/physics.js"
+			],
+			[
+				"up",
+				"src/helpers/phaser/update.js"
+			],
+			[
+				"nin",
+				"src/ui/components/nine_slice_scale.js"
+			],
 			[
 				"worl",
 				"src/states/worldmap.js"
@@ -1794,33 +1884,17 @@
 			[
 				"chm",
 				"Controllers/CharacterManager.cs"
-			],
-			[
-				"piv",
-				"Utility/PivotScale.cs"
-			],
-			[
-				"pan",
-				"UI/PanelType.cs"
-			],
-			[
-				"coll",
-				"Playa/PlayerCollisions.cs"
-			],
-			[
-				"ania",
-				"Behaviours/AI/AnimalAI.cs"
 			]
 		],
 		"width": 0.0
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"selected_items":
 		[
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"select_symbol":
 	{

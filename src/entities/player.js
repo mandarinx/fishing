@@ -1,59 +1,80 @@
 "use strict";
 
-// NOTE:
-// Rename player to fisher, and put fisher inside a wrapper module
-// that wraps both fisher and boat. Expose functions for
-// - updating
-// - switching between fisher and boat?
-// - access to sprites for debugging
+var cu              = require('config_utils');
+var boat            = require('entities/boat');
+var fisherman       = require('entities/fisherman');
+var physics         = require('helpers/phaser/physics');
+var update          = require('helpers/phaser/update');
+var list            = require('utils/list');
 
-// About switching
-// Player could switch automatically when ...
-// a) the boat has been pressed against the pier for a certain amount of time
-// b) the boat is close to the pier, and player is pressing a key
-//    This should be fairly easy to make. Add a trigger to the pier, and make
-//    it fairly large.
-//    Create a physics manager that exposes functions for adding colliders
-//    and triggers. Triggers use game.physics.overlap.
-//    Callbacks for triggers and collisions are kept in a list. All callbacks
-//    are called for every collision and overlap.
-
-var config = require('config');
-var player;
+var current;
 var game;
-var player_cfg;
+var layer;
+var map_data;
 
-module.exports.create = function(g, x, y) {
+module.exports.init = function(g, l, md) {
     game = g;
-    player_cfg = config.get('entities', 'player');
+    layer = l;
+    map_data = md;
 
-    player = game.add.sprite(x, y, 'sprites');
-    player.anchor.setTo(0.5, 0);
-    player.frame = 3;
+    var x = layer.map.tileWidth * map_data.meta.boat_pos.x;
+    var y = layer.map.tileHeight * map_data.meta.boat_pos.y;
 
-    var physics_system = config.get('game', 'physics_system');
-    game.physics.enable(player, Phaser.Physics[physics_system]);
+    fisherman.init(game, x, y);
+    boat.init(game, x, y);
+    setDefault();
 
-    player.body.setSize(12, 12, 0, 0);
-};
+    // load and init all states. Read from config?
 
-module.exports.update = function(cursors, pointer, layer) {
-    game.physics.arcade.collide(player, layer);
+    physics.setPlayer(this);
+    update.register(this);
+}
 
-    if (cursors.up.isDown) {
-        player.y -= player_cfg.speed;
-    } else if (cursors.down.isDown) {
-        player.y += player_cfg.speed;
+module.exports.update = function() {
+    physics.collide(current.sprite, layer);
+    current.update();
+}
+
+// add triggerEnter, Leave and Stay
+    // get name of entity passed
+    // append 'on_' to the name
+    // switch to state with name
+
+function switchToBoat() {
+    fisherman.hide();
+    boat.show();
+    current = boat;
+}
+
+function switchToFisherman() {
+    boat.hide();
+    fisherman.show();
+    current = fisherman;
+}
+
+function setDefault() {
+    var tile_type = cu.getDataType(list.get(map_data.data,
+                                            map_data.meta.boat_pos.x,
+                                            map_data.meta.boat_pos.y,
+                                            map_data.width));
+
+    if (matchSpawnTile(fisherman, tile_type)) {
+        switchToFisherman();
     }
-
-    if (cursors.left.isDown) {
-        player.x -= player_cfg.speed;
-    } else if (cursors.right.isDown) {
-        player.x += player_cfg.speed;
+    if (matchSpawnTile(boat, tile_type)) {
+        switchToBoat();
     }
-};
+}
+
+function matchSpawnTile(entity, type) {
+    if (entity.settings.spawn_tile instanceof Array) {
+        return entity.settings.spawn_tile.indexOf(type) > -1;
+    } else {
+        return entity.settings.spawn_tile === type;
+    }
+}
 
 Object.defineProperty(module.exports, 'sprite', {
-    get: function() { return player; },
+    get: function() { return current.sprite; },
     enumerable: true
 });

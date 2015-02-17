@@ -3,40 +3,55 @@
 var config          = require('config');
 var update          = require('helpers/phaser/update');
 
-var overlaps = [];
-var player_bounds;
+var triggers = [];
 var player;
+var system_type;
+var system;
+var game;
 
-module.exports.init = function(game) {
-    var physics_system = config.get('game', 'physics_system');
-    game.physics.startSystem(Phaser.Physics[physics_system]);
+module.exports.init = function(g) {
+    game = g;
+    var system_id = config.get('game', 'physics_system');
+    system_type = Phaser.Physics[system_id];
+    game.physics.startSystem(system_type);
+    system = game.physics[system_id.toLowerCase()];
     update.register(this);
 }
 
-// enableForSprite(sprite)
-    // enable physics for the given sprite, using the defined physics system
+module.exports.enable = function(sprite) {
+    game.physics.enable(sprite, system_type);
+}
 
-// all sprites collide with player by default
-
-// addTrigger(sprite, options, callback)
-    // add physics to sprite if not added
-    // scale up the hit area using options
-    // add sprite and callback to an object in a list of triggers
+module.exports.collide = function(a, b) {
+    system.collide(a, b);
+}
 
 module.exports.setPlayer = function(p) {
     player = p;
 }
 
-module.exports.addOverlap = function(bounds, callback) {
-    overlaps.push({bounds: bounds, callback: callback});
+module.exports.addTrigger = function(owner) {
+    triggers.push({
+        owner:      owner,
+        entered:    false
+    });
 }
 
 module.exports.update = function() {
-    player_bounds = player.sprite.getBounds();
+    triggers.forEach(function(trigger) {
+        if (Phaser.Rectangle.intersects(player.sprite.getBounds(),
+                                        trigger.owner.bounds)) {
+            if (!trigger.entered) {
+                trigger.owner.triggerEnter(player);
+                trigger.entered = true;
+            }
 
-    overlaps.forEach(function(overlap) {
-        if (Phaser.Rectangle.intersects(player_bounds, overlap.bounds)) {
-            overlap.callback(player);
+            trigger.owner.triggerStay(player);
+        } else {
+            if (trigger.entered) {
+                trigger.owner.triggerLeave(player);
+                trigger.entered = false;
+            }
         }
     });
 }

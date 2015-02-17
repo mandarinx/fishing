@@ -12,6 +12,7 @@
 
 var config          = require('config');
 var physics         = require('helpers/phaser/physics');
+var input           = require('controllers/input');
 
 var speed_rotate = 90;
 var speed_forward = 40;
@@ -22,9 +23,14 @@ var sails;
 var sail_up = 1;
 var sail_down = 2;
 var sail_is_up = false;
+
+var settings = {
+    spawn_tile: 'Shallow sea'
+};
+
 // var key_space;
 
-module.exports.create = function(g, x, y) {
+module.exports.init = function(g, x, y) {
     game = g;
     boat = game.add.sprite();
 
@@ -45,26 +51,26 @@ module.exports.create = function(g, x, y) {
     boat.y = y;
     boat.anchor.setTo(0.5, 0.5);
 
-    var physics_system = config.get('game', 'physics_system');
-    game.physics.enable(boat, Phaser.Physics[physics_system]);
-    game.physics.enable(hull, Phaser.Physics[physics_system]);
+    physics.enable(boat);
+    physics.enable(hull);
 
     boat.body.setSize(12, 12, 0, 0);
 
-    physics.setPlayer(this);
     // Keep for action button, like fishing
     // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     // key_space.onUp.add(onSpace);
 };
 
-module.exports.update = function(cursors, pointer, layer) {
-    game.physics.arcade.collide(boat, layer);
+module.exports.update = function() {
+    if (!boat.visible) {
+        return;
+    }
 
     boat.body.velocity.x *= 0.9;
     boat.body.velocity.y *= 0.9;
     hull.body.angularVelocity *= 0.9;
 
-    sail_is_up = cursors.up.isDown ? true : false;
+    sail_is_up = input.up.isDown ? true : false;
     setSail();
 
     if (sail_is_up) {
@@ -73,12 +79,20 @@ module.exports.update = function(cursors, pointer, layer) {
                                                      boat.body.velocity);
     }
 
-    if (cursors.right.isDown) {
+    if (input.right.isDown) {
         hull.body.angularVelocity = speed_rotate;
-    } else if (cursors.left.isDown) {
+    } else if (input.left.isDown) {
         hull.body.angularVelocity = -speed_rotate;
     }
 };
+
+module.exports.show = function() {
+    boat.visible = true;
+}
+
+module.exports.hide = function() {
+    boat.visible = false;
+}
 
 function setSail() {
     sails.frame = sail_is_up ? sail_up : sail_down;
@@ -89,5 +103,10 @@ function setSail() {
 
 Object.defineProperty(module.exports, 'sprite', {
     get: function() { return boat; },
+    enumerable: true
+});
+
+Object.defineProperty(module.exports, 'settings', {
+    get: function() { return settings; },
     enumerable: true
 });

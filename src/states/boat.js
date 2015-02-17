@@ -7,16 +7,12 @@ var list            = require('utils/list');
 var tilemaps        = require('helpers/phaser/tilemaps');
 var physics         = require('helpers/phaser/physics');
 var segment         = require('generators/segment');
-var boat            = require('entities/boat');
 var player          = require('entities/player');
 var pier            = require('entities/pier');
+var input           = require('controllers/input');
 var ui              = require('ui/ui_manager');
 
 var game;
-// TODO: Bundle cursors and pointer in an input manager. The input manager
-// accepts a key mapping object from config
-var cursors;
-var pointer;
 var coord = {};
 var layer;
 var map_data;
@@ -32,12 +28,7 @@ module.exports.create = function() {
     game.stage.backgroundColor = game_config.background_color;
 
     physics.init(game);
-
-    // Stop the following keys from propagating up to the browser
-    game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT,
-                                      Phaser.Keyboard.RIGHT,
-                                      Phaser.Keyboard.SPACEBAR]);
-
+    input.init(game);
 
     tilemaps.loadTilemap(game, {
         map_name:   'BoatPracticing',
@@ -49,32 +40,24 @@ module.exports.create = function() {
     // layer.debug = true;
 
     // Need to switch collision between player/boat switches
-    layer.map.setCollision([3, 4, 5], 'BoatPracticing');
+    // Dispatch a player switch event that the layer controller can listen
+    // to and toggle the collisions
+    // Get collisions from config
+    layer.map.setCollision([3, 4, 5], layer);
 
-    cursors = game.input.keyboard.createCursorKeys();
-    pointer = game.input.activePointer;
-
+    // Use a factory instead. Pass the level data and let the factory
+    // create as many piers as necessary
     pier.create(layer, map_data);
 
-    // TODO: Merge boat and player
-    boat.create(game,
-                layer.map.tileWidth * map_data.meta.boat_pos.x,
-                layer.map.tileHeight * map_data.meta.boat_pos.y);
-
-    // player.create(game,
-    //               layer.map.tileWidth * 16,
-    //               layer.map.tileHeight * 16);
+    player.init(game, layer, map_data);
 
     ui.init(game);
 
 };
 
 module.exports.update = function() {
-    coord.x = layer.getTileX(pointer.worldX);
-    coord.y = layer.getTileY(pointer.worldY);
-
-    boat.update(cursors, pointer, layer);
-    // player.update(cursors, pointer, layer);
+    coord.x = layer.getTileX(input.pointer.worldX);
+    coord.y = layer.getTileY(input.pointer.worldY);
 };
 
 module.exports.render = function() {

@@ -13,7 +13,15 @@ module.exports.getDataTypeValue = function(name) {
     }
     return dt.value;
 }
+
+module.exports.getDataType = function(value) {
+    var data_types = config.get('map', 'data_types');
+    var dt = null;
+    for (var i=0; i<data_types.length; i++) {
+        dt = data_types[i];
+        if (dt.value === value) {
+            break;
         }
     }
-    return null;
+    return dt.name;
 }

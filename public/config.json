@@ -10,6 +10,13 @@
         "states": ["Boot", "Preloader", "Boat"],
         "physics_system": "ARCADE"
     },
+    "input": {
+        "action": "SPACEBAR",
+        "up": "UP",
+        "down": "DOWN",
+        "left": "LEFT",
+        "right": "RIGHT"
+    },
     "entities": {
         "player": {
             "speed": 1

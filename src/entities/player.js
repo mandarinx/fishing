@@ -23,9 +23,6 @@ module.exports.init = function(g, l, md) {
     fisherman.init(game, x, y);
     boat.init(game, x, y);
     setDefault();
-
-    // load and init all states. Read from config?
-
     physics.setPlayer(this);
     update.register(this);
 }
@@ -35,10 +32,15 @@ module.exports.update = function() {
     current.update();
 }
 
-// add triggerEnter, Leave and Stay
-    // get name of entity passed
-    // append 'on_' to the name
-    // switch to state with name
+module.exports.triggerEnter = function(entity) {
+    current.setState(entity.actions);
+}
+
+module.exports.triggerLeave = function(entity) {
+    current.setState('idle');
+}
+
+module.exports.triggerStay = function(entity) {}
 
 function switchToBoat() {
     fisherman.hide();

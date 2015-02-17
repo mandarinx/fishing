@@ -29,6 +29,11 @@ var settings = {
     spawn_tile: ['Island', 'Pier']
 };
 
+var states = {
+    'idle':     idle
+};
+var cur_state;
+
 module.exports.init = function(g, x, y) {
     game = g;
     player_cfg = config.get('entities', 'player');
@@ -39,12 +44,16 @@ module.exports.init = function(g, x, y) {
 
     physics.enable(fisherman);
     fisherman.body.setSize(12, 12, 0, 0);
+
+    this.setState('idle');
 };
 
 module.exports.update = function() {
     if (!fisherman.visible) {
         return;
     }
+
+    cur_state();
 
     if (input.up.isDown) {
         fisherman.y -= player_cfg.speed;
@@ -61,11 +70,30 @@ module.exports.update = function() {
 
 module.exports.show = function() {
     fisherman.visible = true;
+    this.setState('walking');
 }
 
 module.exports.hide = function() {
     fisherman.visible = false;
+    this.setState('idle');
 }
+
+module.exports.setState = function(state) {
+    if (state instanceof Array) {
+        for (var i=0; i<state.length; i++) {
+            if (typeof states[state[i]] !== 'undefined') {
+                cur_state = states[state[i]];
+                return;
+            }
+        }
+    }
+
+    if (typeof states[state] !== 'undefined') {
+        cur_state = states[state];
+    }
+}
+
+function idle() {}
 
 Object.defineProperty(module.exports, 'sprite', {
     get: function() { return fisherman; },

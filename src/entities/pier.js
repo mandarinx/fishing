@@ -4,6 +4,7 @@ var physics         = require('helpers/phaser/physics');
 var ui              = require('ui/ui_manager');
 
 var bounds;
+var actions = ['dock'];
 
 module.exports.create = function(layer, map_data) {
     var tw = layer.map.tileWidth;
@@ -28,5 +29,10 @@ module.exports.triggerStay = function(player) {}
 
 Object.defineProperty(module.exports, 'bounds', {
     get: function() { return bounds; },
+    enumerable: true
+});
+
+Object.defineProperty(module.exports, 'actions', {
+    get: function() { return actions; },
     enumerable: true
 });

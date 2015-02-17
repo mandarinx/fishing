@@ -43,13 +43,16 @@ module.exports.update = function() {
                                         trigger.owner.bounds)) {
             if (!trigger.entered) {
                 trigger.owner.triggerEnter(player);
+                player.triggerEnter(trigger.owner);
                 trigger.entered = true;
             }
-
             trigger.owner.triggerStay(player);
+            player.triggerStay(trigger.owner);
+
         } else {
             if (trigger.entered) {
                 trigger.owner.triggerLeave(player);
+                player.triggerLeave(trigger.owner);
                 trigger.entered = false;
             }
         }

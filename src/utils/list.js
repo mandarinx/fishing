@@ -1,19 +1,3 @@
-module.exports.each = function(list, width, callback) {
-    if (!callback) {
-        console.warn('each() missing callback');
-        return;
-    }
-
-    var x = 0;
-    var y = 0;
-
-    list.forEach(function(item, i) {
-        x = i % width !== 0 ? x + 1 : 0;
-        y = i > 0 && x === 0 ? y + 1 : y;
-        callback(item, x, y, i);
-    });
-};
-
 module.exports.get = function(arr, x, y, width) {
     return arr[(width * y) + x];
 };
@@ -54,7 +38,8 @@ module.exports.printString = function(list, width) {
 
     var str = '';
 
-    this.each(list, width, function(tile, x, y, i) {
+    // this.each(list, width, function(tile, x, y, i) {
+    list.each(width, function(tile, x, y, i) {
         str += i % width !== 0 ? ',' : '\n';
         str += tile;
     });

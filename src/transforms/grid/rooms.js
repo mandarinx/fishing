@@ -8,7 +8,7 @@ module.exports = {
         var data = [];
         var rooms_tmp = [];
 
-        list.each(grid.data, grid.width, function(tile, x, y, i) {
+        grid.data.each(grid.width, function(tile, x, y, i) {
             data.push(tile);
         });
 

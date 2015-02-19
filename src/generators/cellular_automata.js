@@ -18,7 +18,8 @@ module.exports = {
 
         Math.seed = options.seed;
 
-        list.each(grid.data, grid.width, function(item, x, y, i) {
+        grid.data.each(grid.width, function(value, x, y, i) {
+        // list.each(grid.data, grid.width, function(item, x, y, i) {
             if ((x < options.padding) ||
                 (y < options.padding) ||
                 (x >= grid.width - options.padding) ||
@@ -60,7 +61,8 @@ function generateCells(grid, options) {
         var corner = false;
         var val = -1;
 
-        list.each(new_map, grid.width, function(tile, x, y, i) {
+        // list.each(new_map, grid.width, function(tile, x, y, i) {
+        new_map.each(grid.width, function(tile, x, y, i) {
 
             x_low = Math.max(0, x - 1);
             x_high = Math.min(grid.width - 1, x + 1);

@@ -6,6 +6,14 @@ Math.seededRandom = function(min, max) {
     return min + (Math.seed / 233280) * (max - min);
 }
 
+Array.prototype.each = function(width, cb) {
+    var y = 0, i = 0;
+    for (i=0; i<this.length; i++) {
+        y += i>0 && i%width===0 ? 1 : 0;
+        cb(this[i], i%width, y, i);
+    }
+};
+
 Array.prototype.next = function() {
     if (typeof this.__counter === 'undefined') {
         this.__counter = -1;

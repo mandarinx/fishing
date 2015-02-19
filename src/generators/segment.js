@@ -120,7 +120,8 @@ function generateIsland(segment, opts) {
 }
 
 function generateFishingSea(segment) {
-    list.each(segment.data, segment.width, function(tile, x, y, i) {
+    // list.each(segment.data, segment.width, function(tile, x, y, i) {
+    segment.data.each(segment.width, function(value, x, y, i) {
         if ((x < 5) ||
             (x > segment.width - 6) ||
             (y < 5) ||
@@ -133,7 +134,8 @@ function generateFishingSea(segment) {
 }
 
 function generateShallowSea(segment) {
-    list.each(segment.data, segment.width, function(tile, x, y, i) {
+    // list.each(segment.data, segment.width, function(tile, x, y, i) {
+    segment.data.each(segment.width, function(tile, x, y, i) {
         segment.data[i] = cu.getDataTypeValue('Shallow sea');
     });
 }

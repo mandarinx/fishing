@@ -4,6 +4,70 @@
 		"selected_items":
 		[
 			[
+				"is",
+				"is_undefined"
+			],
+			[
+				"sail",
+				"sailing"
+			],
+			[
+				"sta",
+				"state"
+			],
+			[
+				"st",
+				"state"
+			],
+			[
+				"setS",
+				"setState"
+			],
+			[
+				"swit",
+				"switchToFisherman"
+			],
+			[
+				"tile",
+				"tile_type"
+			],
+			[
+				"boat",
+				"boat_pos"
+			],
+			[
+				"sys",
+				"system_id"
+			],
+			[
+				"sw",
+				"switchTo"
+			],
+			[
+				"phy",
+				"physics_system"
+			],
+			[
+				"key",
+				"key_codes"
+			],
+			[
+				"ac",
+				"action_label"
+			],
+			[
+				"in",
+				"inputs"
+			],
+			[
+				"regist",
+				"registerKeys"
+			],
+			[
+				"inpu",
+				"input_config"
+			],
+			[
 				"get",
 				"getBounds"
 			],
@@ -14,10 +78,6 @@
 			[
 				"init",
 				"inited"
-			],
-			[
-				"phy",
-				"physics"
 			],
 			[
 				"ph",
@@ -34,10 +94,6 @@
 			[
 				"map",
 				"map_data"
-			],
-			[
-				"st",
-				"start_index"
 			],
 			[
 				"wat",
@@ -66,18 +122,6 @@
 			[
 				"at_",
 				"at_right"
-			],
-			[
-				"tile",
-				"tile_index"
-			],
-			[
-				"key",
-				"key_space"
-			],
-			[
-				"sail",
-				"sail_is_up"
 			],
 			[
 				"sai",
@@ -470,50 +514,6 @@
 			[
 				"Chara",
 				"Character"
-			],
-			[
-				"Char",
-				"Character"
-			],
-			[
-				"hig",
-				"highlightColor"
-			],
-			[
-				"char",
-				"characters"
-			],
-			[
-				"high",
-				"Highlight"
-			],
-			[
-				"butt",
-				"buttonScientist"
-			],
-			[
-				"enti",
-				"entityConfig"
-			],
-			[
-				"type",
-				"typeString"
-			],
-			[
-				"Clear",
-				"ClearListeners"
-			],
-			[
-				"at",
-				"attEnt"
-			],
-			[
-				"iden",
-				"identifyEnemies"
-			],
-			[
-				"vic",
-				"victim"
 			]
 		]
 	},
@@ -523,7 +523,40 @@
 			"file": "src/states/boat.js",
 			"settings":
 			{
-				"buffer_size": 2452,
+				"buffer_size": 1865,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/entities/player.js",
+			"settings":
+			{
+				"buffer_size": 2093,
+				"line_ending": "Unix",
+				"name": "\"use strict\";"
+			}
+		},
+		{
+			"file": "src/entities/boat.js",
+			"settings":
+			{
+				"buffer_size": 3178,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/entities/fisherman.js",
+			"settings":
+			{
+				"buffer_size": 2360,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/controllers/states.js",
+			"settings":
+			{
+				"buffer_size": 783,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,15 +564,33 @@
 			"file": "src/entities/pier.js",
 			"settings":
 			{
-				"buffer_size": 616,
+				"buffer_size": 964,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/generators/segment.js",
+			"file": "src/ui/ui_manager.js",
 			"settings":
 			{
-				"buffer_size": 4692,
+				"buffer_size": 1650,
+				"line_ending": "Unix",
+				"name": "\"use strict\";"
+			}
+		},
+		{
+			"file": "src/controllers/input.js",
+			"settings":
+			{
+				"buffer_size": 1275,
+				"line_ending": "Unix",
+				"name": "\"use strict\";"
+			}
+		},
+		{
+			"file": "src/helpers/phaser/physics.js",
+			"settings":
+			{
+				"buffer_size": 1545,
 				"line_ending": "Unix"
 			}
 		},
@@ -547,7 +598,7 @@
 			"file": "src/config_utils.js",
 			"settings":
 			{
-				"buffer_size": 260,
+				"buffer_size": 622,
 				"line_ending": "Unix"
 			}
 		},
@@ -560,23 +611,6 @@
 			}
 		},
 		{
-			"file": "src/entities/boat.js",
-			"settings":
-			{
-				"buffer_size": 2567,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/ui/ui_manager.js",
-			"settings":
-			{
-				"buffer_size": 1261,
-				"line_ending": "Unix",
-				"name": "\"use strict\";"
-			}
-		},
-		{
 			"file": "src/ui/components/label.js",
 			"settings":
 			{
@@ -586,18 +620,10 @@
 			}
 		},
 		{
-			"file": "src/entities/player.js",
-			"settings":
-			{
-				"buffer_size": 1795,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "public/config.json",
 			"settings":
 			{
-				"buffer_size": 2538,
+				"buffer_size": 2683,
 				"line_ending": "Unix"
 			}
 		}
@@ -605,24 +631,44 @@
 	"build_system": "Packages/Unity3D Build System/Unity.sublime-build",
 	"command_palette":
 	{
-		"height": 93.0,
+		"height": 269.0,
 		"selected_items":
 		[
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
 			[
 				"inst",
 				"Package Control: Install Package"
 			],
 			[
-				"install",
-				"Package Control: Install Package"
+				"pack",
+				"Package Control: List Packages"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
 			],
 			[
 				"dis",
 				"Package Control: Disable Package"
 			],
 			[
-				"pack",
-				"Package Control: List Packages"
+				"packa",
+				"Package Control: Disable Package"
+			],
+			[
+				"lint",
+				"SublimeLinter: Toggle Linter"
+			],
+			[
+				"uninst",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
 			],
 			[
 				"package",
@@ -641,7 +687,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 579.0
+		"width": 453.0
 	},
 	"console":
 	{
@@ -663,9 +709,8 @@
 	"expanded_folders":
 	[
 		"/Users/mandarin/Projects/Games/Fishing/fishing",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/public",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/controllers",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/entities",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states",
@@ -674,32 +719,34 @@
 	],
 	"file_history":
 	[
+		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/segment.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/controllers/states.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/controllers/actions.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/grid/pier.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/list.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/update.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/physics.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/README.md",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/config/tileset_index_range.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/island_name.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/preloader.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/grid/pier.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/ui/components/nine_slice_scale.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/npm-debug.log",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/assets/fonts/press_start_16.xml",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
 		"/Users/mandarin/Projects/Games/Mountain King/src/js/update.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/worldmap.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/cellular_automata.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/list.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/generate.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/data/grid.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boot.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/fishing.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/extensions.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/package.json",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/ui/components/unobtrusive_label.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/tilemaps.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/segment.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/tilemapper.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/world.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boat.js",
@@ -799,9 +846,7 @@
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/FSMTransitionsAndStates.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/Walking.cs",
 		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Utilities/GameObjectExtensions.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Utilities/PivotScale.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Utility/GameObjectExtensions.cs",
-		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/FSM/States/TakeABreak.cs"
+		"/Users/mandarin/Clients/Hyper/Redux Ark/git.redux/Assets/Proto1/Scripts/Utilities/PivotScale.cs"
 	],
 	"find":
 	{
@@ -858,6 +903,23 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"state",
+			"dock",
+			"player",
+			"up",
+			"forward",
+			"getDataTypeValue",
+			"cu",
+			"system_type",
+			"physics_system",
+			"pointer",
+			"right",
+			"pointer",
+			"player",
+			"boat",
+			"action",
+			"overlap",
+			"overlaps",
 			"this",
 			"registerUp",
 			"register(",
@@ -968,24 +1030,7 @@
 			"1",
 			"smoothness",
 			"segment",
-			"data",
-			"grid",
-			".fill(",
-			"data",
-			"width",
-			"_options",
-			"world",
-			"worldmap",
-			"world_height",
-			"world_width",
-			"list",
-			"coordinate",
-			"worldmap",
-			"seed",
-			"x",
-			"tile_value",
-			"map",
-			"game"
+			"data"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1020,7 +1065,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -1029,15 +1074,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2452,
+						"buffer_size": 1865,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2053,
-								2053
+								1865,
+								1865
 							]
 						],
 						"settings":
@@ -1046,150 +1091,33 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": -0.0,
-						"translation.y": 459.0,
+						"translation.x": 0.0,
+						"translation.y": 204.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/entities/pier.js",
+					"file": "src/entities/player.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 616,
+						"buffer_size": 2093,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								614,
-								614
+								1046,
+								1046
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/generators/segment.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4692,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								14
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/config_utils.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 260,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								14,
-								14
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/data/grid.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2878,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2317,
-								2406
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "src/entities/boat.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2567,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								598,
-								598
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
+							"auto_name": "\"use strict\";",
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -1202,26 +1130,88 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "src/ui/ui_manager.js",
+					"buffer": 2,
+					"file": "src/entities/boat.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1261,
+						"buffer_size": 3178,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1123,
-								1123
+								2698,
+								2728
 							]
 						],
 						"settings":
 						{
-							"auto_name": "\"use strict\";",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1194.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/entities/fisherman.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2360,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1996,
+								1996
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 549.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/controllers/states.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 783,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								783,
+								783
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1231,7 +1221,190 @@
 					"type": "text"
 				},
 				{
+					"buffer": 5,
+					"file": "src/entities/pier.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 964,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								467,
+								467
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/ui/ui_manager.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1650,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1420,
+								1420
+							]
+						],
+						"settings":
+						{
+							"auto_name": "\"use strict\";",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
 					"buffer": 7,
+					"file": "src/controllers/input.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1275,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								930,
+								930
+							]
+						],
+						"settings":
+						{
+							"auto_name": "\"use strict\";",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/helpers/phaser/physics.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1545,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1467,
+								1467
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 69.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "src/config_utils.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 622,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								352,
+								363
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/data/grid.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2878,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2878,
+								2878
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 894.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
 					"file": "src/ui/components/label.js",
 					"semi_transient": false,
 					"settings":
@@ -1256,54 +1429,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "src/entities/player.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1795,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								809,
-								841
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
+					"buffer": 12,
 					"file": "public/config.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2538,
+						"buffer_size": 2683,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1865,
-								1873
+								410,
+								410
 							]
 						],
 						"settings":
@@ -1314,10 +1457,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 519.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1374,7 +1517,23 @@
 		"selected_items":
 		[
 			[
-				"upd",
+				"state",
+				"src/controllers/states.js"
+			],
+			[
+				"typ",
+				"src/utils/type.js"
+			],
+			[
+				"con",
+				"src/config_utils.js"
+			],
+			[
+				"list",
+				"src/utils/list.js"
+			],
+			[
+				"up",
 				"src/helpers/phaser/update.js"
 			],
 			[
@@ -1382,7 +1541,7 @@
 				"src/helpers/phaser/physics.js"
 			],
 			[
-				"up",
+				"upd",
 				"src/helpers/phaser/update.js"
 			],
 			[
@@ -1396,10 +1555,6 @@
 			[
 				"gri",
 				"src/data/grid.js"
-			],
-			[
-				"list",
-				"src/utils/list.js"
 			],
 			[
 				"seg",
@@ -1416,10 +1571,6 @@
 			[
 				"fish",
 				"src/fishing.js"
-			],
-			[
-				"con",
-				"src/config.js"
 			],
 			[
 				"boo",
@@ -1464,10 +1615,6 @@
 			[
 				"wor",
 				"src/states/worldmap.js"
-			],
-			[
-				"typ",
-				"src/utils/type.js"
 			],
 			[
 				"roo",
@@ -1604,10 +1751,6 @@
 			[
 				"perl",
 				"Controllers/Utilities/PositionerPerlin.cs"
-			],
-			[
-				"state",
-				"FSM/FSMTransitionsAndStates.cs"
 			],
 			[
 				"opt",

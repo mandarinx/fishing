@@ -3523,7 +3523,8 @@ function Grid(width, height, value) {
             }
 
             var row = [];
-            list.each(this.data, w, function(tile, x, y, i) {
+            // list.each(this.data, w, function(tile, x, y, i) {
+            this.data.each(w, function(tile, x, y, i) {
                 row.push(walkables.indexOf(tile) >= 0 ? 0 : 1);
                 if (x === w - 1) {
                     this.pathf_data.push(row);
@@ -4004,7 +4005,8 @@ module.exports = {
 
         Math.seed = options.seed;
 
-        list.each(grid.data, grid.width, function(item, x, y, i) {
+        grid.data.each(grid.width, function(value, x, y, i) {
+        // list.each(grid.data, grid.width, function(item, x, y, i) {
             if ((x < options.padding) ||
                 (y < options.padding) ||
                 (x >= grid.width - options.padding) ||
@@ -4046,7 +4048,8 @@ function generateCells(grid, options) {
         var corner = false;
         var val = -1;
 
-        list.each(new_map, grid.width, function(tile, x, y, i) {
+        // list.each(new_map, grid.width, function(tile, x, y, i) {
+        new_map.each(grid.width, function(tile, x, y, i) {
 
             x_low = Math.max(0, x - 1);
             x_high = Math.min(grid.width - 1, x + 1);
@@ -4274,7 +4277,8 @@ function generateIsland(segment, opts) {
 }
 
 function generateFishingSea(segment) {
-    list.each(segment.data, segment.width, function(tile, x, y, i) {
+    // list.each(segment.data, segment.width, function(tile, x, y, i) {
+    segment.data.each(segment.width, function(value, x, y, i) {
         if ((x < 5) ||
             (x > segment.width - 6) ||
             (y < 5) ||
@@ -4287,7 +4291,8 @@ function generateFishingSea(segment) {
 }
 
 function generateShallowSea(segment) {
-    list.each(segment.data, segment.width, function(tile, x, y, i) {
+    // list.each(segment.data, segment.width, function(tile, x, y, i) {
+    segment.data.each(segment.width, function(tile, x, y, i) {
         segment.data[i] = cu.getDataTypeValue('Shallow sea');
     });
 }
@@ -4798,7 +4803,8 @@ var gridcreator     = require('./data/grid.js');
 var list            = require('./utils/list.js');
 
 module.exports.map = function(grid, data_types, tilemap) {
-    list.each(grid.data, grid.width, function(tile_value, x, y, i) {
+    // list.each(grid.data, grid.width, function(tile_value, x, y, i) {
+    grid.data.each(grid.width, function(tile_value, x, y, i) {
         grid.tiles[i] = tilemap[tile_value];
     });
 };
@@ -4957,7 +4963,7 @@ module.exports = {
         var data = [];
         var rooms_tmp = [];
 
-        list.each(grid.data, grid.width, function(tile, x, y, i) {
+        grid.data.each(grid.width, function(tile, x, y, i) {
             data.push(tile);
         });
 
@@ -5285,6 +5291,14 @@ Math.seededRandom = function(min, max) {
     return min + (Math.seed / 233280) * (max - min);
 }
 
+Array.prototype.each = function(width, cb) {
+    var y = 0, i = 0;
+    for (i=0; i<this.length; i++) {
+        y += i>0 && i%width===0 ? 1 : 0;
+        cb(this[i], i%width, y, i);
+    }
+};
+
 Array.prototype.next = function() {
     if (typeof this.__counter === 'undefined') {
         this.__counter = -1;
@@ -5332,22 +5346,6 @@ Object.size = function(obj) {
 }
 
 },{}],60:[function(require,module,exports){
-module.exports.each = function(list, width, callback) {
-    if (!callback) {
-        console.warn('each() missing callback');
-        return;
-    }
-
-    var x = 0;
-    var y = 0;
-
-    list.forEach(function(item, i) {
-        x = i % width !== 0 ? x + 1 : 0;
-        y = i > 0 && x === 0 ? y + 1 : y;
-        callback(item, x, y, i);
-    });
-};
-
 module.exports.get = function(arr, x, y, width) {
     return arr[(width * y) + x];
 };
@@ -5388,7 +5386,8 @@ module.exports.printString = function(list, width) {
 
     var str = '';
 
-    this.each(list, width, function(tile, x, y, i) {
+    // this.each(list, width, function(tile, x, y, i) {
+    list.each(width, function(tile, x, y, i) {
         str += i % width !== 0 ? ',' : '\n';
         str += tile;
     });

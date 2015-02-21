@@ -14,6 +14,7 @@ var config          = require('config');
 var input           = require('controllers/input');
 var states          = require('controllers/states');
 var physics         = require('helpers/phaser/physics');
+var player          = require('entities/player');
 
 var speed_rotate = 90;
 var speed_forward = 40;
@@ -29,8 +30,7 @@ var settings = {
     spawn_tile: 'Shallow sea'
 };
 
-
-module.exports.init = function(g, x, y) {
+module.exports.init = function(g) {
     game = g;
     boat = game.add.sprite();
 
@@ -48,10 +48,10 @@ module.exports.init = function(g, x, y) {
 
     // Get these values from somewhere. They are the half of the sprite's
     // dimensions
-    x += 8;
-    y += 8;
-    boat.x = x;
-    boat.y = y;
+    // x += 8;
+    // y += 8;
+    // boat.x = x;
+    // boat.y = y;
     boat.anchor.setTo(0.5, 0.5);
 
     physics.enable(boat);
@@ -59,10 +59,9 @@ module.exports.init = function(g, x, y) {
 
     boat.body.setSize(12, 12, 0, 0);
 
-    // TODO: Load and init all states. Read from config
-    // var states = require('states/index');
-    states.set(this, 'idle');
+    this.hide();
 
+    return this;
 };
 
 module.exports.update = function() {
@@ -92,7 +91,10 @@ module.exports.update = function() {
     }
 };
 
-module.exports.show = function() {
+module.exports.show = function(x, y) {
+    // TODO: get the tile's halfsize from somewhere
+    boat.x = x + 8;
+    boat.y = y + 8;
     boat.visible = true;
     states.set(this, 'sailing');
 }
@@ -110,6 +112,7 @@ function idle() {}
 
 function dock(pier) {
     if (input.action) {
+        player.switchTo('fisherman', pier.position.x, pier.position.y);
     }
 }
 

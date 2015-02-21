@@ -1,12 +1,5 @@
 "use strict";
 
-// NOTE:
-// Rename player to fisher, and put fisher inside a wrapper module
-// that wraps both fisher and boat. Expose functions for
-// - updating
-// - switching between fisher and boat?
-// - access to sprites for debugging
-
 // About switching
 // Player could switch automatically when ...
 // a) the boat has been pressed against the pier for a certain amount of time
@@ -30,20 +23,22 @@ var settings = {
     spawn_tile: ['Island', 'Pier']
 };
 
-module.exports.init = function(g, x, y) {
+module.exports.init = function(g) {
     game = g;
     player_cfg = config.get('entities', 'player');
 
     states.add(this, 'idle', idle);
 
-    fisherman = game.add.sprite(x, y, 'sprites');
+    fisherman = game.add.sprite(0, 0, 'sprites');
     fisherman.anchor.setTo(0.5, 0);
     fisherman.frame = 3;
 
     physics.enable(fisherman);
     fisherman.body.setSize(12, 12, 0, 0);
 
-    states.set(this, 'idle');
+    this.hide();
+
+    return this;
 };
 
 module.exports.update = function() {
@@ -66,7 +61,9 @@ module.exports.update = function() {
     }
 };
 
-module.exports.show = function() {
+module.exports.show = function(x, y) {
+    fisherman.x = x + 8;
+    fisherman.y = y;
     fisherman.visible = true;
     states.set(this, 'walking');
 }

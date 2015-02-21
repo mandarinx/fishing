@@ -9,7 +9,7 @@ module.exports.add = function(owner, name, callback) {
     owner.__states[name] = callback;
 }
 
-module.exports.set = function(owner, name) {
+module.exports.set = function(owner, name, options) {
     if (!type(owner.__states).is_object) {
         return;
     }
@@ -17,6 +17,7 @@ module.exports.set = function(owner, name) {
     if (type(name).is_array) {
         for (var i=0; i<name.length; i++) {
             if (!type(owner.__states[name[i]]).is_undefined) {
+                owner.__current_state_options = options;
                 owner.__current_state = owner.__states[name[i]];
                 return;
             }
@@ -24,10 +25,11 @@ module.exports.set = function(owner, name) {
     }
 
     if (!type(owner.__states[name]).is_undefined) {
+        owner.__current_state_options = options;
         owner.__current_state = owner.__states[name];
     }
 }
 
 module.exports.current = function(owner) {
-    owner.__current_state();
+    owner.__current_state(owner.__current_state_options);
 }

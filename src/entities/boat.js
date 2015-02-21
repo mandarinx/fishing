@@ -29,7 +29,6 @@ var settings = {
     spawn_tile: 'Shallow sea'
 };
 
-// var key_space;
 
 module.exports.init = function(g, x, y) {
     game = g;
@@ -64,9 +63,6 @@ module.exports.init = function(g, x, y) {
     // var states = require('states/index');
     states.set(this, 'idle');
 
-    // Keep for action button, like fishing
-    // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    // key_space.onUp.add(onSpace);
 };
 
 module.exports.update = function() {
@@ -80,7 +76,7 @@ module.exports.update = function() {
     boat.body.velocity.y *= 0.9;
     hull.body.angularVelocity *= 0.9;
 
-    sail_is_up = input.up.isDown ? true : false;
+    sail_is_up = input.up ? true : false;
     setSail();
 
     if (sail_is_up) {
@@ -89,9 +85,9 @@ module.exports.update = function() {
                                                      boat.body.velocity);
     }
 
-    if (input.right.isDown) {
+    if (input.right) {
         hull.body.angularVelocity = speed_rotate;
-    } else if (input.left.isDown) {
+    } else if (input.left) {
         hull.body.angularVelocity = -speed_rotate;
     }
 };
@@ -112,14 +108,10 @@ function setSail() {
 
 function idle() {}
 
-function dock() {
-    if (input.action.isDown) {
-        log('dock, damnit!');
+function dock(pier) {
+    if (input.action) {
     }
 }
-
-// function onSpace() {
-// }
 
 Object.defineProperty(module.exports, 'sprite', {
     get: function() { return boat; },

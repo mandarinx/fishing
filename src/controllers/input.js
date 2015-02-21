@@ -1,48 +1,108 @@
 "use strict";
 
+// TODO:
+// Make a base object for the state. Register the state with
+// Phaser's update chain if it is set to be single.
+
 var config          = require('config');
+var type            = require('utils/type');
+var update          = require('helpers/phaser/update');
 
-var input_config;
-var inputs = {};
+var keys = {};
 var key_codes = [];
+var states = {};
 var pointer;
+var game;
 
-module.exports.init = function(game) {
-    input_config = config.get('input');
-    registerKeys(game, input_config);
+module.exports.init = function(g) {
+    game = g;
+
+    registerKeys(config.get('input', 'keys'));
     pointer = game.input.activePointer;
-    // Stop the configured keys from propagating up to the browser
+
+    // Stop the key events from propagating up to the browser
     game.input.keyboard.addKeyCapture(key_codes);
+    update.register(this);
 }
 
-function registerKeys(game, keys) {
-    Object.keys(keys).forEach(function(key) {
-        var key_id = keys[key];
-        key_codes.push(Phaser.Keyboard[key_id]);
-        inputs[key] = game.input.keyboard.addKey(key_codes[key_codes.length-1]);
-        inputs[key].name = key_id;
+module.exports.update = function() {
+    Object.keys(states).forEach(function(key) {
+        states[key].update();
     });
 }
 
-Object.defineProperty(module.exports, 'action', {
-    get: function() { return inputs.action; }
-});
+module.exports.keys = function(name) {
+    return states[name].key;
+}
 
-Object.defineProperty(module.exports, 'up', {
-    get: function() { return inputs.up; }
-});
+function registerKeys(keys_config) {
+    Object.keys(keys_config).forEach(function(name) {
+        var settings = keys_config[name];
+        var key = addKey(settings.key_code, name);
 
-Object.defineProperty(module.exports, 'down', {
-    get: function() { return inputs.down; }
-});
+        if (!type(settings.type).is_undefined) {
+            if (settings.type === 'single') {
+                states[name] = {
+                    name: name,
+                    key: settings.key_code,
+                    type: 'single',
+                    state: false,
+                    duration: 0,
+                    update: function() {
+                        if (this.state) {
+                            if (this.duration > 0) {
+                                this.state = false;
+                                this.duration = 0;
+                            }
+                            if (this.duration === 0) {
+                                ++this.duration;
+                            }
+                        } else {
+                            this.duration = 0;
+                        }
+                    }
+                };
 
-Object.defineProperty(module.exports, 'left', {
-    get: function() { return inputs.left; }
-});
+                key.onUp.add(function() {
+                    states[name].state = true;
+                });
 
-Object.defineProperty(module.exports, 'right', {
-    get: function() { return inputs.right; }
-});
+                Object.defineProperty(module.exports, name, {
+                    get: function() { return states[name].state; }
+                });
+                return;
+            }
+        }
+
+        // Default to continuous
+        states[name] = {
+            name: name,
+            key: settings.key_code,
+            type: 'continuous',
+            state: false,
+            update: function() {}
+        };
+
+        key.onDown.add(function() {
+            states[name].state = true;
+        });
+
+        key.onUp.add(function() {
+            states[name].state = false;
+        });
+
+        Object.defineProperty(module.exports, name, {
+            get: function() { return states[name].state; }
+        });
+    });
+}
+
+function addKey(key_code, name) {
+    key_codes.push(Phaser.Keyboard[key_code]);
+    keys[name] = game.input.keyboard.addKey(key_codes[key_codes.length-1]);
+    keys[name].name = name;
+    return keys[name];
+}
 
 Object.defineProperty(module.exports, 'pointer', {
     get: function() { return pointer; }

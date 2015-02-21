@@ -11,11 +11,28 @@
         "physics_system": "ARCADE"
     },
     "input": {
-        "action": "SPACEBAR",
-        "up": "UP",
-        "down": "DOWN",
-        "left": "LEFT",
-        "right": "RIGHT"
+        "keys": {
+            "action": {
+                "key_code": "SPACEBAR",
+                "type": "single"
+            },
+            "up": {
+                "key_code": "UP",
+                "type": "continuous"
+            },
+            "down": {
+                "key_code": "DOWN",
+                "type": "continuous"
+            },
+            "left": {
+                "key_code": "LEFT",
+                "type": "continuous"
+            },
+            "right": {
+                "key_code": "RIGHT",
+                "type": "continuous"
+            }
+        }
     },
     "entities": {
         "player": {

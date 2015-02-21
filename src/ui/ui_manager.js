@@ -44,7 +44,7 @@ module.exports.dispatch = function(name, payload) {
     action_label.visible = true;
 
     if (name === 'action_label') {
-        action_label.text = payload + ' [' + input.action.name + ']';
+        action_label.text = payload + ' [' + input.keys('action') + ']';
     }
 };
 

@@ -53,15 +53,15 @@ module.exports.update = function() {
 
     states.current(this);
 
-    if (input.up.isDown) {
+    if (input.up) {
         fisherman.y -= player_cfg.speed;
-    } else if (input.down.isDown) {
+    } else if (input.down) {
         fisherman.y += player_cfg.speed;
     }
 
-    if (input.left.isDown) {
+    if (input.left) {
         fisherman.x -= player_cfg.speed;
-    } else if (input.right.isDown) {
+    } else if (input.right) {
         fisherman.x += player_cfg.speed;
     }
 };

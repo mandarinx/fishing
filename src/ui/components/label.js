@@ -30,7 +30,7 @@
 
 module.exports.create = function(game, x, y, width, height) {
     // TODO: replace font and size with settings from config
-    var label = game.add.bitmapText(x, y, 'Gamegirl', 'a', 16);
+    var label = game.add.bitmapText(x, y, 'Gamegirl', 'N/A', 16);
     // label.visible = false;
     return label;
 }

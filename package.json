@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "browserify": "6.0.0",
+    "chokidar": "^1.0.0-rc3",
     "node-static": "0.7.6",
     "parallelshell": "1.0.3",
     "proc-noise": "0.0.1",
@@ -18,7 +19,7 @@
   },
   "scripts": {
     "build:js": "node browserify.js > ./public/fishing.js",
-    "watch:js": "watch 'npm run build:js' ./src/",
+    "watch:js": "node watch.js build:js",
     "dev": "parallelshell 'npm run watch:js' 'node index.js'"
   },
   "author": "Thomas Viktil",

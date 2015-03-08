@@ -14,7 +14,6 @@ var list            = require('utils/list');
 var ui              = require('ui/ui_manager');
 
 var game;
-var coord = {};
 var layer_main;
 var map_data;
 
@@ -54,12 +53,6 @@ module.exports.shutdown = function() {
     level.removeLayer(game, 'island');
 };
 
-module.exports.update = function() {
-    // coord.x = layer_main.getTileX(input.pointer.worldX);
-    // coord.y = layer_main.getTileY(input.pointer.worldY);
-};
-
-module.exports.render = function() {
-    // game.debug.text(coord.x+' : '+coord.y, 16, 16, 'rgb(255,255,255)');
-    // game.debug.body(player.current.sprite);
-};
+// module.exports.render = function() {
+//     game.debug.body(player.current.sprite);
+// };

@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"leve",
+				"level_config"
+			],
+			[
+				"st",
+				"state"
+			],
+			[
+				"key",
+				"key_code"
+			],
+			[
+				"con",
+				"continuous"
+			],
+			[
 				"add",
 				"addKeyCode"
 			],
@@ -14,10 +30,6 @@
 			[
 				"ke",
 				"key_def"
-			],
-			[
-				"key",
-				"key_id"
 			],
 			[
 				"pr",
@@ -37,10 +49,6 @@
 			],
 			[
 				"sta",
-				"state"
-			],
-			[
-				"st",
 				"state"
 			],
 			[
@@ -154,10 +162,6 @@
 			[
 				"phys",
 				"physics_system"
-			],
-			[
-				"con",
-				"console"
 			],
 			[
 				"cur",
@@ -510,28 +514,39 @@
 			[
 				"Ins",
 				"Instance"
-			],
-			[
-				"day",
-				"dayCounterLabel"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
+			"contents": "\"use strict\";\n\nmodule.exports = new Phaser.State();\n\nvar config          = require('config');\nvar input           = require('controllers/input');\nvar level           = require('controllers/level');\nvar player          = require('entities/player');\nvar pier            = require('entities/pier');\nvar physics         = require('helpers/phaser/physics');\nvar segment         = require('generators/segment');\nvar list            = require('utils/list');\nvar ui              = require('ui/ui_manager');\n\nvar game;\nvar coord = {};\nvar layer;\nvar map_data;\n\nmodule.exports.init = function(options) {\n    map_data = segment.generate(0, 0, 2);\n};\n\nmodule.exports.create = function() {\n    var game_config = config.get('game');\n\n    game = this.game;\n    game.stage.backgroundColor = game_config.background_color;\n\n    physics.init(game);\n    input.init(game);\n\n    level.load(game, {\n        // debug: true,\n        // tileset: 'tilemap-simple',\n        name: 'BoatPracticing',\n        data: list.printString(map_data.tiles)\n    });\n\n    // Use a factory instead. Pass the level data and let the factory\n    // create as many piers as necessary\n    // TODO: pass level instead of layer\n    pier.create(layer, map_data);\n\n    // TODO: pass level instead of layer\n    player.init(game, layer, map_data);\n\n    ui.init(game);\n\n};\n\nmodule.exports.update = function() {\n    coord.x = layer.getTileX(input.pointer.worldX);\n    coord.y = layer.getTileY(input.pointer.worldY);\n};\n\nmodule.exports.render = function() {\n    // game.debug.text(coord.x+' : '+coord.y, 16, 16, 'rgb(255,255,255)');\n    // game.debug.body(boat.sprite);\n};\n",
 			"file": "src/states/boat.js",
+			"file_size": 2120,
+			"file_write_time": 130690104090000000,
 			"settings":
 			{
-				"buffer_size": 1865,
+				"buffer_size": 1616,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\"use strict\";\n\nvar config          = require('config');\nvar tilemaps        = require('helpers/phaser/tilemaps');\nvar type            = require('utils/type');\n\nvar layer;\n\nmodule.exports.load = function(game, options) {\n\n    if (type(options).is_undefined) {\n        console.log('Level controller needs certain options to work');\n        return;\n    }\n\n    var level_config = config.get('level');\n    \n    var debug = options.debug || level_config.debug;\n    var name = options.name || 'Unnamed';\n\n    tilemaps.loadTilemap(game, {\n        map_name:   name,\n        data:       options.data,\n        tileset:    options.tileset || level_config.tileset\n    });\n\n    layer = tilemaps.layer(name);\n    layer.debug = debug;\n\n    // Need to switch collision between player/boat switches\n    // Dispatch a player switch event that the layer controller can listen\n    // to and toggle the collisions\n    // Get collisions from config\n    layer.map.setCollision([3, 4, 5], layer);\n\n};\n",
+			"file": "src/controllers/level.js",
+			"file_size": 67,
+			"file_write_time": 130690104490000000,
+			"settings":
+			{
+				"buffer_size": 976,
+				"line_ending": "Unix",
+				"name": "\"use strict\";"
 			}
 		},
 		{
 			"file": "src/entities/player.js",
 			"settings":
 			{
-				"buffer_size": 2173,
+				"buffer_size": 2631,
 				"line_ending": "Unix",
 				"name": "\"use strict\";"
 			}
@@ -540,7 +555,7 @@
 			"file": "src/entities/boat.js",
 			"settings":
 			{
-				"buffer_size": 3120,
+				"buffer_size": 3056,
 				"line_ending": "Unix"
 			}
 		},
@@ -548,7 +563,7 @@
 			"file": "src/entities/fisherman.js",
 			"settings":
 			{
-				"buffer_size": 2360,
+				"buffer_size": 2156,
 				"line_ending": "Unix"
 			}
 		},
@@ -556,7 +571,7 @@
 			"file": "src/controllers/states.js",
 			"settings":
 			{
-				"buffer_size": 783,
+				"buffer_size": 927,
 				"line_ending": "Unix"
 			}
 		},
@@ -564,7 +579,7 @@
 			"file": "src/entities/pier.js",
 			"settings":
 			{
-				"buffer_size": 1011,
+				"buffer_size": 1252,
 				"line_ending": "Unix"
 			}
 		},
@@ -572,19 +587,16 @@
 			"file": "src/ui/ui_manager.js",
 			"settings":
 			{
-				"buffer_size": 1650,
+				"buffer_size": 1653,
 				"line_ending": "Unix",
 				"name": "\"use strict\";"
 			}
 		},
 		{
-			"contents": "\"use strict\";\n\nvar config          = require('config');\nvar type            = require('utils/type');\n\nvar input_config;\nvar inputs = {};\nvar key_codes = [];\nvar pointer;\n\nmodule.exports.init = function(game) {\n    input_config = config.get('input');\n    registerKeys(game, input_config);\n    pointer = game.input.activePointer;\n    // Stop the configured keys from propagating up to the browser\n    game.input.keyboard.addKeyCapture(key_codes);\n\n    // key_space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);\n    // key_space.onUp.add(onSpace);\n\n}\n\n// function onSpace() {\n// }\n\nfunction registerKeys(game, keys) {\n    Object.keys(keys).forEach(function(key) {\n        var key_def = keys[key];\n        if (type(key_def).is_object) {\n            addKeyCode(key_def.key);\n        }\n        inputs[key] = game.input.keyboard.addKey(key_codes[key_codes.length-1]);\n        inputs[key].name = key_id;\n    });\n}\n\nfunction addKeyCode(code) {\n    key_codes.push(Phaser.Keyboard[code]);\n}\n\nObject.defineProperty(module.exports, 'action', {\n    get: function() { return inputs.action; }\n});\n\nObject.defineProperty(module.exports, 'up', {\n    get: function() { return inputs.up; }\n});\n\nObject.defineProperty(module.exports, 'down', {\n    get: function() { return inputs.down; }\n});\n\nObject.defineProperty(module.exports, 'left', {\n    get: function() { return inputs.left; }\n});\n\nObject.defineProperty(module.exports, 'right', {\n    get: function() { return inputs.right; }\n});\n\nObject.defineProperty(module.exports, 'pointer', {\n    get: function() { return pointer; }\n});\n",
 			"file": "src/controllers/input.js",
-			"file_size": 1275,
-			"file_write_time": 130686822210000000,
 			"settings":
 			{
-				"buffer_size": 1573,
+				"buffer_size": 3025,
 				"line_ending": "Unix",
 				"name": "\"use strict\";"
 			}
@@ -610,7 +622,7 @@
 			"file": "public/config.json",
 			"settings":
 			{
-				"buffer_size": 2744,
+				"buffer_size": 3317,
 				"line_ending": "Unix"
 			}
 		}
@@ -706,6 +718,9 @@
 	],
 	"file_history":
 	[
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/tilemaps.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/tilemapper.js",
+		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config_utils.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/data/grid.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/entities/entity.js",
@@ -714,11 +729,9 @@
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/list.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/segment.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/grid/rooms.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/tilemapper.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/cellular_automata.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/public/style.css",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/controllers/states.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/utils/type.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/controllers/actions.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/transforms/grid/pier.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/config.js",
@@ -738,7 +751,6 @@
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/fishing.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/package.json",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/ui/components/unobtrusive_label.js",
-		"/Users/mandarin/Projects/Games/Fishing/fishing/src/helpers/phaser/tilemaps.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/generators/world.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/boat.js",
 		"/Users/mandarin/Projects/Games/Fishing/fishing/src/states/game.js",
@@ -890,6 +902,24 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"debug",
+			"tilemaps",
+			"tilemap",
+			"layer",
+			"extend",
+			"bounds",
+			"this",
+			"x",
+			"inputs",
+			"input",
+			"name",
+			"key_code",
+			"key_def",
+			"key",
+			"key_def",
+			"addKeyCode",
+			"code",
+			"key_id",
 			"list.each(",
 			"each",
 			"segment",
@@ -999,25 +1029,7 @@
 			"data_t",
 			"data_",
 			"data_types",
-			"info",
-			"data_types",
-			"list",
-			"getFilteredMetaData",
-			"insertCache",
-			"insert",
-			"filter",
-			"data_types",
-			"grid",
-			"onDown",
-			"key1",
-			"get",
-			"data_types",
-			"cfg",
-			"config",
-			"filter",
-			"max",
-			"1",
-			"smoothness"
+			"info"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1052,7 +1064,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -1061,15 +1073,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1865,
+						"buffer_size": 1616,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1020,
-								1020
+								1025,
+								1025
 							]
 						],
 						"settings":
@@ -1079,27 +1091,56 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 114.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/entities/player.js",
+					"file": "src/controllers/level.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2173,
+						"buffer_size": 976,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1187,
-								1187
+								923,
+								923
+							]
+						],
+						"settings":
+						{
+							"auto_name": "\"use strict\";",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/entities/player.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2631,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1475,
+								1475
 							]
 						],
 						"settings":
@@ -1110,27 +1151,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 423.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 3,
 					"file": "src/entities/boat.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3120,
+						"buffer_size": 3056,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2883,
-								2883
+								2811,
+								2811
 							]
 						],
 						"settings":
@@ -1144,54 +1185,24 @@
 						"translation.y": 1119.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/entities/fisherman.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2360,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2360,
-								2360
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": -0.0,
-						"translation.y": 549.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "src/controllers/states.js",
+					"file": "src/entities/fisherman.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 783,
+						"buffer_size": 2156,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								783,
-								783
+								1731,
+								1731
 							]
 						],
 						"settings":
@@ -1201,7 +1212,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 264.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
@@ -1209,19 +1220,19 @@
 				},
 				{
 					"buffer": 5,
-					"file": "src/entities/pier.js",
+					"file": "src/controllers/states.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1011,
+						"buffer_size": 927,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								255,
-								287
+								922,
+								922
 							]
 						],
 						"settings":
@@ -1234,29 +1245,28 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "src/ui/ui_manager.js",
+					"file": "src/entities/pier.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1650,
+						"buffer_size": 1252,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1420,
-								1420
+								623,
+								623
 							]
 						],
 						"settings":
 						{
-							"auto_name": "\"use strict\";",
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -1265,24 +1275,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
 					"buffer": 7,
-					"file": "src/controllers/input.js",
+					"file": "src/ui/ui_manager.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1573,
+						"buffer_size": 1653,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								526,
-								554
+								1501,
+								1521
 							]
 						],
 						"settings":
@@ -1296,11 +1306,42 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
 					"buffer": 8,
+					"file": "src/controllers/input.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3025,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1368,
+								1368
+							]
+						],
+						"settings":
+						{
+							"auto_name": "\"use strict\";",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
 					"file": "src/helpers/phaser/physics.js",
 					"semi_transient": false,
 					"settings":
@@ -1326,11 +1367,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "src/ui/components/label.js",
 					"semi_transient": false,
 					"settings":
@@ -1355,24 +1396,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 11,
 					"file": "public/config.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2744,
+						"buffer_size": 3317,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								429,
-								429
+								454,
+								454
 							]
 						],
 						"settings":
@@ -1386,7 +1427,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

@@ -21,7 +21,7 @@ module.exports.init = function(g, l) {
     // TODO: obsolete
     states.add(this, 'idle', idle);
 
-    fisherman = game.add.sprite(0, 0, 'sprites');
+    fisherman = game.add.sprite(0, 0, 'sprites-16');
     fisherman.anchor.setTo(0.5, 0);
     fisherman.frame = 3;
     fisherman.name = 'fisherman';

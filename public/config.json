@@ -7,7 +7,7 @@
         "host": "http://localhost:5000/",
         "font": "Boxy-Bold",
         "font_size": 8,
-        "boot_sequence": ["Boot", "Preloader", "Generate", "Worldmap"],
+        "boot_sequence": ["Boot", "Preloader", "Boat"],
         "physics_system": "ARCADE"
     },
     "level": {

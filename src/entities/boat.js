@@ -33,12 +33,12 @@ module.exports.init = function(g, l) {
     states.add(this, 'dock', dock);
     states.add(this, 'idle', idle);
 
-    hull = boat.addChild(game.make.sprite(0, 0, 'sprites'));
+    hull = boat.addChild(game.make.sprite(0, 0, 'sprites-16'));
     hull.anchor.setTo(0.5, 0.5);
     hull.frame = 0;
     hull.name = 'hull';
 
-    sails = boat.addChild(game.make.sprite(0, 0, 'sprites'));
+    sails = boat.addChild(game.make.sprite(0, 0, 'sprites-16'));
     sails.anchor.setTo(0.5, 1);
     sails.x += 1;
     sails.name = 'sails';

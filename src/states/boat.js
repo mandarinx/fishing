@@ -31,10 +31,8 @@ module.exports.create = function() {
     physics.init(game);
     input.init(game);
 
-    layer_main = level.createLayer(game, {
-        // debug: true,
-        // tileset: 'tilemap-simple',
-        name: 'main',
+    layer_main = level.createMap(game, {
+        name: 'island',
         data: list.printString(map_data.tiles, map_data.width)
     });
 
@@ -50,6 +48,10 @@ module.exports.create = function() {
     });
 
     ui.init(game);
+};
+
+module.exports.shutdown = function() {
+    level.removeLayer(game, 'island');
 };
 
 module.exports.update = function() {

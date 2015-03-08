@@ -4,7 +4,7 @@ module.exports = new Phaser.State();
 
 var config          = require('config');
 var list            = require('utils/list');
-var tilemaps        = require('helpers/phaser/tilemaps');
+var level           = require('controllers/level');
 var world           = require('generators/world');
 var unobtrusive     = require('ui/components/unobtrusive_label');
 
@@ -25,15 +25,16 @@ module.exports.create = function() {
     game.stage.backgroundColor = game_config.background_color;
     pointer = game.input.activePointer;
 
-    tilemaps.loadTilemap(game, {
-        map_name:       mapname,
-        data:           list.printString(world.map.tiles),
-        tile_size:      tilesize,
-        tileset:        'worldmap-simple'
+    layer = level.createMap(game, {
+        // debug: true,
+        tileset: 'worldmap-simple',
+        name: 'worldmap',
+        tile_size: 32,
+        data: list.printString(world.map.tiles, world.map.width)
     });
 
-    marker = game.add.sprite(0, 0, 'sprites');
-    layer = tilemaps.layer(mapname);
+    marker = game.add.sprite(0, 0, 'sprites-32');
+    marker.frame = 3;
 
     game.add.bitmapText(16, 16, 'Gamegirl', 'Worldmap', 8);
 
@@ -43,6 +44,11 @@ module.exports.create = function() {
     });
 
     game.input.onUp.add(click, this);
+};
+
+module.exports.shutdown = function() {
+    game.input.onUp.remove(click, this);
+    level.removeLayer(game, 'worldmap');
 };
 
 module.exports.update = function() {
@@ -60,8 +66,6 @@ function click() {
                             cur_tile.x,
                             cur_tile.y,
                             world.map.width);
-
-    game.input.onUp.remove(click, this);
 
     game.state.start('Game', true, false, {
         map_type:   map_type,

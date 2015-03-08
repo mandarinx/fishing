@@ -16,6 +16,6 @@ module.exports.preload = function() {
 
 module.exports.update = function() {
     if (this.game.load.hasLoaded) {
-        this.game.state.start(config.get('game', 'states').next());
+        this.game.state.start(config.get('game', 'boot_sequence').next());
     }
 };

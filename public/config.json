@@ -7,7 +7,7 @@
         "host": "http://localhost:5000/",
         "font": "Boxy-Bold",
         "font_size": 8,
-        "states": ["Boot", "Preloader", "Boat"],
+        "boot_sequence": ["Boot", "Preloader", "Generate", "Worldmap"],
         "physics_system": "ARCADE"
     },
     "level": {
@@ -106,7 +106,8 @@
             "Gamegirl":                 ["assets/fonts/game_girl_16_shadow.png", "assets/fonts/game_girl_16_shadow.xml"]
         },
         "spritesheet": {
-            "sprites":                  ["assets/sprites.png", 16, 16]
+            "sprites-16":               ["assets/sprites.png", 16, 16],
+            "sprites-32":               ["assets/sprites.png", 32, 32]
         },
         "image": {
             "tilemap":                  ["assets/tilemap.png"],

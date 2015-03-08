@@ -16,10 +16,10 @@ module.exports.generate = function(data_types, seed) {
 
     map = grid.create(cfg.width, cfg.height, 0);
 
-    list.fill(noise, map.width * map.height, 0)
-        .each(noise, map.width, function(tile, x, y, i) {
-            noise[i] = Perlin.noise(x * scale, y * scale);
-        });
+    list.fill(noise, map.width * map.height, 0);
+    noise.each(map.width, function(tile, x, y, i) {
+        noise[i] = Perlin.noise(x * scale, y * scale);
+    });
 
     filter(noise, map, data_types);
 

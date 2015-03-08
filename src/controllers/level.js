@@ -8,7 +8,7 @@ var level_config;
 var map;
 var layers = {};
 
-module.exports.createLayer = function(game, options) {
+module.exports.createMap = function(game, options) {
     if (type(options).is_undefined) {
         console.log('Level controller needs certain options to work');
         return null;
@@ -27,19 +27,26 @@ module.exports.createLayer = function(game, options) {
         options.tileset = level_config.tileset;
     }
 
-    if (type(map).is_undefined) {
-        createMap(game, options);
-    }
+    createMap(game, options);
 
-    if (type(layers[options.name]).is_undefined) {
-        layers[options.name] = addLayer(debug);
-    }
+    return this.addLayer(options.name, debug);
+};
 
-    return layers[options.name];
+module.exports.addLayer = function(name, debug) {
+    if (type(layers[name]).is_undefined) {
+        layers[name] = addLayer(debug);
+    }
+    return layers[name];
 };
 
 module.exports.getLayer = function(name) {
     return layers[name];
+};
+
+module.exports.removeLayer = function(game, name) {
+    var layer = layers[name];
+    layer.destroy();
+    layers[name] = undefined;
 };
 
 module.exports.setCollision = function(include) {

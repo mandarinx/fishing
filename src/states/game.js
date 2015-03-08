@@ -4,7 +4,7 @@ module.exports = new Phaser.State();
 
 var config          = require('config');
 var list            = require('utils/list');
-var tilemaps        = require('helpers/phaser/tilemaps');
+var level           = require('controllers/level');
 var segment         = require('generators/segment');
 
 var game            = null;
@@ -30,11 +30,9 @@ module.exports.create = function() {
     game.stage.backgroundColor = game_config.background_color;
 
     var seg = segment.get(coordinate.x, coordinate.y);
-
-    tilemaps.loadTilemap(game, {
-        map_name:   seg.name,
-        data:       list.printString(seg.tiles),
-        tileset:    'tilemap-simple'
+    level.createMap(game, {
+        name: 'island',
+        data: list.printString(seg.tiles, seg.width)
     });
 
     game.add.bitmapText(16, 16, 'Gamegirl', '[M] Return to worldmap', 8);
@@ -46,6 +44,7 @@ module.exports.create = function() {
 
 module.exports.shutdown = function() {
     key_map.onUp.remove(returnToWorldmap);
+    level.removeLayer(game, 'island');
 };
 
 function returnToWorldmap() {

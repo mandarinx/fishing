@@ -31,5 +31,5 @@ module.exports.create = function() {
 
     game.renderer.renderSession.roundPixels = true;
 
-    game.state.start(config.get('game', 'states').next());
+    game.state.start(config.get('game', 'boot_sequence').next());
 };

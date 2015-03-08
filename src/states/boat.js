@@ -3,18 +3,19 @@
 module.exports = new Phaser.State();
 
 var config          = require('config');
-var list            = require('utils/list');
-var tilemaps        = require('helpers/phaser/tilemaps');
-var physics         = require('helpers/phaser/physics');
-var segment         = require('generators/segment');
+var cu              = require('config_utils');
+var input           = require('controllers/input');
+var level           = require('controllers/level');
 var player          = require('entities/player');
 var pier            = require('entities/pier');
-var input           = require('controllers/input');
+var physics         = require('helpers/phaser/physics');
+var segment         = require('generators/segment');
+var list            = require('utils/list');
 var ui              = require('ui/ui_manager');
 
 var game;
 var coord = {};
-var layer;
+var layer_main;
 var map_data;
 
 module.exports.init = function(options) {
@@ -30,37 +31,33 @@ module.exports.create = function() {
     physics.init(game);
     input.init(game);
 
-    tilemaps.loadTilemap(game, {
-        map_name:   'BoatPracticing',
-        data:       list.printString(map_data.tiles),
-        tileset:    'tilemap-simple'
+    layer_main = level.createLayer(game, {
+        // debug: true,
+        // tileset: 'tilemap-simple',
+        name: 'main',
+        data: list.printString(map_data.tiles, map_data.width)
     });
 
-    layer = tilemaps.layer('BoatPracticing');
-    // layer.debug = true;
+    pier.create(level.map.tileWidth,
+                level.map.tileHeight,
+                map_data.meta.pier_pos);
 
-    // Need to switch collision between player/boat switches
-    // Dispatch a player switch event that the layer controller can listen
-    // to and toggle the collisions
-    // Get collisions from config
-    layer.map.setCollision([3, 4, 5], layer);
-
-    // Use a factory instead. Pass the level data and let the factory
-    // create as many piers as necessary
-    pier.create(layer, map_data);
-
-    player.init(game, layer, map_data);
+    player.init(game, {
+        layer:         layer_main,
+        tile_width:    level.map.tileWidth,
+        tile_height:   level.map.tileHeight,
+        spawn_pos:     map_data.meta.boat_pos
+    });
 
     ui.init(game);
-
 };
 
 module.exports.update = function() {
-    coord.x = layer.getTileX(input.pointer.worldX);
-    coord.y = layer.getTileY(input.pointer.worldY);
+    // coord.x = layer_main.getTileX(input.pointer.worldX);
+    // coord.y = layer_main.getTileY(input.pointer.worldY);
 };
 
 module.exports.render = function() {
     // game.debug.text(coord.x+' : '+coord.y, 16, 16, 'rgb(255,255,255)');
-    // game.debug.body(boat.sprite);
+    // game.debug.body(player.current.sprite);
 };

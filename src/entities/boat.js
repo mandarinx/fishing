@@ -1,20 +1,16 @@
 "use strict";
 
 // NOTES
-// - To add a more boat-like feel to the movement, a slowdown on stop would
-//   be nice. Also a bit of slowness at start.
 // - Turning radius should be a factor of speed. Greater radius at greater
 //   speeds.
 // - Use the angle of the rotation to switch between sprites.
-// - boat needs an update routine that knows that kind of tile it is on.
-//   Use Phaser tile callbacks? They need to be reset between each
-//   map switch.
 
 var config          = require('config');
 var input           = require('controllers/input');
 var states          = require('controllers/states');
 var physics         = require('helpers/phaser/physics');
 var player          = require('entities/player');
+var type            = require('utils/type');
 
 var speed_rotate = 90;
 var speed_forward = 40;
@@ -25,14 +21,14 @@ var sails;
 var sail_up = 1;
 var sail_down = 2;
 var sail_is_up = false;
+var layer;
 
-var settings = {
-    spawn_tile: 'Shallow sea'
-};
-
-module.exports.init = function(g) {
+module.exports.init = function(g, l) {
     game = g;
+    layer = l;
+
     boat = game.add.sprite();
+    boat.name = 'boat';
 
     states.add(this, 'dock', dock);
     states.add(this, 'idle', idle);
@@ -40,18 +36,13 @@ module.exports.init = function(g) {
     hull = boat.addChild(game.make.sprite(0, 0, 'sprites'));
     hull.anchor.setTo(0.5, 0.5);
     hull.frame = 0;
+    hull.name = 'hull';
 
     sails = boat.addChild(game.make.sprite(0, 0, 'sprites'));
     sails.anchor.setTo(0.5, 1);
     sails.x += 1;
-    setSail();
+    sails.name = 'sails';
 
-    // Get these values from somewhere. They are the half of the sprite's
-    // dimensions
-    // x += 8;
-    // y += 8;
-    // boat.x = x;
-    // boat.y = y;
     boat.anchor.setTo(0.5, 0.5);
 
     physics.enable(boat);
@@ -65,18 +56,15 @@ module.exports.init = function(g) {
 };
 
 module.exports.update = function() {
-    if (!boat.visible) {
-        return;
-    }
-
+    physics.collide(boat, layer);
     states.current(this);
 
     boat.body.velocity.x *= 0.9;
     boat.body.velocity.y *= 0.9;
     hull.body.angularVelocity *= 0.9;
 
-    sail_is_up = input.up ? true : false;
-    setSail();
+    sail_is_up = input.up.isDown ? true : false;
+    sails.frame = sail_is_up ? sail_up : sail_down;
 
     if (sail_is_up) {
         game.physics.arcade.accelerationFromRotation(hull.rotation,
@@ -84,17 +72,29 @@ module.exports.update = function() {
                                                      boat.body.velocity);
     }
 
-    if (input.right) {
+    if (input.right.isDown) {
         hull.body.angularVelocity = speed_rotate;
-    } else if (input.left) {
+    } else if (input.left.isDown) {
         hull.body.angularVelocity = -speed_rotate;
     }
 };
 
 module.exports.show = function(x, y) {
     // TODO: get the tile's halfsize from somewhere
-    boat.x = x + 8;
-    boat.y = y + 8;
+    if (type(x).is_undefined) {
+        x = boat.x;
+    } else {
+        x = x + 8;
+    }
+
+    if (type(y).is_undefined) {
+        y = boat.y;
+    } else {
+        y = y + 8;
+    }
+
+    boat.x = x;
+    boat.y = y;
     boat.visible = true;
     states.set(this, 'sailing');
 }
@@ -104,17 +104,15 @@ module.exports.hide = function() {
     states.set(this, 'idle');
 }
 
-function setSail() {
-    sails.frame = sail_is_up ? sail_up : sail_down;
+module.exports.onPier = function(pier) {
+    boat.body.velocity.setTo(0, 0);
+    player.switchTo('fisherman', false);
+    player.current.show(pier.position.x, pier.position.y);
 }
 
+// TODO: obsolete
 function idle() {}
-
-function dock(pier) {
-    if (input.action) {
-        player.switchTo('fisherman', pier.position.x, pier.position.y);
-    }
-}
+function dock(pier) {}
 
 Object.defineProperty(module.exports, 'sprite', {
     get: function() { return boat; },

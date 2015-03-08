@@ -46,3 +46,6 @@ Object.defineProperty(module.exports, 'is_null', {
 Object.defineProperty(module.exports, 'is_undefined', {
     get: function() { return type === '[object Undefined]'; }
 });
+Object.defineProperty(module.exports, 'to_string', {
+    get: function() { return type; }
+});

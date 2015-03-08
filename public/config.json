@@ -10,6 +10,14 @@
         "states": ["Boot", "Preloader", "Boat"],
         "physics_system": "ARCADE"
     },
+    "level": {
+        "tileset": "tilemap-simple",
+        "debug": false,
+        "collisions": {
+            "fisherman": [1, 2],
+            "boat": [3, 4, 5]
+        }
+    },
     "input": {
         "keys": {
             "action": {
@@ -36,7 +44,7 @@
     },
     "entities": {
         "player": {
-            "speed": 1
+            "speed": 50
         }
     },
     "world": {

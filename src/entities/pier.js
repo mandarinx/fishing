@@ -7,22 +7,20 @@ var entity          = require('entities/entity');
 
 var bounds;
 var position;
-var actions = ['dock'];
+var actions = ['dock', 'board'];
 
 extend(module.exports, entity);
 
-module.exports.create = function(layer, map_data) {
-    var tw = layer.map.tileWidth;
-    var th = layer.map.tileHeight;
-    var x = (tw * map_data.meta.pier_pos.x) - tw;
-    var y = (th * map_data.meta.pier_pos.y) - th;
+module.exports.create = function(tileWidth, tileHeight, spawn_pos) {
+    var x = (tileWidth * spawn_pos.x) - tileWidth;
+    var y = (tileHeight * spawn_pos.y) - tileHeight;
 
     position = {
-        x: map_data.meta.pier_pos.x * tw,
-        y: map_data.meta.pier_pos.y * th
+        x: spawn_pos.x * tileWidth,
+        y: spawn_pos.y * tileHeight
     };
-    bounds = new Phaser.Rectangle(x, y, tw * 3, th * 3);
-    physics.addTrigger(this);
+    bounds = new Phaser.Rectangle(x, y, tileWidth * 3, tileHeight * 3);
+    physics.addTrigger(this, 'pier');
 }
 
 module.exports.triggerEnter = function(player) {

@@ -39,7 +39,6 @@ module.exports.triggerLeave = function(player) {
 }
 
 function onAction() {
-    // Blah!
     if (player.current.sprite.name === 'boat') {
         player.toggle(position.x, position.y);
     } else {

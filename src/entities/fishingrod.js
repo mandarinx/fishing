@@ -29,6 +29,7 @@ var fishingrod = {
 
     hide: function() {
         sprite.visible = false;
+        sprite.frame = 8;
         if (!type(timer).is_undefined) {
             timer.stop(true);
         }
@@ -83,9 +84,12 @@ function timerDone() {
     if (tile_type === 'Deep sea') {
         tags.push('Shallow sea');
     }
+
+    // TODO: Pass a random number based on the fishing rod's properties?
     var entity = loot.getLoot(tags);
     console.log('Got a '+entity.name);
 
+    sprite.frame = entity.weight > 1 ? 10 : 9;
     // var chance = tile_type === 'Shallow sea' ? 0.5 : 0.4;
     // var fish = tile_type === 'Shallow sea' ? 'small' : 'large';
 

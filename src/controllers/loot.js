@@ -5,21 +5,6 @@ var config          = require('config');
 var loot_config;
 
 module.exports.getLoot = function(tags) {
-    // iterate loot_config
-        // pick loot that match any of the tags
-    // get total weight
-    // var cur_upper = 0
-    // iterate results
-        // calculate entity weight factor
-            // entity.weight / total weight
-        // set entity lower_chance = cur_upper
-        // set entity upper_chance = cur_upper + entity weight factor
-        // cur_upper = entity.upper_chance
-    // roll the dice
-    // return an entity
-        // iterate results
-            // pick entity where random is >= && < entity lower and upper chance
-
     // TODO: consider getting config from an init() function
     loot_config = config.get('entities', 'loot');
     var loot_list = [];
@@ -30,12 +15,12 @@ module.exports.getLoot = function(tags) {
         }
     });
 
-    var total_weight = getTotalWeight(loot_list);
+    var total_frequency = getTotalFrequency(loot_list);
     var cur_upper = 0;
 
     loot_list.forEach(function(loot) {
         loot._chance_lower = cur_upper;
-        loot._chance_upper = cur_upper + (loot.weight / total_weight);
+        loot._chance_upper = cur_upper + (loot.frequency / total_frequency);
         cur_upper = loot._chance_upper;
     });
 
@@ -66,10 +51,10 @@ function tagsMatch(entity_tags, search_tags) {
     return match;
 }
 
-function getTotalWeight(entities) {
+function getTotalFrequency(entities) {
     var total = 0;
     entities.forEach(function(entity) {
-        total += parseInt(entity.weight);
+        total += parseInt(entity.frequency);
     });
     return total;
 }

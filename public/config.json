@@ -51,21 +51,24 @@
         "loot": [{
                 "tags": ["Deep sea"],
                 "name": "Hammer head shark",
-                "weight": "50",
+                "frequency": "50",
                 "sprite": "shark_01",
-                "value": [120, 170]
+                "value": [120, 170],
+                "weight": 2
             },{
                 "tags": ["Shallow sea", "Deep sea"],
                 "name": "Salmon",
-                "weight": "500",
+                "frequency": "500",
                 "sprite": "salmon_01",
-                "value": [8, 10]
+                "value": [8, 10],
+                "weight": 1
             },{
                 "tags": ["Sand", "Shallow sea"],
                 "name": "Leather boot",
-                "weight": "200",
+                "frequency": "200",
                 "sprite": "boot_01",
-                "value": [2, 5]
+                "value": [2, 5],
+                "weight": 1
             }]
     },
     "world": {

@@ -2,7 +2,6 @@
 
 var cu              = require('config_utils');
 var config          = require('config');
-var states          = require('controllers/states');
 var level           = require('controllers/level');
 var input           = require('controllers/input');
 var entity          = require('entities/entity');
@@ -34,7 +33,6 @@ module.exports.init = function(g, options) {
     current.show(options.tile_width * options.spawn_pos.x,
                  options.tile_height * options.spawn_pos.y);
 
-    // TODO: physics shouldn't be dependent on player.
     physics.setPlayer(this);
     update.register(this);
 
@@ -45,32 +43,30 @@ module.exports.update = function() {
     current.update();
 }
 
-module.exports.switchTo = function(target, hide) {
-    if (type(hide).is_undefined) {
-        hide = true;
-    }
-    if (current && hide) {
+module.exports.toggle = function(x, y) {
+    this.switchTo(current.sprite.name === players.fisherman.sprite.name ?
+                  players.boat.sprite.name :
+                  players.fisherman.sprite.name, x, y);
+}
+
+module.exports.switchTo = function(player_name, x, y) {
+    if (current) {
         current.hide();
     }
-    current = players[target];
-    level.setCollision(collision_cfg[target]);
-    events.onPlayerChange.dispatch(target);
+    current = players[player_name];
+    current.show(x, y);
+    level.setCollision(collision_cfg[player_name]);
+    events.onPlayerChange.dispatch(player_name);
 }
 
 module.exports.triggerEnter = function(entity) {
-    // TODO: obsolete
-    states.set(current, entity.actions, entity);
 }
 
 module.exports.triggerLeave = function(entity) {
-    // TODO: obsolete
-    states.set(current, 'idle');
 }
 
 function onAction() {
-    if (physics.triggers.pier.active) {
-        current.onPier(physics.triggers.pier.owner);
-    }
+    current.action.execute();
 }
 
 Object.defineProperty(module.exports, 'current', {

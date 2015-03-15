@@ -44,7 +44,9 @@
     },
     "entities": {
         "player": {
-            "speed": 50
+            "walking_speed": 50,
+            "sailing_speed": 40,
+            "sailing_rotate_speed": 90
         }
     },
     "world": {

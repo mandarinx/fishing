@@ -2,7 +2,7 @@
 
 var config          = require('config');
 var input           = require('controllers/input');
-var states          = require('controllers/states');
+var action          = require('controllers/action');
 var physics         = require('helpers/phaser/physics');
 var player          = require('entities/player');
 var type            = require('utils/type');
@@ -12,14 +12,14 @@ var game;
 var player_cfg;
 var layer;
 
+module.exports.action = action.create();
+
 module.exports.init = function(g, l) {
     game = g;
     layer = l;
-
     player_cfg = config.get('entities', 'player');
 
-    // TODO: obsolete
-    states.add(this, 'idle', idle);
+    this.action.add(onAction);
 
     fisherman = game.add.sprite(0, 0, 'sprites-16');
     fisherman.anchor.setTo(0.5, 0);
@@ -36,21 +36,20 @@ module.exports.init = function(g, l) {
 
 module.exports.update = function() {
     physics.collide(fisherman, layer);
-    states.current(this);
 
     fisherman.body.velocity.x *= 0.2;
     fisherman.body.velocity.y *= 0.2;
 
     if (input.up.isDown) {
-        fisherman.body.velocity.y = -player_cfg.speed;
+        fisherman.body.velocity.y = -player_cfg.walking_speed;
     } else if (input.down.isDown) {
-        fisherman.body.velocity.y = player_cfg.speed;
+        fisherman.body.velocity.y = player_cfg.walking_speed;
     }
 
     if (input.left.isDown) {
-        fisherman.body.velocity.x = -player_cfg.speed;
+        fisherman.body.velocity.x = -player_cfg.walking_speed;
     } else if (input.right.isDown) {
-        fisherman.body.velocity.x = player_cfg.speed;
+        fisherman.body.velocity.x = player_cfg.walking_speed;
     }
 };
 
@@ -68,23 +67,14 @@ module.exports.show = function(x, y) {
     fisherman.x = x;
     fisherman.y = y;
     fisherman.visible = true;
-    states.set(this, 'walking');
 }
 
 module.exports.hide = function() {
     fisherman.visible = false;
-    states.set(this, 'idle');
 }
 
-module.exports.onPier = function(pier) {
-    fisherman.body.velocity.setTo(0, 0);
-    player.switchTo('boat', true);
-    player.current.show();
+function onAction() {
 }
-
-// TODO: obsolete
-function idle() {}
-function board() {}
 
 Object.defineProperty(module.exports, 'sprite', {
     get: function() { return fisherman; },

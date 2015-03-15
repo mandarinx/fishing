@@ -4,10 +4,15 @@ var physics         = require('helpers/phaser/physics');
 var ui              = require('ui/ui_manager');
 var extend          = require('utils/extend');
 var entity          = require('entities/entity');
+var player          = require('entities/player');
 
 var bounds;
 var position;
-var actions = ['dock', 'board'];
+
+var action_labels = {
+    boat:       'dock',
+    fisherman:  'board'
+};
 
 extend(module.exports, entity);
 
@@ -24,11 +29,23 @@ module.exports.create = function(tileWidth, tileHeight, spawn_pos) {
 }
 
 module.exports.triggerEnter = function(player) {
-    ui.dispatch('action_label', 'Dock');
+    player.current.action.add(onAction);
+    ui.dispatch('action_label', action_labels[player.current.sprite.name]);
 }
 
 module.exports.triggerLeave = function(player) {
+    player.current.action.remove(onAction);
     ui.dispatch('action_label');
+}
+
+function onAction() {
+    // Blah!
+    if (player.current.sprite.name === 'boat') {
+        player.toggle(position.x, position.y);
+    } else {
+        player.toggle();
+    }
+    ui.dispatch('action_label', action_labels[player.current.sprite.name]);
 }
 
 Object.defineProperty(module.exports, 'bounds', {
@@ -38,10 +55,5 @@ Object.defineProperty(module.exports, 'bounds', {
 
 Object.defineProperty(module.exports, 'position', {
     get: function() { return position; },
-    enumerable: true
-});
-
-Object.defineProperty(module.exports, 'actions', {
-    get: function() { return actions; },
     enumerable: true
 });

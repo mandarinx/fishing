@@ -38,6 +38,7 @@ function addKey(key_code, name) {
     key_codes.push(Phaser.Keyboard[key_code]);
     keys[name] = game.input.keyboard.addKey(key_codes[key_codes.length-1]);
     keys[name].name = name;
+    keys[name].keyCode = key_code;
 }
 
 Object.defineProperty(module.exports, 'pointer', {

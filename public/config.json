@@ -50,23 +50,44 @@
         },
         "loot": [{
                 "tags": ["Deep sea"],
-                "name": "Hammer head shark",
+                "name": "Reef shark",
                 "frequency": "50",
-                "sprite": "shark_01",
+                "sprite_index": 42,
                 "value": [120, 170],
                 "weight": 2
             },{
                 "tags": ["Shallow sea", "Deep sea"],
                 "name": "Salmon",
                 "frequency": "500",
-                "sprite": "salmon_01",
+                "sprite_index": 12,
                 "value": [8, 10],
+                "weight": 1
+            },{
+                "tags": ["Shallow sea", "Deep sea"],
+                "name": "Tuna",
+                "frequency": "400",
+                "sprite_index": 15,
+                "value": [6, 9],
+                "weight": 2
+            },{
+                "tags": ["Shallow sea"],
+                "name": "Lobster",
+                "frequency": "300",
+                "sprite_index": 31,
+                "value": [12, 17],
                 "weight": 1
             },{
                 "tags": ["Sand", "Shallow sea"],
                 "name": "Leather boot",
                 "frequency": "200",
-                "sprite": "boot_01",
+                "sprite_index": 27,
+                "value": [2, 5],
+                "weight": 1
+            },{
+                "tags": ["Sand", "Shallow sea"],
+                "name": "Leather glove",
+                "frequency": "150",
+                "sprite_index": 29,
                 "value": [2, 5],
                 "weight": 1
             }]

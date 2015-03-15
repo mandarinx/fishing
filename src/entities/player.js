@@ -4,6 +4,7 @@ var cu              = require('config_utils');
 var config          = require('config');
 var level           = require('controllers/level');
 var input           = require('controllers/input');
+var inventory       = require('controllers/inventory');
 var entity          = require('entities/entity');
 var boat            = require('entities/boat');
 var fisherman       = require('entities/fisherman');
@@ -24,6 +25,7 @@ extend(module.exports, entity);
 module.exports.init = function(g, options) {
     game = g;
 
+    inventory.init();
     collision_cfg = config.get('level', 'collisions');
 
     players['fisherman'] = fisherman.init(game, options.layer);

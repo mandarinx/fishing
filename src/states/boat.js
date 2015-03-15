@@ -6,6 +6,7 @@ var config          = require('config');
 var cu              = require('config_utils');
 var input           = require('controllers/input');
 var level           = require('controllers/level');
+var factory         = require('controllers/factory');
 var player          = require('entities/player');
 var pier            = require('entities/pier');
 var physics         = require('helpers/phaser/physics');
@@ -29,12 +30,14 @@ module.exports.create = function() {
 
     physics.init(game);
     input.init(game);
+    factory.init(game);
 
     layer_main = level.createMap(game, {
         name: 'island',
         data: list.printString(map_data.tiles, map_data.width)
     });
 
+    // TODO: Move to segment. Piers should be created by the factory.
     pier.create(level.map.tileWidth,
                 level.map.tileHeight,
                 map_data.meta.pier_pos);

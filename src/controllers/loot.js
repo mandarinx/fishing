@@ -32,7 +32,6 @@ function getLootFrom(entities) {
     var entity;
     for (var i=0; i<entities.length; i++) {
         entity = entities[i];
-        console.log(rnd, entity._chance_lower, entity._chance_upper);
         if (rnd >= entity._chance_lower &&
             rnd < entity._chance_upper) {
             break;

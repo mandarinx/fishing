@@ -1,17 +1,26 @@
 "use strict";
 
+// NOTES:
+
+// - Some types of fishes can get away. Pay attention to the fishinrod and
+// hit the action button when you get something. Funny? Engaging? Pointless?
+// - Bending of the fishing rod should be a looping animation. Could even
+// add some randomness to it. Need to hook up to the update function of sprite.
+
 var segment     = require('generators/segment');
 var level       = require('controllers/level');
 var loot        = require('controllers/loot');
+var factory     = require('controllers/factory');
 var type        = require('utils/type');
 var list        = require('utils/list');
 var cu          = require('config_utils');
+var events      = require('events');
 
 var sprite;
 var game;
 var boat;
 var timer;
-var loot;
+var cur_loot;
 
 var fishingrod = {
     init: function(g, b) {
@@ -33,8 +42,18 @@ var fishingrod = {
         if (!type(timer).is_undefined) {
             timer.stop(true);
         }
-        // if loot != undefined
-            // dispatch got loot event with current loot
+        if (!type(cur_loot).is_undefined) {
+            game.add.existing(cur_loot.sprite);
+            cur_loot.sprite.x = boat.x + 16;
+            cur_loot.sprite.y = boat.y;
+
+            var bounce = game.add.tween(cur_loot.sprite);
+            bounce.to({ y: boat.y - 16 }, 700, Phaser.Easing.Cubic.Out);
+            bounce.onComplete.add(bounceDone);
+            bounce.start();
+
+            events.onLootDrop.dispatch(cur_loot);
+        }
     },
 
     show: function() {
@@ -60,12 +79,14 @@ var fishingrod = {
 
 module.exports = fishingrod;
 
+function bounceDone() {
+    cur_loot.sprite.kill();
+    cur_loot = undefined;
+}
+
 function timerDone() {
 
-    // TODO: I want to call an animation by play, and have it loop
-    // until the player hits the action key, without having to manually
-    // call update on the rod
-
+    // There's a 20% chance of not getting anything. Put in config
     if (Math.random() < 0.2) {
         // NOTE: This is an example of the benefit of using module exports
         // on an object, rather than one module export for each function
@@ -90,23 +111,8 @@ function timerDone() {
     console.log('Got a '+entity.name);
 
     sprite.frame = entity.weight > 1 ? 10 : 9;
-    // var chance = tile_type === 'Shallow sea' ? 0.5 : 0.4;
-    // var fish = tile_type === 'Shallow sea' ? 'small' : 'large';
 
-    // // TODO: The chance of getting a fish is affected by the effectiveness
-    // // of the fishing rod. Or maybe the bait?
-
-    // if (Math.random() >= chance) {
-    //     console.log('Got a '+fish+' fish');
-    // }
-    // roll the dice
-        // got fish?
-            // tile deep? play animation for big : small
-            // tile deep ? use factory to create random big fish : small
-            // exit
-        // no fish
-            // start new timer
-
+    cur_loot = factory.create('loot', entity);
 }
 
 Object.defineProperty(module.exports, 'sprite', {

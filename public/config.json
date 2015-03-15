@@ -47,7 +47,26 @@
             "walking_speed": 50,
             "sailing_speed": 40,
             "sailing_rotate_speed": 90
-        }
+        },
+        "loot": [{
+                "tags": ["Deep sea"],
+                "name": "Hammer head shark",
+                "weight": "50",
+                "sprite": "shark_01",
+                "value": [120, 170]
+            },{
+                "tags": ["Shallow sea", "Deep sea"],
+                "name": "Salmon",
+                "weight": "500",
+                "sprite": "salmon_01",
+                "value": [8, 10]
+            },{
+                "tags": ["Sand", "Shallow sea"],
+                "name": "Leather boot",
+                "weight": "200",
+                "sprite": "boot_01",
+                "value": [2, 5]
+            }]
     },
     "world": {
         "width": 16,

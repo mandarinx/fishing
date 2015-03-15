@@ -17,10 +17,11 @@ var world           = {};
 var cfg             = null;
 var map_cfg         = null;
 var data_types      = null;
+var current;
 
 module.exports.generate = function(x, y, type) {
     if (exists(x, y)) {
-        return;
+        return this.get(x, y);
     }
 
     cfg = config.get('world_segment');
@@ -28,31 +29,31 @@ module.exports.generate = function(x, y, type) {
     data_types = map_cfg.data_types;
     addToCache(x, y);
 
-    var segment = world[x][y] = grid.create(cfg.width, cfg.height, 0);
-    segment.seed = Math.round(Math.random() * 10000);
-    // segment.seed = 5388;
-    log(segment.seed);
+    current = world[x][y] = grid.create(cfg.width, cfg.height, 0);
+    current.seed = Math.round(Math.random() * 10000);
+    // current.seed = 5388;
+    log(current.seed);
 
-    // info(data_types, type, x, y, segment.seed);
+    // info(data_types, type, x, y, current.seed);
 
     // TODO: Define the generators for each type as a recipe, and store
     // each recipe in an object with type as index
 
     if (type === 0) {
         // TODO: Generate sea name
-        segment.name = 'Fishing sea';
-        generateFishingSea(segment);
+        current.name = 'Fishing sea';
+        generateFishingSea(current);
     }
 
     if (type === 1) {
-        segment.name = 'null';
-        generateShallowSea(segment);
+        current.name = 'null';
+        generateShallowSea(current);
     }
 
     if (type === 2) {
-        segment.name = island_name.generate();
-        generateIsland(segment, {
-            seed:       segment.seed,
+        current.name = island_name.generate();
+        generateIsland(current, {
+            seed:       current.seed,
             smoothness: cfg.smoothness,
             padding:    cfg.padding,
             value_a:    cu.getDataTypeValue('Shallow sea'),
@@ -60,9 +61,9 @@ module.exports.generate = function(x, y, type) {
         });
     }
 
-    // list.print(segment.data);
+    // list.print(current.data);
 
-    tilemapper.map(segment, data_types, map_cfg.tilemaps.segment);
+    tilemapper.map(current, data_types, map_cfg.tilemaps.segment);
 
     return this.get(x, y);
 };
@@ -74,6 +75,19 @@ module.exports.get = function(x, y) {
 
     return world[x][y];
 };
+
+module.exports.getTileType = function(x, y) {
+    if (!current) {
+        return null;
+    }
+
+    return cu.getDataType(list.get(current.data, x, y, current.width));
+};
+
+Object.defineProperty(module.exports, 'current', {
+    get: function() { return current; },
+    enumerable: true
+});
 
 function generateIsland(segment, opts) {
 

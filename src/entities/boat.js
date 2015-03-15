@@ -96,8 +96,7 @@ module.exports.hide = function() {
 }
 
 function onAction() {
-    // fishingrod.show(input.action.isDown);
-    // fishingrod.show();
+    fishingrod.toggle();
 }
 
 Object.defineProperty(module.exports, 'sprite', {

@@ -29,7 +29,7 @@ module.exports.collide = function(a, b) {
     system.collide(a, b);
 }
 
-// Terrible! Why must the physics system depend on player?
+// TODO: Why must the physics system depend on player?
 module.exports.setPlayer = function(p) {
     player = p;
 }

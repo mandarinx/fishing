@@ -39,7 +39,6 @@ function Grid(width, height, value) {
             }
 
             var row = [];
-            // list.each(this.data, w, function(tile, x, y, i) {
             this.data.each(w, function(tile, x, y, i) {
                 row.push(walkables.indexOf(tile) >= 0 ? 0 : 1);
                 if (x === w - 1) {

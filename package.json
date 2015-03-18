@@ -13,6 +13,7 @@
     "chalk": "^1.0.0",
     "cheerio": "^0.18.0",
     "chokidar": "^1.0.0-rc3",
+    "del": "^1.1.1",
     "gift": "^0.5.0",
     "node-static": "0.7.6",
     "parallelshell": "1.0.3",

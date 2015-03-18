@@ -1,9 +1,5 @@
 // Put route config in a separate file. That way I can use the config to
 // include libs in a runnable build.
-// I want to create a npm task that wraps the public dir and any necessary
-// external libraries in a package and deploys it to e.g. GitHub pages.
-// An index.html file should also be genrated to make each playable
-// build easily accessible.
 
 // Route config:
 // {
@@ -30,6 +26,8 @@ var node_static = require('node-static');
 var file_server = new node_static.Server('./public');
 var fs = require('fs');
 var port = 5000;
+var libs_json = fs.readFileSync('./libs.json', 'utf8');
+var libs = JSON.parse(libs_json);
 
 var server = require('http').createServer(function (request, response) {
     request.addListener('end', function () {
@@ -51,7 +49,7 @@ function isLibFile(req, res) {
 
         var file_name = getLib(req.url);
         if (file_name) {
-            file_server.serveFile(file_name, 200, {}, req, res);
+            file_server.serveFile('../' + file_name, 200, {}, req, res);
             return true;
         }
 
@@ -63,14 +61,13 @@ function isLibFile(req, res) {
     return false;
 }
 
-function getLib(path) {
-    var parts = path.split('/');
+function getLib(file_path) {
+    var parts = file_path.split('/');
     for (var i=parts.length-1; i>=0; i--) {
         if (parts[i] === 'lib' ||
             parts[i] === '') {
             parts.splice(i, 1);
         }
     }
-    var libs = JSON.parse(fs.readFileSync('./libs.json', 'utf8'));
     return libs[parts.join('')];
 }

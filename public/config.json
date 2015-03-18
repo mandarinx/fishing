@@ -21,24 +21,22 @@
     "input": {
         "keys": {
             "action": {
-                "key_code": "SPACEBAR",
-                "type": "single"
+                "key_code": "SPACEBAR"
+            },
+            "inventory": {
+                "key_code": "I"
             },
             "up": {
-                "key_code": "UP",
-                "type": "continuous"
+                "key_code": "UP"
             },
             "down": {
-                "key_code": "DOWN",
-                "type": "continuous"
+                "key_code": "DOWN"
             },
             "left": {
-                "key_code": "LEFT",
-                "type": "continuous"
+                "key_code": "LEFT"
             },
             "right": {
-                "key_code": "RIGHT",
-                "type": "continuous"
+                "key_code": "RIGHT"
             }
         }
     },

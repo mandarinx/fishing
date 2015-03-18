@@ -25,7 +25,7 @@ extend(module.exports, entity);
 module.exports.init = function(g, options) {
     game = g;
 
-    inventory.init();
+    inventory.init(game);
     collision_cfg = config.get('level', 'collisions');
 
     players['fisherman'] = fisherman.init(game, options.layer);

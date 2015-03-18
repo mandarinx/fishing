@@ -1,7 +1,6 @@
 "use strict";
 
 var config          = require('config');
-var type            = require('utils/type');
 
 var keys = {};
 var key_codes = [];

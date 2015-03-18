@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A Phaser game",
   "main": "./src/main.js",
+  "ghpages": {
+    "url": "http://mandarinx.github.io/fishing/"
+  },
   "dependencies": {
     "pathfinding": "^0.4.16",
     "phaser": "2.2.2",

@@ -10,7 +10,10 @@
   },
   "devDependencies": {
     "browserify": "6.0.0",
+    "chalk": "^1.0.0",
+    "cheerio": "^0.18.0",
     "chokidar": "^1.0.0-rc3",
+    "gift": "^0.5.0",
     "node-static": "0.7.6",
     "parallelshell": "1.0.3",
     "proc-noise": "0.0.1",

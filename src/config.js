@@ -30,10 +30,7 @@ module.exports = {
             }
         };
 
-        // TODO: both name of config file and port number should
-        // be inserted by Yeoman(?). Maybe the settings can be
-        // stored in package.json?
-        qwest.get('http://localhost:5000/config.json')
+        qwest.get('/config.json')
             .then(function(response) {
                 config = response;
 

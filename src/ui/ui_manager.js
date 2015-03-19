@@ -21,6 +21,7 @@ var panel_index     = require('ui/panels/index');
 // TODO: put in a panel
 var label           = require('ui/components/label');
 var input           = require('controllers/input');
+var type            = require('utils/type');
 
 // TODO: put in a panel
 var action_label;
@@ -30,10 +31,11 @@ var panels;
 var ui_manager = {
     init: function(game) {
 
-        panels = game.add.group();
+        panels = {};
 
         Object.keys(panel_index).forEach(function(panel) {
             panel_index[panel].init(game, panels);
+            panels[panel] = panel_index[panel];
         });
 
         // var image = game.cache.getImage('label');
@@ -43,16 +45,22 @@ var ui_manager = {
         //     top: 0, bottom: 22, left: 28, right: 28
         // });
 
+        // MOVE
         action_label = label.create(game, 16, 16);
     },
 
     toggle: function(panel_name, options) {
-        // look up panel
-        panels.forEach(function(child) {
-            console.log(child);
-        });
-        // if it's visible, hide it
-        // if it's hidden, show it, pass options
+        var panel = panels[panel_name];
+
+        if (type(panel).is_undefined) {
+            return;
+        }
+
+        if (panel.visible) {
+            panel.hide();
+        } else {
+            panel.show(options);
+        }
     }
 };
 

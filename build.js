@@ -26,6 +26,7 @@
 //   Use the commit messages to compose a changelog for the current build.
 //   Include it in the build's html so it is visible when playing.
 // - clean up this mess!
+// - Integration with Slack? Publish to Twitter? RSS?
 
 var chalk = require('chalk');
 var cheerio = require('cheerio');

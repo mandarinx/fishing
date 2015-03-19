@@ -172,12 +172,12 @@ function get_subdirs(srcpath) {
     });
 }
 
-function copy_lib(from, to) {
+function copy_lib(from, to, cb) {
     fs.copy(from, to, function(err) {
         if (err) {
             return error('Could not copy '+ from+' to '+ to + ': '+ err);
         }
-
+        cb();
     })
 }
 

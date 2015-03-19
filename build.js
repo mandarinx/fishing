@@ -179,7 +179,7 @@ function copy_lib(from, to) {
 
             update_index(next_build);
 
-            current_build_url = gh_pages_url + 'builds/build_' + build_num;
+            current_build_url = gh_pages_url + 'builds/build_' + next_build;
 
             add(['./index.html', './builds/build_'+next_build], next_build);
         });

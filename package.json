@@ -18,6 +18,7 @@
     "chokidar": "^1.0.0-rc3",
     "fs-extra": "^0.16.5",
     "gift": "^0.5.0",
+    "ncp": "^2.0.0",
     "node-static": "0.7.6",
     "parallelshell": "1.0.3",
     "proc-noise": "0.0.1",

@@ -16,6 +16,7 @@
     "chalk": "^1.0.0",
     "cheerio": "^0.18.0",
     "chokidar": "^1.0.0-rc3",
+    "dateformat": "^1.0.11",
     "fs-extra": "^0.16.5",
     "gift": "^0.5.0",
     "node-static": "0.7.6",

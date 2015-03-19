@@ -9,8 +9,6 @@
 // projects with a different folder structure? Use a config file? The config
 // file should be the same used for setting up the project.
 
-// mkdirp can recursively create dirs https://github.com/substack/node-mkdirp
-
 // For next version:
 // - display a short description of how the build script works at beginning
 //   of script.
@@ -27,29 +25,7 @@
 //   including descriptions for all commits between current and previous tag.
 //   Use the commit messages to compose a changelog for the current build.
 //   Include it in the build's html so it is visible when playing.
-
-// ------------------
-
-// ! check if there are tracked and uncomitted changes. Report back to user and
-//   abort.
-// ! switch to master branch
-// ! create 'build' directory
-// ! copy contents of public to build
-// ! get gh-pages url from package.json
-// ! prepare phaser lib
-// ! switch to gh-pages branch
-// ! get name of build folder with the highest number
-// ! pad the number
-// ! append build number to document title
-// ! rename ./build to build_x+1
-// ! move new build folder to builds
-// ! add new build folder to index.html
-// - add new build folder and index.html to git commit
-// - set commit message to build number
-// - commit
-// - push
-// - switch back to previous branch
-// - output the URL to the new build in console
+// - clean up this mess!
 
 var chalk = require('chalk');
 var cheerio = require('cheerio');
@@ -93,11 +69,50 @@ check_status(function(err) {
                 return error(err);
             }
 
-            copy_lib(libs_json['phaser.min.js'], './build/lib/phaser.min.js');
+            var libs = 0;
+
+            copy_lib(libs_json['phaser.min.js'],
+                    './build/lib/phaser.min.js', function() {
+                        libs++;
+                        if (libs === 2) {
+                            checkout_ghpages();
+                        }
+                    });
+            copy_lib(libs_json['phaser.map'],
+                    './build/lib/phaser.map', function() {
+                        libs++;
+                        if (libs === 2) {
+                            checkout_ghpages();
+                        }
+                    });
+
         });
 
     });
 });
+
+function checkout_ghpages() {
+    checkout('gh-pages', function() {
+
+        var next_build = get_next_build();
+        update_title(next_build);
+
+        fs.renameSync('./build', './build_'+next_build);
+
+        wrench.copyDirSyncRecursive('./build_'+next_build,
+                                    './builds/build_'+next_build, {
+            forceDelete: true
+        });
+
+        wrench.rmdirSyncRecursive('./build_'+next_build, false);
+
+        update_index(next_build);
+
+        current_build_url = gh_pages_url + 'builds/build_' + next_build;
+
+        add(['./index.html', './builds/build_'+next_build], next_build);
+    });
+}
 
 function checkout(branch, cb) {
     repo.checkout(branch, function(err) {
@@ -163,26 +178,6 @@ function copy_lib(from, to) {
             return error('Could not copy '+ from+' to '+ to + ': '+ err);
         }
 
-        checkout('gh-pages', function() {
-
-            var next_build = get_next_build();
-            update_title(next_build);
-
-            fs.renameSync('./build', './build_'+next_build);
-
-            wrench.copyDirSyncRecursive('./build_'+next_build,
-                                        './builds/build_'+next_build, {
-                forceDelete: true
-            });
-
-            wrench.rmdirSyncRecursive('./build_'+next_build, false);
-
-            update_index(next_build);
-
-            current_build_url = gh_pages_url + 'builds/build_' + next_build;
-
-            add(['./index.html', './builds/build_'+next_build], next_build);
-        });
     })
 }
 

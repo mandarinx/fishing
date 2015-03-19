@@ -30,7 +30,7 @@ module.exports = {
             }
         };
 
-        qwest.get('config.json')
+        qwest.get('./config.json')
             .then(function(response) {
                 config = response;
 

@@ -63,6 +63,7 @@ var repo = gift('./');
 var libs_json;
 var package_json;
 var gh_pages_url;
+var current_build_url;
 
 var error = function() {
     var args = Array.prototype.slice.call(arguments);
@@ -178,6 +179,8 @@ function copy_lib(from, to) {
 
             update_index(next_build);
 
+            current_build_url = gh_pages_url + 'builds/build_' + build_num;
+
             add(['./index.html', './builds/build_'+next_build], next_build);
         });
     })
@@ -279,6 +282,10 @@ function push() {
             console.log('could not push', err);
             return;
         }
+
+        console.log('');
+        console.log(current_build_url);
+        console.log('');
         checkout('master');
     });
 }

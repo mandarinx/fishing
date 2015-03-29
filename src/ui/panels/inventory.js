@@ -5,39 +5,84 @@
 // panel.
 // show, hide, visible
 
-var image = require('ui/components/image');
+var plane       = require('ui/components/plane');
+var image       = require('ui/components/image');
+var type        = require('utils/type');
+var config      = require('config');
 
 var visible;
+var dim = {};
+var items = [];
+var game;
+var game_cfg;
+
+// TODO: Move to config.json
+var settings = {
+    columns:    8,
+    rows:       4,
+    spacing:    4,
+    padding:    8,
+    slot_size:  16
+};
 
 var inventory_panel = {
-    init: function(game) {
-        // TODO: Image component draws a square using game.graphics, but will
-        // later be replaced with loading an image from cache, or somewhere.
-        var panel_width = 192;
-        var panel_height = 96;
-        image.create(game,
-                    (512 - panel_width) / 2,
-                    (512 - panel_height) / 2,
-                    panel_width,
-                    panel_height,
+    init: function(g) {
+        game = g;
+        game_cfg = config.get('game');
+
+        dim = getDimensions();
+
+        plane.create(game,
+                    (game_cfg.width - dim.width) / 2,
+                    (game_cfg.height - dim.height) / 2,
+                    dim.width, dim.height,
                     0xaa8e54);
 
-        // add slots using ui component
-            // lay them out in a grid
+        for (var i=0; i<(settings.columns * settings.rows); i++) {
+            items.push(image.create(game));
+        }
 
         this.hide();
     },
 
-    show: function(options) {
-        image.show();
+    show: function(slots) {
+        items.forEach(function(item, i) {
+            item.setSlot(slots[i], getCoordinate(i));
+        });
+
+        plane.show();
         visible = true;
     },
 
     hide: function() {
-        image.hide();
+        items.forEach(function(item, i) {
+            item.hide();
+        });
+
+        plane.hide();
         visible = false;
     }
 };
+
+function getDimensions() {
+    var slot_dim = settings.slot_size + (settings.spacing * 2);
+    var padding = settings.padding * 2;
+
+    return {
+        width:  (slot_dim * settings.columns) + padding,
+        height: (slot_dim * settings.rows) + padding
+    }
+}
+
+function getCoordinate(i) {
+    var col = i % settings.columns;
+    var row = Math.floor(i / settings.columns);
+
+    return {
+        x: ((game_cfg.width - dim.width) / 2) + settings.padding + ((settings.spacing + settings.slot_size) * col),
+        y: ((game_cfg.height - dim.height) / 2) + settings.padding + ((settings.spacing + settings.slot_size) * row)
+    };
+}
 
 Object.defineProperty(inventory_panel, 'visible', {
     get: function() { return visible; },

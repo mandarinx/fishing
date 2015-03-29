@@ -106,7 +106,8 @@ function timerDone() {
         tags.push('Shallow sea');
     }
 
-    // TODO: Pass a random number based on the fishing rod's properties?
+    // TODO: Loot drop can also be affected by tile type and the fishing
+    // rod's properties
     var entity = loot.getLoot(tags);
     console.log('Got a '+entity.name);
 

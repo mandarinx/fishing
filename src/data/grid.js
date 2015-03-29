@@ -1,5 +1,7 @@
 "use strict";
 
+// TODO: Pathfinding should NOT be a part of Grid. Append it when needed
+
 var list    = require('utils/list');
 var type    = require('utils/type');
 var PF      = require('pathfinding');

@@ -13,6 +13,7 @@ var generate    = require('states/generate');
 var worldmap    = require('states/worldmap');
 var boat        = require('states/boat');
 var game_state  = require('states/game');
+var traversal   = require('states/traversal');
 
 module.exports = function() {
     config.load(function() {
@@ -30,6 +31,7 @@ module.exports = function() {
         game.state.add('Worldmap',  worldmap);
         game.state.add('Game',      game_state);
         game.state.add('Boat',      boat);
+        game.state.add('Traversal', traversal);
 
         game.state.start(config.get('game', 'boot_sequence').next());
     });

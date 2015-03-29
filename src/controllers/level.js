@@ -80,9 +80,9 @@ function addLayer(debug) {
 
 function createMap(game, options) {
     options.tile_size = options.tile_size || 16;
-    options.layer_index = options.layer_index || 0;
+    // options.layer_index = options.layer_index || 0;
 
-    game.load.tilemap('map', null, options.data);
+    game.load.tilemap('map', undefined, options.data);
     map = game.add.tilemap('map', options.tile_size, options.tile_size);
     map.addTilesetImage(options.tileset);
 }
